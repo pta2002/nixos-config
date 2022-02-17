@@ -1,32 +1,17 @@
 # This is the NixOS config file!
 { config, pkgs, ... }:
-let
-  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
-    export __NV_PRIME_RENDER_OFFLOAD=1
-    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-    export __GLX_VENDOR_LIBRARY_NAME=nvidia
-    export __VK_LAYER_NV_optimus=NVIDIA_only
-    exec -a "$0" "$@"
-  '';
-in
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
-  networking.hostName = "mercury";
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Lisbon";
 
   networking.useDHCP = false;
-  networking.interfaces.wlo1.useDHCP = true;
 
   services.tailscale.enable = true;
 
@@ -39,14 +24,6 @@ in
   services.xserver.libinput = {
     enable = true;
     touchpad.naturalScrolling = true;
-  };
-
-  services.xserver.videoDrivers = ["nvidia"];
-  hardware.nvidia.prime = {
-    offload.enable = true;
-
-    intelBusId = "PCI:00:02:0";
-    nvidiaBusId = "PCI:02:00:0";
   };
 
   services.xserver.layout = "pt";
@@ -69,7 +46,6 @@ in
   virtualisation.docker.enable = true;
 
   environment.shells = with pkgs; [ bash fish ];
-  environment.systemPackages = [ nvidia-offload ];
 
   users.users.pta2002 = {
     isNormalUser = true;
@@ -92,4 +68,8 @@ in
   '';
 
   system.stateVersion = "21.11";
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-13.6.9"
+  ];
 }

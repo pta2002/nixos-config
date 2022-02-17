@@ -24,7 +24,7 @@
     discord
     spotify
     texmacs
-    visual-paradigm
+    # visual-paradigm
     calibre
     signal-desktop
     tdesktop
