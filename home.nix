@@ -24,6 +24,7 @@
     discord
     spotify
     texmacs
+    minecraft
     # visual-paradigm
     calibre
     signal-desktop
@@ -98,7 +99,7 @@
   };
 
   programs.starship = {
-    enable = true;
+    enable = false; # TODO: This is broken :(
     settings = {
       add_newline = false;
       format = "$directory$git_branch$git_status$character";
@@ -134,7 +135,7 @@
         };
       };
       coq-nvim = {
-        enable = true;
+        enable = false; # TODO: This is broken :(
         installArtifacts = true;
         autoStart = "shut-up";
       };
@@ -178,9 +179,9 @@
     keyMode = "vi";
   };
 
-  programs.kitty = {
-    enable = true;
-  };
+  # programs.kitty = {
+  #   enable = true;
+  # };
 
   nixpkgs.config.allowUnfree = true;
 }
