@@ -32,6 +32,7 @@
     zotero
     libreoffice
     obsidian
+    zoom-us
 
     # IDEs
     jetbrains.idea-ultimate
