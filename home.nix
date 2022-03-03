@@ -33,6 +33,7 @@
     libreoffice
     obsidian
     zoom-us
+    krita
 
     # IDEs
     jetbrains.idea-ultimate
@@ -100,7 +101,7 @@
   };
 
   programs.starship = {
-    enable = false; # TODO: This is broken :(
+    enable = true;
     settings = {
       add_newline = false;
       format = "$directory$git_branch$git_status$character";
@@ -133,13 +134,17 @@
         servers = {
           rnix-lsp.enable = true;
           clangd.enable = true;
+          zls.enable = true;
         };
       };
+
       coq-nvim = {
         enable = false; # TODO: This is broken :(
         installArtifacts = true;
         autoStart = "shut-up";
       };
+
+      zig.enable = true;
     };
 
     colorschemes.gruvbox = {

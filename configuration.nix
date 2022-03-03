@@ -25,6 +25,7 @@
     enable = true;
     touchpad.naturalScrolling = true;
   };
+  services.xserver.wacom.enable = true;
 
   services.xserver.layout = "pt";
 
