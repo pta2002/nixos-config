@@ -10,6 +10,7 @@
     texlive.combined.scheme-full
     nodejs
     python3
+    zig zls
 
     # Utilities
     ripgrep fd exa
@@ -34,6 +35,7 @@
     obsidian
     zoom-us
     krita
+    musescore
 
     # IDEs
     jetbrains.idea-ultimate
@@ -73,6 +75,7 @@
       set fish_greeting
       any-nix-shell fish | source
       base16-gruvbox-dark-hard
+      set -x PROJECT_PATHS ~/Projects ~/sources
     '';
 
     shellAliases = {
@@ -95,6 +98,15 @@
           repo = "base16-fish";
           rev = "2f6dd973a9075dabccd26f1cded09508180bf5fe";
           sha256 = "sha256-PebymhVYbL8trDVVXxCvZgc0S5VxI7I1Hv4RMSquTpA=";
+        };
+      }
+      {
+        name = "plugin-pj";
+        src = pkgs.fetchFromGitHub {
+          owner = "oh-my-fish";
+          repo = "plugin-pj";
+          rev = "43c94f24fd53a55cb6b01400b9b39eb3b6ed7e4e";
+          sha256 = "1z65m3w5fi3wfyfiflj9ycndimg3pnh318iv7q9jggybc7kkz1zz";
         };
       }
     ];
@@ -169,6 +181,9 @@
       "j" = "gj";
       "k" = "gk";
     };
+
+    extraPlugins = [ pkgs.vimPlugins.vim-sleuth ];
+    extraPackages = [ pkgs.xclip ];
   };
 
   programs.vscode = {
