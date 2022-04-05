@@ -147,7 +147,12 @@
           rnix-lsp.enable = true;
           clangd.enable = true;
           zls.enable = true;
+          pyright.enable = true;
         };
+
+        onAttach = ''
+          vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+        '';
       };
 
       coq-nvim = {
@@ -182,7 +187,9 @@
       "k" = "gk";
     };
 
-    extraPlugins = [ pkgs.vimPlugins.vim-sleuth ];
+    extraPlugins = with pkgs.vimPlugins; [
+      vim-sleuth
+    ];
     extraPackages = [ pkgs.xclip ];
   };
 

@@ -10,6 +10,7 @@
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Lisbon";
+  time.hardwareClockInLocalTime = true;
 
   networking.useDHCP = false;
 
@@ -18,8 +19,10 @@
   networking.firewall.enable = false;
 
   services.xserver.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.displayManager.sddm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  # services.xserver.desktopManager.plasma5.enable = true;
+  # services.xserver.displayManager.sddm.enable = true;
   services.xserver.windowManager.awesome.enable = true;
   services.xserver.libinput = {
     enable = true;
@@ -31,6 +34,7 @@
 
   services.fstrim.enable = true;
 
+  hardware.pulseaudio.enable = false;
   sound.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -59,7 +63,6 @@
   nixpkgs.config.allowUnfree = true;
 
   nix.settings.trusted-users = [ "root" "pta2002" ];
-  # nix.package = pkgs.nix_2_4;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
@@ -69,6 +72,17 @@
   '';
 
   system.stateVersion = "21.11";
+
+  services.vaultwarden.enable = true;
+  services.vaultwarden.config = {
+    signupsAllowed = true;
+    rocketPort = 8222;
+    rocketLog = "critical";
+    websocketEnabled = true;
+    websocketAddress = "0.0.0.0";
+    websocketPort = 3012;
+    domain = "http://localhost";
+  };
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-13.6.9"
