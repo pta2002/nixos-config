@@ -5,15 +5,20 @@
 
   home.packages = with pkgs; [
     # Programming languages
-    gcc gnumake
-    jdk17 maven
+    gcc
+    gnumake
+    jdk17
+    maven
     texlive.combined.scheme-full
     nodejs
     python3
-    zig zls
+    zig
+    zls
 
     # Utilities
-    ripgrep fd exa
+    ripgrep
+    fd
+    exa
     any-nix-shell
     unzip
     libqalculate
@@ -27,7 +32,7 @@
     texmacs
     minecraft
     # visual-paradigm
-    calibre
+    # calibre
     signal-desktop
     tdesktop
     zotero
@@ -48,7 +53,7 @@
 
     # Random things like fonts
     jetbrains-mono
-    (nerdfonts.override { fonts = ["JetBrainsMono" "FiraCode"]; })
+    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
   ];
 
   home.sessionVariables = {
