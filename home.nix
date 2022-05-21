@@ -41,6 +41,10 @@
     zoom-us
     krita
     musescore
+    virt-manager
+    gnome3.gnome-terminal
+    qbittorrent
+    spot
 
     # IDEs
     jetbrains.idea-ultimate
@@ -71,6 +75,7 @@
       pull.rebase = true;
       diff.colorMoved = "zebra";
       core.autocrlf = "input";
+      safe.directory = [ "/home/pta2002/nixos" ];
     };
   };
 
@@ -114,6 +119,15 @@
           sha256 = "1z65m3w5fi3wfyfiflj9ycndimg3pnh318iv7q9jggybc7kkz1zz";
         };
       }
+      {
+        name = "colored-man-pages";
+        src = pkgs.fetchFromGitHub {
+          owner = "PatrickF1";
+          repo = "colored_man_pages.fish";
+          rev = "f885c2507128b70d6c41b043070a8f399988bc7a";
+          sha256 = "0ifqdbaw09hd1ai0ykhxl8735fcsm0x2fwfzsk7my2z52ds60bwa";
+        };
+      }
     ];
   };
 
@@ -131,12 +145,15 @@
     enable = true;
     plugins = {
       treesitter.enable = true;
-      treesitter.nixGrammars = true;
+      treesitter.nixGrammars = false;
+      treesitter.ensureInstalled = "all";
       comment-nvim.enable = true;
+
       lualine = {
         enable = true;
         theme = "gruvbox-material";
       };
+
       intellitab.enable = true;
       nix.enable = true;
       bufferline.enable = true;

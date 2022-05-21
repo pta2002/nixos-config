@@ -49,13 +49,19 @@
   programs.adb.enable = true;
 
   virtualisation.docker.enable = true;
+  virtualisation.libvirtd.enable = true;
+
+  # Required for virt-manager
+  programs.dconf.enable = true;
 
   environment.shells = with pkgs; [ bash fish ];
+
+  documentation.dev.enable = true;
 
   users.users.pta2002 = {
     isNormalUser = true;
     shell = pkgs.fish;
-    extraGroups = [ "wheel" "docker" "audio" "video" "networkmanager" "wireshark" "adbusers" ];
+    extraGroups = [ "wheel" "docker" "audio" "video" "networkmanager" "wireshark" "adbusers" "libvirtd" ];
   };
 
   environment.etc.jdk.source = pkgs.jdk17;
