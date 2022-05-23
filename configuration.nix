@@ -79,17 +79,6 @@
 
   system.stateVersion = "21.11";
 
-  services.vaultwarden.enable = true;
-  services.vaultwarden.config = {
-    signupsAllowed = true;
-    rocketPort = 8222;
-    rocketLog = "critical";
-    websocketEnabled = true;
-    websocketAddress = "0.0.0.0";
-    websocketPort = 3012;
-    domain = "http://localhost";
-  };
-
   nixpkgs.config.permittedInsecurePackages = [
     "electron-13.6.9"
   ];
