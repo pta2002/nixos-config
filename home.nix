@@ -25,6 +25,7 @@
     httpie
     jq
     gh
+    floating-print
 
     # Random programs
     discord

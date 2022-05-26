@@ -21,8 +21,6 @@
   services.xserver.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.xserver.displayManager.gdm.enable = true;
-  # services.xserver.desktopManager.plasma5.enable = true;
-  # services.xserver.displayManager.sddm.enable = true;
   services.xserver.windowManager.awesome.enable = true;
   services.xserver.libinput = {
     enable = true;
@@ -81,5 +79,10 @@
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-13.6.9"
+  ];
+
+  nixpkgs.overlays = [
+    (import ./overlays/sxiv)
+    (import ./overlays/my-scripts pkgs)
   ];
 }

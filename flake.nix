@@ -20,14 +20,14 @@
       hydrogen = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ({pkgs, ...}: {
+          ({ pkgs, ... }: {
             nixpkgs.overlays = [ (import ./overlays/visual-paradigm.nix pkgs) ];
           })
 
           ./configuration.nix
           ./machines/hydrogen.nix
           home.nixosModules.home-manager
-          ({pkgs, ...}@args: {
+          ({ pkgs, ... }@args: {
             home-manager.users.pta2002 = import ./home.nix args // {
               imports = [
                 nixvim.homeManagerModules.nixvim
@@ -40,13 +40,13 @@
       mercury = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ({pkgs, ...}: {
+          ({ pkgs, ... }: {
             nixpkgs.overlays = [ (import ./overlays/visual-paradigm.nix pkgs) ];
           })
           ./configuration.nix
           ./machines/mercury.nix
           home.nixosModules.home-manager
-          ({pkgs, ...}@args: {
+          ({ pkgs, ... }@args: {
             home-manager.users.pta2002 = import ./home.nix args // {
               imports = [
                 nixvim.homeManagerModules.nixvim
