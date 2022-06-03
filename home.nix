@@ -31,6 +31,7 @@
     discord
     spotify
     texmacs
+    lyx
     minecraft
     # visual-paradigm
     # calibre

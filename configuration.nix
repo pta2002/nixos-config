@@ -32,6 +32,11 @@
 
   services.fstrim.enable = true;
 
+  services.printing = {
+    enable = true;
+    drivers = [ pkgs.gutenprint ];
+  };
+
   hardware.pulseaudio.enable = false;
   sound.enable = true;
   security.rtkit.enable = true;
