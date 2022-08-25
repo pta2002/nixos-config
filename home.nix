@@ -14,6 +14,8 @@
     python3
     zig
     zls
+    flutter
+    godot
 
     # Utilities
     ripgrep
@@ -26,6 +28,7 @@
     jq
     gh
     floating-print
+    zbar
 
     # Random programs
     discord
@@ -34,7 +37,7 @@
     lyx
     minecraft
     # visual-paradigm
-    # calibre
+    calibre
     signal-desktop
     tdesktop
     zotero
@@ -47,6 +50,9 @@
     gnome3.gnome-terminal
     qbittorrent
     spot
+    picom
+    # freecad
+    mindustry
 
     # IDEs
     jetbrains.idea-ultimate
@@ -142,6 +148,8 @@
     ];
   };
 
+  programs.direnv.enable = true;
+
   programs.starship = {
     enable = true;
     settings = {
@@ -178,6 +186,7 @@
         enable = true;
         servers = {
           rnix-lsp.enable = true;
+          rust-analyzer.enable = true;
           clangd.enable = true;
           zls.enable = true;
           pyright.enable = true;
@@ -188,10 +197,13 @@
         '';
       };
 
-      coq-nvim = {
-        enable = false; # TODO: This is broken :(
-        installArtifacts = true;
-        autoStart = "shut-up";
+      nvim-cmp = {
+        enable = true;
+        sources = [{ name = "nvim_lsp"; }];
+        mappingPresets = [ "insert" ];
+        mapping = {
+          "<CR>" = "cmp.mapping.confirm({ select = true })";
+        };
       };
 
       zig.enable = true;
@@ -243,9 +255,32 @@
     keyMode = "vi";
   };
 
-  # programs.kitty = {
+  # services.picom = {
   #   enable = true;
+  #   experimentalBackends = true;
+  #
+  #   shadow = true;
+  #   shadowExclude = [ "window_type *= 'menu'" ];
+  #   backend = "glx";
+  #   vSync = true;
   # };
+
+  # xdg.configFile."picom/picom.conf".text = ''
+  #   shadow = true
+  #   shadow-opacity = 0.3
+  # '';
+
+  programs.kitty = {
+    enable = true;
+    font = {
+      name = "JetBrains Mono";
+      size = 12;
+    };
+
+    extraConfig = ''
+      background_opacity 0.9
+    '';
+  };
 
   nixpkgs.config.allowUnfree = true;
 }

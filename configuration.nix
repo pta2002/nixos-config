@@ -21,7 +21,16 @@
   services.xserver.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.windowManager.awesome.enable = true;
+  services.xserver.windowManager.awesome = {
+    enable = true;
+    luaModules = with pkgs.luaPackages; [
+      luarocks
+      upower_dbus
+      dbus_proxy
+      enum
+    ];
+  };
+
   services.xserver.libinput = {
     enable = true;
     touchpad.naturalScrolling = true;
