@@ -66,6 +66,12 @@
   # Required for virt-manager
   programs.dconf.enable = true;
 
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+  };
+
   environment.shells = with pkgs; [ bash fish ];
 
   documentation.dev.enable = true;

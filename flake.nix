@@ -7,7 +7,7 @@
     home.url = "github:nix-community/home-manager/release-21.11";
     home.inputs.nixpkgs.follows = "nixpkgs";
 
-    /* nixvim.url = "github:pta2002/nixvim"; */
+    # nixvim.url = "github:pta2002/nixvim";
     nixvim = {
       type = "git";
       url = "file:///home/pta2002/Projects/nixvim";

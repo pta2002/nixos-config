@@ -207,6 +207,11 @@
       };
 
       zig.enable = true;
+
+      telescope = {
+        enable = true;
+        extensions.fzf-native.enable = true;
+      };
     };
 
     # colorschemes.gruvbox = {
@@ -220,16 +225,30 @@
       mouse = "a";
       shiftwidth = 2;
       tabstop = 2;
+      smartindent = true;
       expandtab = true;
       number = true;
       wrap = true;
       linebreak = true;
+      hlsearch = false;
+      relativenumber = true;
+      smartcase = true;
+      ignorecase = true;
+
+      undodir = "/home/pta2002/.cache/nvim/undodir";
+      undofile = true;
+
+      showmode = false;
+
+      scrolloff = 4;
     };
 
     globals.mapleader = " ";
 
     maps.normal = {
       "<leader>t" = "<CMD>NvimTreeToggle<CR>";
+      "<leader>ft" = "<CMD>Telescope find_files<CR>";
+      "<leader>fg" = "<CMD>Telescope grep_string<CR>";
       "j" = "gj";
       "k" = "gk";
     };
