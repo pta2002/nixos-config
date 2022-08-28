@@ -55,7 +55,12 @@
                 imports = [
                   # nixvim.homeManagerModules.x86_64-linux.nixvim
                   nixvim.homeManagerModules.nixvim
+                  ./nvim.nix
                 ];
+
+                #                home.packages = [
+                #                  (nixvim.build pkgs (import ./nvim.nix { inherit pkgs; }))
+                #		];
               };
             })
           ];

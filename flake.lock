@@ -23,11 +23,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1661361016,
-        "narHash": "sha256-Bjf6ZDnDc6glTwIIItvwfcaeJ5zWFM6GYfPajSArdUY=",
+        "lastModified": 1661450036,
+        "narHash": "sha256-0/9UyJLtfWqF4uvOrjFIzk8ue1YYUHa6JIhV0mALkH0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "b784c5ae63dd288375af1b4d37b8a27dd8061887",
+        "rev": "f3d0897be466aa09a37f6bf59e62c360c3f9a6cc",
         "type": "github"
       },
       "original": {
@@ -45,11 +45,11 @@
         "nmdSrc": "nmdSrc"
       },
       "locked": {
-        "lastModified": 1661300212,
-        "narHash": "sha256-hyBkehSLaxqMkpNMEuFJcfUN47TzgC4uW2qCytt2DMU=",
+        "lastModified": 1661646823,
+        "narHash": "sha256-NWVxSDALuagE12UW102ZPhnnp9WDUg+I4cA4lf27yiw=",
         "ref": "refs/heads/main",
-        "rev": "4ff6dcb863c2c28f01d547fb50d8ce93e72dd800",
-        "revCount": 128,
+        "rev": "5bc0a552cea34b03e63883f2a50b186873e6258a",
+        "revCount": 132,
         "type": "git",
         "url": "file:///home/pta2002/Projects/nixvim"
       },
