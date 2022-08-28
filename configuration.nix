@@ -55,6 +55,9 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
+    config.jack = {
+      jack.properties.node.latency = "512/48000";
+    };
   };
 
   programs.wireshark.enable = true;
@@ -83,6 +86,8 @@
   };
 
   environment.etc.jdk.source = pkgs.jdk17;
+  environment.etc.jdk11.source = pkgs.jdk11;
+  environment.etc.jdk8.source = pkgs.jdk8;
 
   nixpkgs.config.allowUnfree = true;
 

@@ -14,8 +14,8 @@
     python3
     zig
     zls
-    flutter
     godot
+    flutter
 
     # Utilities
     ripgrep
@@ -29,6 +29,7 @@
     gh
     floating-print
     zbar
+    gpg
 
     # Random programs
     discord
@@ -53,6 +54,11 @@
     picom
     # freecad
     mindustry
+    reaper
+    bottles
+    lutris
+    # freecad
+    google-chrome
 
     # IDEs
     jetbrains.idea-ultimate
@@ -94,6 +100,7 @@
       any-nix-shell fish | source
       base16-gruvbox-dark-hard
       set -x PROJECT_PATHS ~/Projects ~/sources
+      set -Ua fish_user_paths ~/.pub-cache/bin
     '';
 
     shellAliases = {

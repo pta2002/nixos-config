@@ -36,7 +36,8 @@
             ({ pkgs, ... }@args: {
               home-manager.users.pta2002 = import ./home.nix args // {
                 imports = [
-                  nixvim.homeManagerModules.x86_64-linux.nixvim
+                  nixvim.homeManagerModules.nixvim
+                  ./nvim.nix
                 ];
               };
             })
