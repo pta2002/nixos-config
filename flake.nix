@@ -4,8 +4,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    home.url = "github:nix-community/home-manager/release-21.11";
+    home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
+
+    picom.url = "github:Arian8j2/picom-jonaburg-fix";
+    picom.flake = false;
 
     # nixvim.url = "github:pta2002/nixvim";
     nixvim = {

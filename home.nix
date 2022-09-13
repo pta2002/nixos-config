@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, inputs, ... }:
 {
   home.stateVersion = "21.11";
   programs.home-manager.enable = true;
@@ -23,13 +23,14 @@
     exa
     any-nix-shell
     unzip
+    zip
     libqalculate
     httpie
     jq
     gh
     floating-print
     zbar
-    gpg
+    gnupg
 
     # Random programs
     discord
@@ -51,7 +52,11 @@
     gnome3.gnome-terminal
     qbittorrent
     spot
-    picom
+
+    (picom.overrideAttrs (old: {
+      src = inputs.picom;
+    }))
+
     # freecad
     mindustry
     reaper
@@ -72,6 +77,13 @@
     # Random things like fonts
     jetbrains-mono
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
+
+    sxhkd
+    eww
+    feh
+    playerctl
+    maim
+    xclip
   ];
 
   home.sessionVariables = {
@@ -207,6 +219,21 @@
       background_opacity 0.9
     '';
   };
+
+  programs.rofi.enable = true;
+
+  gtk = {
+    enable = true;
+    gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
+    gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
+    # cursorTheme = {
+    #   package = pkgs.gnome3.defaultIconTheme;
+    #   name = "Adwaita";
+    # };
+  };
+
+  # cursor theme
+  home.file.".icons/default".source = "${pkgs.gnome.adwaita-icon-theme}/share/icons/Adwaita";
 
   nixpkgs.config.allowUnfree = true;
 }
