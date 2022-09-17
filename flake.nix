@@ -10,11 +10,18 @@
     picom.url = "github:Arian8j2/picom-jonaburg-fix";
     picom.flake = false;
 
-    nixvim = {
-      type = "git";
-      url = "file:///home/pta2002/Projects/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    vim-tup.url = "github:dunedain289/vim-tup";
+    vim-tup.flake = false;
+
+    eww-scripts.url = "file:///home/pta2002/Projects/eww-scripts";
+    eww-scripts.type = "git";
+    eww-scripts.inputs.nixpkgs.follows = "nixpkgs";
+
+    phosphor-icons.url = "github:phosphor-icons/phosphor-icons";
+    phosphor-icons.flake = false;
+
+    nixvim.url = "github:pta2002/nixvim";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     musnix.url = "github:musnix/musnix";
   };
@@ -44,7 +51,7 @@
                 imports = [
                   # nixvim.homeManagerModules.x86_64-linux.nixvim
                   nixvim.homeManagerModules.nixvim
-                  ./nvim.nix
+                  (import ./nvim.nix inputs)
                 ];
               };
             })
@@ -81,7 +88,7 @@
                 imports = [
                   # nixvim.homeManagerModules.x86_64-linux.nixvim
                   nixvim.homeManagerModules.nixvim
-                  ./nvim.nix
+                  (import ./nvim.nix inputs)
                 ];
               };
             })

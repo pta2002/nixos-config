@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+inputs: { pkgs, ... }:
 {
   programs.nixvim = {
     enable = true;
@@ -37,7 +37,7 @@
         '';
       };
 
-      # lsp-lines.enable = true;
+      lsp-lines.enable = true;
 
       nvim-cmp = {
         enable = true;
@@ -116,6 +116,11 @@
           rev = version;
           sha256 = "0890cyxnnvbbhv1irm0nxl5x7a49h1327cmhl1gmayigd4jym7ln";
         };
+      })
+      (pkgs.vimUtils.buildVimPlugin {
+        pname = "vim-tup";
+        version = "eede19c";
+        src = inputs.vim-tup;
       })
     ];
 

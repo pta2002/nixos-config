@@ -1,5 +1,41 @@
 {
   "nodes": {
+    "eww-scripts": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1663165227,
+        "narHash": "sha256-kmhoPC2PmKzTsxqHfjRliA1tSbRTUNnCu0w2G2nUMn4=",
+        "ref": "refs/heads/main",
+        "rev": "4f0072fbeabc3f517b73d24f1b6f1a0839a7c001",
+        "revCount": 3,
+        "type": "git",
+        "url": "file:///home/pta2002/Projects/eww-scripts"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///home/pta2002/Projects/eww-scripts"
+      }
+    },
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1659877975,
+        "narHash": "sha256-zllb8aq3YO3h8B/U0/J1WBgAL8EX5yWf5pMj3G0NAmc=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c0e246b9b83f637f4681389ecabcb2681b4f3af0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "home": {
       "inputs": {
         "nixpkgs": [
@@ -57,11 +93,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1663178737,
-        "narHash": "sha256-ayOtdyoNx6BqJtTYVzdQCDz/YWb67TY/CMGacFCgNQo=",
+        "lastModified": 1663268520,
+        "narHash": "sha256-Jf6wkoMOhWUdx9d9UarWHExvOUDzVa98OsPYvbNLVYo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "1158501e7c7cba26d922723cf9f70099995eb755",
+        "rev": "823e2c9b0a0ec8b61b6583f48338072f137b6889",
         "type": "github"
       },
       "original": {
@@ -79,17 +115,17 @@
         "nmdSrc": "nmdSrc"
       },
       "locked": {
-        "lastModified": 1662074366,
-        "narHash": "sha256-V3pRgFhxIagO3tnVctAh1ubObAYAWLzJXpF49Ex5/Os=",
-        "ref": "refs/heads/main",
-        "rev": "88fb867da5d3b4785c8c52ea9d0ca2185b0dd51a",
-        "revCount": 134,
-        "type": "git",
-        "url": "file:///home/pta2002/Projects/nixvim"
+        "lastModified": 1662984264,
+        "narHash": "sha256-6Rq3+SVnVhD/gJfyAtA+hhuoIwInP3I4c5uAMPh1zWs=",
+        "owner": "pta2002",
+        "repo": "nixvim",
+        "rev": "bd6f978d51eb95c8633744331546efbd9206d228",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/pta2002/Projects/nixvim"
+        "owner": "pta2002",
+        "repo": "nixvim",
+        "type": "github"
       }
     },
     "nmdSrc": {
@@ -106,6 +142,22 @@
         "owner": "rycee",
         "repo": "nmd",
         "type": "gitlab"
+      }
+    },
+    "phosphor-icons": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1640542741,
+        "narHash": "sha256-n9aw+hTsZ3lX5DX1e2lN9OorLK8XsMsUROdqwAwGL1c=",
+        "owner": "phosphor-icons",
+        "repo": "phosphor-icons",
+        "rev": "ef44a967cc5525a8b71fea20364be3e066c38f6e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "phosphor-icons",
+        "repo": "phosphor-icons",
+        "type": "github"
       }
     },
     "picom": {
@@ -126,11 +178,14 @@
     },
     "root": {
       "inputs": {
+        "eww-scripts": "eww-scripts",
         "home": "home",
         "musnix": "musnix",
         "nixpkgs": "nixpkgs_2",
         "nixvim": "nixvim",
-        "picom": "picom"
+        "phosphor-icons": "phosphor-icons",
+        "picom": "picom",
+        "vim-tup": "vim-tup"
       }
     },
     "utils": {
@@ -145,6 +200,22 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "vim-tup": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1494958058,
+        "narHash": "sha256-7G8bkvHbTklRaxbWPgI9Gm6auL8Td3Cb6ehEz93ezkg=",
+        "owner": "dunedain289",
+        "repo": "vim-tup",
+        "rev": "eede19c1277a0e9ed7709ca50d89bdd5b89e7c4f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dunedain289",
+        "repo": "vim-tup",
         "type": "github"
       }
     }

@@ -84,6 +84,22 @@
     playerctl
     maim
     xclip
+    inputs.eww-scripts.packages."${pkgs.system}".nm-follow
+
+    (stdenv.mkDerivation rec {
+      pname = "phosphor-icons";
+      version = "1.4.0";
+
+      ttf = ''${inputs.phosphor-icons}/src/fonts/Phosphor.ttf'';
+
+      dontUnpack = true;
+
+      buildPhase = "";
+      installPhase =
+        ''
+          install -m 644 -D ${ttf} $out/share/fonts/truetype/Phosphor.ttf
+        '';
+    })
   ];
 
   home.sessionVariables = {
@@ -217,6 +233,7 @@
 
     extraConfig = ''
       background_opacity 0.9
+      window_padding_width 4
     '';
   };
 

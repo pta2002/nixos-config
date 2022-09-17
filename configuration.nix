@@ -47,6 +47,8 @@
     drivers = [ pkgs.gutenprint ];
   };
 
+  services.gnome.gnome-keyring.enable = true;
+
   hardware.pulseaudio.enable = false;
   sound.enable = true;
   security.rtkit.enable = true;
