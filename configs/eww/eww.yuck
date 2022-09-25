@@ -33,8 +33,7 @@
        :spacing 18
     (for desktop in {bspwm[monitor]}
       (button
-        ; TODO: this only works with numbered desktops
-        :onclick "bspc desktop -f ${monitor}:^${desktop["name"]}"
+        :onclick "bspc desktop -f ${monitor}:^${desktop["index"]}"
         (label
           :class "${desktop["status"]} ${desktop["focused"] ? "focused" : ""}"
           :text {desktop["name"]})))))

@@ -9,11 +9,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1664136522,
-        "narHash": "sha256-7nYhkG53rwdoQUiFSnRyrogmmMe1WrlEEvOIVo3jTkI=",
+        "lastModified": 1664142471,
+        "narHash": "sha256-cOQQlPfuqLkNcOj57s5T4EmsRmD6g9dVcgAZA9H2NnY=",
         "ref": "refs/heads/main",
-        "rev": "0c89d2cddbf3503965adbcdfd4d88b898b2e95d3",
-        "revCount": 9,
+        "rev": "f5bb536326579a9a009cce18bae7d67acb7c9305",
+        "revCount": 10,
         "type": "git",
         "url": "file:///home/pta2002/Projects/eww-scripts"
       },
