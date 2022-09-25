@@ -22,6 +22,8 @@
       gpl = "git pull";
 
       ls = "exa";
+
+      cat = "bat";
     };
     plugins = [
       {
@@ -71,5 +73,10 @@
     };
 
     enableFishIntegration = true;
+  };
+
+  programs.bat = {
+    enable = true;
+    config.theme = "gruvbox-dark";
   };
 }

@@ -1,10 +1,6 @@
 { inputs, ... }: { pkgs, config, ... }:
 {
   home.packages = with pkgs; [
-    (picom.overrideAttrs (old: {
-      src = inputs.picom;
-    }))
-
     sxhkd
     eww
     feh
@@ -55,6 +51,40 @@
     gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
   };
 
+  services.picom = {
+    enable = true;
+    package = pkgs.picom.overrideAttrs (old: {
+      src = inputs.picom;
+    });
+
+    backend = "glx";
+    experimentalBackends = true;
+
+    shadow = true;
+    shadowOpacity = 1.0;
+
+    settings = {
+      blur-background = true;
+      blur-method = "dual_kawase";
+      blur-strength = 5;
+      blur-background-exclude = [ "name ~= 'slop'" ];
+
+      fading = true;
+      fade-delta = 3;
+
+      round-borders = 1;
+      corner-radius = 12.0;
+    };
+
+    wintypes = {
+      desktop = { shadow = true; };
+      dropdown_menu = { shadow = false; blur = false; full-shadow = false; opacity = 1.0; };
+      popup_menu = { shadow = false; blur = false; full-shadow = false; opacity = 1.0; };
+      menu = { shadow = false; blur = false; full-shadow = false; opacity = 1.0; };
+      tooltip = { shadow = false; blur = true; full-shadow = false; opacity = 1.0; };
+    };
+  };
+
   home.file =
     let
       ln = config.lib.file.mkOutOfStoreSymlink;
@@ -66,6 +96,6 @@
       ".config/bspwm".source = ln "/home/pta2002/nixos/configs/bspwm";
       ".config/sxhkd".source = ln "/home/pta2002/nixos/configs/sxhkd";
       ".config/eww".source = ln "/home/pta2002/nixos/configs/eww";
-      ".config/picom".source = ln "/home/pta2002/nixos/configs/picom";
+      # ".config/picom".source = ln "/home/pta2002/nixos/configs/picom";
     };
 }

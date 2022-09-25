@@ -9,11 +9,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1663612845,
-        "narHash": "sha256-sc5Aa8Lznwfctl5MH1wi1Ie0GE+0cV56DSSYnRWhJJk=",
+        "lastModified": 1664133657,
+        "narHash": "sha256-x/3DJfbNmKmNZRdhSMGtYtHYU5Cwi/3ab3E9UXkf5Fw=",
         "ref": "refs/heads/main",
-        "rev": "fc5051578a5bdd7f0063d655a740321d7a12195d",
-        "revCount": 6,
+        "rev": "0a5f2957b3898ecf05c478d9cbc6f9d64d1dd1a1",
+        "revCount": 8,
         "type": "git",
         "url": "file:///home/pta2002/Projects/eww-scripts"
       },
@@ -60,11 +60,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1663328500,
-        "narHash": "sha256-7n+J/exp8ky4dmk02y5a9R7CGmJvHpzrHMzfEkMtSWA=",
+        "lastModified": 1663932797,
+        "narHash": "sha256-IH8ZBW99W2k7wKLS+Sat9HiKX1TPZjFTnsPizK5crok=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "5427f3d1f0ea4357cd4af0bffee7248d640c6ffc",
+        "rev": "de3758e31a3a1bc79d569f5deb5dac39791bf9b6",
         "type": "github"
       },
       "original": {
@@ -141,11 +141,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1663357389,
-        "narHash": "sha256-oYA2nVRSi6yhCBqS5Vz465Hw+3BQOVFEhfbfy//3vTs=",
+        "lastModified": 1664017330,
+        "narHash": "sha256-919WZKBTxFdTkzIK6uJXE7hwSPQb7e/ekybxxWaotR4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "da6a05816e7fa5226c3f61e285ef8d9dfc868f3c",
+        "rev": "fde244a8c7655bc28616864e2290ad9c95409c2c",
         "type": "github"
       },
       "original": {

@@ -1,8 +1,8 @@
-(defwidget bar []
+(defwidget bar [primary monitor]
   (centerbox
     :orientation "h"
     :class "bar"
-    (workspaces)
+    (workspaces :monitor monitor)
     (music)
     (sidestuff)))
 
@@ -21,13 +21,13 @@
             :green {battery["charging"]})
     time))
 
-(defwidget workspaces []
+(defwidget workspaces [monitor]
   (box :class "workspaces"
        :orientation "h"
        :space-evenly false
        :halign "start"
        :spacing 18
-    (for desktop in {bspwm["desktops"]}
+    (for desktop in {bspwm[monitor]}
       (button
         :onclick "bspc desktop -f ${desktop["name"]}"
         (label
@@ -90,7 +90,7 @@
 (deflisten battery :initial ""
   "upower-follow")
 
-(defwindow bar
+(defwindow bar-laptop
   :monitor 0
   :windowtype "dock" ; TODO: Fix this, should be 'bg' but if it is then it's not clickable
   :geometry (geometry :x "0%"
@@ -101,5 +101,31 @@
   :stacking "bg"
   :wm-ignore false
   :reserve (struts :side "top" :distance "46")
-  (bar))
+  (bar :primary false :monitor "eDP1"))
+
+(defwindow bar-desktop-1
+  :monitor "DVI-I-0"
+  :windowtype "dock" ; TODO: Fix this, should be 'bg' but if it is then it's not clickable
+  :geometry (geometry :x "0%"
+                      :y "8px"
+                      :width "1656px"
+                      :height "34px"
+                      :anchor "top center")
+  :stacking "bg"
+  :wm-ignore false
+  :reserve (struts :side "top" :distance "46")
+  (bar :primary false :monitor "DVI-I-0"))
+
+(defwindow bar-desktop-2
+  :monitor "HDMI-0"
+  :windowtype "dock" ; TODO: Fix this, should be 'bg' but if it is then it's not clickable
+  :geometry (geometry :x "0%"
+                      :y "8px"
+                      :width "1896px"
+                      :height "34px"
+                      :anchor "top center")
+  :stacking "bg"
+  :wm-ignore false
+  :reserve (struts :side "top" :distance "46")
+  (bar :primary true :monitor "HDMI-0"))
 
