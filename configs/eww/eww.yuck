@@ -50,13 +50,22 @@
     (label :class "label" :text "")
     (label :class "ssid" :text {network["connection"]["ssid"]})))
 
+(defwidget ethernet []
+  (box
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+    (label :class "label" :text "")
+    (label :class "ssid" :text "Wired")))
+
 (defwidget network []
   (box :class "network"
        :orientation "h"
        :space-evenly false
        :halign "center"
     (literal :content { network != "" && network["connection_type"] == "802-11-wireless" ? "(wifi)"
-    : `"disconnected"`})))
+    :
+    network != "" && network["connection_type"] == "802-3-ethernet" ? `(ethernet)` : `"disconnected"`})))
 
 (defwidget metric [label value onchange green tooltip]
   (box :orientation "h"
