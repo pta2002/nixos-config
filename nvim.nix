@@ -122,6 +122,7 @@ inputs: { pkgs, ... }:
         version = "eede19c";
         src = inputs.vim-tup;
       })
+      vim-endwise
     ];
 
     extraPackages = [ pkgs.xclip ];

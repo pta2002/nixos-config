@@ -47,33 +47,18 @@
             home.nixosModules.home-manager
 
             ({ pkgs, ... }@args: {
-              home-manager.users.pta2002 = import ./home.nix args // {
-                imports = [
-                  # nixvim.homeManagerModules.x86_64-linux.nixvim
-                  nixvim.homeManagerModules.nixvim
-                  (import ./nvim.nix inputs)
-                ];
-              };
+              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+                (import ./home.nix args)
+                {
+                  imports = [
+                    nixvim.homeManagerModules.nixvim
+                    (import ./nvim.nix inputs)
+                  ];
+                }
+              ];
             })
           ];
           specialArgs = { inherit inputs musnix nixvim; };
-        };
-        nixvim-machine = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            # ./configuration.nix
-            # home.nixosModules.home-manager
-
-            # ./nvim.nix
-            # nixvim.nixosModules.x86_64-linux.nixvim
-            ({ pkgs, ... }: {
-              environment.systemPackages = [
-                (nixvim.build pkgs { colorschemes.gruvbox.enable = true; })
-              ];
-            })
-
-          ];
-          # specialArgs = { inherit inputs musnix nixvim; };
         };
 
         mercury = nixpkgs.lib.nixosSystem {
@@ -84,13 +69,15 @@
             ./machines/mercury.nix
             home.nixosModules.home-manager
             ({ pkgs, ... }@args: {
-              home-manager.users.pta2002 = import ./home.nix args // {
-                imports = [
-                  # nixvim.homeManagerModules.x86_64-linux.nixvim
-                  nixvim.homeManagerModules.nixvim
-                  (import ./nvim.nix inputs)
-                ];
-              };
+              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+                (import ./home.nix args)
+                {
+                  imports = [
+                    nixvim.homeManagerModules.nixvim
+                    (import ./nvim.nix inputs)
+                  ];
+                }
+              ];
             })
           ];
           specialArgs = { inherit inputs; };

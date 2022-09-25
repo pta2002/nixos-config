@@ -1,0 +1,105 @@
+(defwidget bar []
+  (centerbox
+    :orientation "h"
+    :class "bar"
+    (workspaces)
+    (music)
+    (sidestuff)))
+
+(defwidget sidestuff []
+  (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
+    (network)
+    (metric :label "🔊"
+            :value volume
+            :onchange "amixer sset Master {}%"
+            :tooltip ""
+            :green false)
+    (metric :label "🔋"
+            :value {battery["percentage"]}
+            :onchange ""
+            :tooltip "Battery: ${round(battery["percentage"], 0)}%"
+            :green {battery["charging"]})
+    time))
+
+(defwidget workspaces []
+  (box :class "workspaces"
+       :orientation "h"
+       :space-evenly false
+       :halign "start"
+       :spacing 18
+    (for desktop in {bspwm["desktops"]}
+      (button
+        :onclick "bspc desktop -f ${desktop["name"]}"
+        (label
+          :class "${desktop["status"]} ${desktop["focused"] ? "focused" : ""}"
+          :text {desktop["name"]})))))
+
+(defwidget music []
+  (box :class "music"
+       :orientation "h"
+       :space-evenly false
+       :halign "center"
+    {music != "" ? "🎵 ${music}" : ""}))
+
+(defwidget wifi []
+  (box
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+    :tooltip "Strength: ${network["connection"]["strength"]}%"
+    (label :class "label" :text "")
+    (label :class "ssid" :text {network["connection"]["ssid"]})))
+
+(defwidget network []
+  (box :class "network"
+       :orientation "h"
+       :space-evenly false
+       :halign "center"
+    (literal :content { network != "" && network["connection_type"] == "802-11-wireless" ? "(wifi)"
+    : `"disconnected"`})))
+
+(defwidget metric [label value onchange green tooltip]
+  (box :orientation "h"
+       :class "metric"
+       :space-evenly false
+       :tooltip tooltip
+    (box :class "label" label)
+    (scale :min 0
+           :max 101
+           :active {onchange != ""}
+           :value { value == "" ? 0 : value }
+           :class {green ? "green" : "false"}
+           :onchange onchange)))
+
+(deflisten music :initial ""
+  "playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
+
+; TODO: Make a script that continuously updates
+(defpoll volume :interval "2s"
+  "scripts/getvol")
+
+(defpoll time :interval "10s"
+  "date '+%H:%M %b %d, %Y'")
+
+(deflisten network :initial ""
+  "scripts/follow")
+
+(deflisten bspwm :initial ""
+  "bspwm-follow")
+
+(deflisten battery :initial ""
+  "upower-follow")
+
+(defwindow bar
+  :monitor 0
+  :windowtype "dock" ; TODO: Fix this, should be 'bg' but if it is then it's not clickable
+  :geometry (geometry :x "0%"
+                      :y "8px"
+                      :width "1896px"
+                      :height "34px"
+                      :anchor "top center")
+  :stacking "bg"
+  :wm-ignore false
+  :reserve (struts :side "top" :distance "46")
+  (bar))
+
