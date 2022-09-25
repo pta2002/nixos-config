@@ -14,11 +14,15 @@
             :onchange "amixer sset Master {}%"
             :tooltip ""
             :green false)
-    (metric :label "🔋"
-            :value {battery["percentage"]}
-            :onchange ""
-            :tooltip "Battery: ${round(battery["percentage"], 0)}%"
-            :green {battery["charging"]})
+    (revealer
+      :transition "slideleft"
+      :reveal {battery["is_battery"]}
+      :duration "0.3s"
+      (metric :label "🔋"
+              :value {battery["percentage"]}
+              :onchange ""
+              :tooltip "Battery: ${round(battery["percentage"], 0)}%"
+              :green {battery["charging"]}))
     time))
 
 (defwidget workspaces [monitor]
