@@ -125,13 +125,13 @@ super + {Left,Down,Up,Right}
 #
 #Volume Control
 XF86AudioLowerVolume
-	amixer set Master 5%-
+	pamixer -d 5
 
 XF86AudioRaiseVolume
-	amixer set Master 5%+
+	pamixer -i 5
 
 XF86AudioMute
-	amixer set Master toggle
+	pamixer -t
 
 #
 # screenshots

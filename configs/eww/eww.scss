@@ -1,3 +1,5 @@
+$font: "DejaVu Sans";
+
 * {
   all: unset; //Unsets everything so you can style everything from scratch
 }
@@ -36,11 +38,10 @@
   min-height: 3px;
   min-width: 50px;
   margin-left: 10px;
-  margin-right: 20px;
 }
 
-.label-ram {
-  font-size: large;
+.metric {
+  margin-right: 20px;
 }
 
 .workspaces button:hover {
@@ -49,14 +50,23 @@
 
 .network {
   all: unset;
-  margin-right: 15px;
+  margin-right: 10px;
 
   .label {
-    all: unset;
-    font-family: "Phosphor";
     margin-right: 10px;
   }
 }
+
+.label {
+  all: unset;
+  font-family: "Phosphor";
+  font-size: large;
+
+  &.nerdfont {
+    font-family: $font;
+  }
+}
+
 
 .workspaces {
   .focused {

@@ -9,18 +9,20 @@
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
     (network)
-    (metric :label "🔊"
-            :value volume
-            :onchange "amixer sset Master {}%"
-            :tooltip ""
+    (metric :label {volume["muted"] ? "寮" : "領"}
+            :value {volume["volume"]}
+            :onchange "pamixer --set-volume {}"
+            :tooltip "Volume: ${volume["volume"]}%"
+            :reveal {!volume["muted"]}
             :green false)
     (revealer
       :transition "slideleft"
       :reveal {battery["is_battery"]}
       :duration "0.3s"
-      (metric :label "🔋"
+      (metric :label ""
               :value {battery["percentage"]}
               :onchange ""
+              :reveal true
               :tooltip "Battery: ${round(battery["percentage"], 0)}%"
               :green {battery["charging"]}))
     time))
@@ -51,7 +53,8 @@
     :space-evenly false
     :halign "center"
     :tooltip "Strength: ${network["connection"]["strength"]}%"
-    (label :class "label" :text "")
+    :class "network"
+    (label :class "label" :text "祐")
     (label :class "ssid" :text {network["connection"]["ssid"]})))
 
 (defwidget ethernet []
@@ -59,7 +62,8 @@
     :orientation "h"
     :space-evenly false
     :halign "center"
-    (label :class "label" :text "")
+    :class "network"
+    (label :class "label nerdfont" :text "")
     (label :class "ssid" :text "Wired")))
 
 (defwidget network []
@@ -71,28 +75,32 @@
     :
     network != "" && network["connection_type"] == "802-3-ethernet" ? `(ethernet)` : `"disconnected"`})))
 
-(defwidget metric [label value onchange green tooltip]
+(defwidget metric [label value onchange green tooltip reveal]
   (box :orientation "h"
        :class "metric"
        :space-evenly false
        :tooltip tooltip
     (box :class "label" label)
-    (scale :min 0
-           :max 101
-           :active {onchange != ""}
-           :value { value == "" ? 0 : value }
-           :class {green ? "green" : "false"}
-           :onchange onchange)))
+    (revealer 
+      :transition "slideleft"
+      :reveal reveal
+      :duration "0.3s"
+ 
+      (scale :min 0
+             :max 101
+             :active {onchange != ""}
+             :value { value == "" ? 0 : value }
+             :class {green ? "green" : "false"}
+             :onchange onchange))))
 
 (deflisten music :initial ""
   "playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
 
-; TODO: Make a script that continuously updates
-(defpoll volume :interval "2s"
-  "scripts/getvol")
-
 (defpoll time :interval "10s"
   "date '+%H:%M %b %d, %Y'")
+
+(deflisten volume :initial ""
+  "pa-follow")
 
 (deflisten network :initial ""
   "scripts/follow")

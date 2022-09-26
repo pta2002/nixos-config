@@ -32,4 +32,4 @@ bspc rule -a '*:*:Picture-in-Picture' state=floating sticky=on
 feh --bg-fill ~/.config/bspwm/wallpaper.jpg
 xsetroot -cursor_name left_ptr # fix cursor
 
-picom --experimental-backends --backend glx &
+# picom --experimental-backends --backend glx &

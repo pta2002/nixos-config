@@ -7,8 +7,10 @@
     playerctl
     maim
     xclip
+    pamixer
     inputs.eww-scripts.packages."${pkgs.system}".follows
     inputs.eww-scripts.packages."${pkgs.system}".upower-follow
+    inputs.eww-scripts.packages."${pkgs.system}".pa-follow
 
     jetbrains-mono
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
@@ -96,6 +98,5 @@
       ".config/bspwm".source = ln "/home/pta2002/nixos/configs/bspwm";
       ".config/sxhkd".source = ln "/home/pta2002/nixos/configs/sxhkd";
       ".config/eww".source = ln "/home/pta2002/nixos/configs/eww";
-      # ".config/picom".source = ln "/home/pta2002/nixos/configs/picom";
     };
 }
