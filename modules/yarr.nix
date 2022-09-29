@@ -3,11 +3,10 @@
     ./argoweb.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
-
-  environment.systemPackages = [
-    inputs.extras.packages.${pkgs.system}.yarr
-  ];
+  age.secrets.yarr = {
+    file = ../secrets/yarr.age;
+    owner = "yarr";
+  };
 
   services.argoWeb = {
     enable = true;
@@ -25,7 +24,7 @@
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      ExecStart = "${inputs.extras.packages.${pkgs.system}.yarr}/bin/yarr";
+      ExecStart = "${inputs.extras.packages.${pkgs.system}.yarr}/bin/yarr -auth-file ${config.age.secrets.yarr.path}";
       Type = "simple";
       User = "yarr";
       Group = "yarr";
@@ -50,5 +49,4 @@
   };
 
   users.groups.yarr = { };
-
 }
