@@ -6,17 +6,24 @@
 
   services.nextcloud = {
     enable = true;
-    hostName = "localhost:8322";
-    config.adminPassFile = config.age.secrets.nextcloud.path;
+    hostName = "localhost";
+    config.adminpassFile = config.age.secrets.nextcloud.path;
+    config.extraTrustedDomains = [ "nextcloud.pta2002.com" "cloudy" ];
   };
 
-  services.argoweb = {
+  # Change the nextcloud port
+  services.nginx.virtualHosts."localhost".listen = [{ addr = "127.0.0.1"; port = 8322; }];
+
+  services.argoWeb = {
     enable = true;
     ingress = [{
       hostname = "nextcloud.pta2002.com";
-      service = "localhost:8322";
+      service = "http://localhost:8322";
     }];
   };
 
-  age.secrets.nextcloud.path = ../secrets/nextcloud.age;
+  age.secrets.nextcloud = {
+    file = ../secrets/nextcloud.age;
+    owner = "nextcloud";
+  };
 }
