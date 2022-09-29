@@ -90,6 +90,7 @@
             ./cloudy.nix
             ({ pkgs, ... }@args: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+                { home.stateVersion = "22.05"; }
                 nixvim.homeManagerModules.nixvim
                 (import ./nvim.nix inputs)
               ];
