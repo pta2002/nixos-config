@@ -49,8 +49,21 @@
 
   gtk = {
     enable = true;
+    theme = {
+      package = pkgs.gnome.gnome-themes-extra;
+      name = "Adwaita-dark";
+    };
     gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
     gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
+  };
+
+  qt = {
+    enable = true;
+    platformTheme = "gtk";
+    style = {
+      package = pkgs.adwaita-qt;
+      name = "Adwaita-dark";
+    };
   };
 
   services.picom = {
