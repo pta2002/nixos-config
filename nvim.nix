@@ -30,6 +30,7 @@ inputs: { pkgs, ... }:
           clangd.enable = true;
           zls.enable = true;
           pyright.enable = true;
+          gopls.enable = true;
         };
 
         onAttach = ''
@@ -123,6 +124,7 @@ inputs: { pkgs, ... }:
         src = inputs.vim-tup;
       })
       vim-endwise
+      vim-terraform
     ];
 
     extraPackages = [ pkgs.xclip ];
