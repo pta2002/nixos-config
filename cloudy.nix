@@ -3,6 +3,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./modules/argoweb.nix
     ./modules/yarr.nix
+    ./modules/nextcloud.nix
   ];
 
   environment.systemPackages = [ pkgs.git ];
