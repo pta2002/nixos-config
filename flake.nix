@@ -24,9 +24,11 @@
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     musnix.url = "github:musnix/musnix";
+
+    agenix.url = "github:ryantm/agenix";
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -90,12 +92,14 @@
             ./cloudy.nix
             ({ pkgs, ... }@args: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-                { home.stateVersion = "22.05"; }
+                { home.stateVersion = "22.11"; }
                 nixvim.homeManagerModules.nixvim
                 (import ./modules/nvim.nix inputs)
+                ./modules/git.nix
               ];
             })
           ];
+          specialArgs = { inherit inputs nixvim; };
         };
       };
     };
