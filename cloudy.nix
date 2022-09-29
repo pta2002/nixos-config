@@ -1,7 +1,6 @@
 { pkgs, modulesPath, inputs, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    inputs.agenix.nixosModule
     ./modules/argoweb.nix
     ./modules/yarr.nix
   ];
@@ -34,7 +33,7 @@
     isNormalUser = true;
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = import ./ssh-keys.nix;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "argoweb" ];
     password = "";
   };
 

@@ -1,9 +1,13 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, inputs, ... }: {
   imports = [
     ./argoweb.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
+
+  environment.systemPackages = [
+    inputs.extras.packages.${pkgs.system}.yarr
+  ];
 
   services.argoWeb = {
     enable = true;
@@ -14,4 +18,37 @@
       }
     ];
   };
+
+  systemd.services.yarr = {
+    description = "yarr";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${inputs.extras.packages.${pkgs.system}.yarr}/bin/yarr";
+      Type = "simple";
+      User = "yarr";
+      Group = "yarr";
+      Restart = "on-failure";
+      RestartSec = "5s";
+      NoNewPrivileges = true;
+      LimitNPROC = 512;
+      LimitNOFILE = 1048576;
+      PrivateTmp = true;
+      PrivateDevices = true;
+      ProtectHome = true;
+      ProtectSystem = "full";
+      ReadWriteDirectories = "/var/lib/yarr";
+    };
+  };
+
+  users.users.yarr = {
+    home = "/var/lib/yarr";
+    createHome = true;
+    isSystemUser = true;
+    group = "yarr";
+  };
+
+  users.groups.yarr = { };
+
 }

@@ -43,20 +43,32 @@ in
 
   config =
     let
-      config = {
+      argoconfig = {
         tunnel = "cloudytunnel";
-        # "credentials-file" = config.age.secrets.cloudflared.path;
+        origincert = config.age.secrets.cert.path;
+        "credentials-file" = config.age.secrets.cloudflared.path;
 
-        ingress = cfg.ingress;
+        ingress = cfg.ingress ++ [
+          { service = "http_status:404"; }
+        ];
       };
 
       configfile = pkgs.writeTextFile {
         name = "cloudflared.yaml";
-        text = builtins.toJSON config;
+        text = builtins.toJSON argoconfig;
       };
     in
     mkIf cfg.enable {
-      age.secrets.cloudflared.path = ../secrets/cloudflared.json.age;
+      age.secrets.cloudflared = {
+        file = ../secrets/cloudflared.json.age;
+        owner = "argoweb";
+      };
+
+      age.secrets.cert = {
+        file = ../secrets/cert.pem.age;
+        owner = "argoweb";
+      };
+
       systemd.services.argoWeb = {
         description = "Cloudflare Argo Tunnel";
         after = [ "network-online.target" ];
@@ -79,5 +91,14 @@ in
           ReadWriteDirectories = cfg.dataDir;
         };
       };
+
+      users.users.argoweb = {
+        home = "/var/lib/argoWeb";
+        createHome = true;
+        isSystemUser = true;
+        group = "argoweb";
+      };
+
+      users.groups.argoweb = { };
     };
 }

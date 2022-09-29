@@ -3,4 +3,5 @@ let
 in
 {
   "cloudflared.json.age".publicKeys = keys;
+  "cert.pem.age".publicKeys = keys;
 }

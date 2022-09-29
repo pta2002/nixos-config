@@ -26,9 +26,12 @@
     musnix.url = "github:musnix/musnix";
 
     agenix.url = "github:ryantm/agenix";
+
+    extras.url = "./extras";
+    extras.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, extras, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -90,6 +93,7 @@
           modules = [
             home.nixosModules.home-manager
             ./cloudy.nix
+            agenix.nixosModule
             ({ pkgs, ... }@args: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
                 { home.stateVersion = "22.11"; }
