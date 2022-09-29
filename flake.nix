@@ -82,6 +82,20 @@
           ];
           specialArgs = { inherit inputs nixvim; };
         };
+
+        cloudy = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = [
+            home.nixosModules.home-manager
+            ./cloudy.nix
+            ({ pkgs, ... }@args: {
+              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+                nixvim.homeManagerModules.nixvim
+                (import ./nvim.nix inputs)
+              ];
+            })
+          ];
+        };
       };
     };
 }
