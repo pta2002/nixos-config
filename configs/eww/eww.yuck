@@ -23,7 +23,7 @@
               :value {battery["percentage"]}
               :onchange ""
               :reveal true
-              :tooltip "Battery: ${round(battery["percentage"], 0)}%"
+              :tooltip "${round(battery["percentage"], 0)}% - ${battery["time_left"]} left"
               :green {battery["charging"]}))
     time))
 

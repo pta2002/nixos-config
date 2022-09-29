@@ -27,11 +27,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1664196392,
-        "narHash": "sha256-Y2wRXMzsuKNtlVsbyXQBVy6SpSCaCbUlMW4Re87ZmjQ=",
+        "lastModified": 1664477745,
+        "narHash": "sha256-lpvFQJf/NlumYLxIp8VJyZeAAz6KEoHntSX5tqXaVfU=",
         "ref": "refs/heads/main",
-        "rev": "c94bf52bffa32a9d95a771732011e30f9d1bb533",
-        "revCount": 11,
+        "rev": "26d68b461a05346976b64750280c259b5eaa1f6a",
+        "revCount": 12,
         "type": "git",
         "url": "file:///home/pta2002/Projects/eww-scripts"
       },
@@ -51,11 +51,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-VVRgIgrqiIBdsSjzybPZKBzkmnXpxXrzanJGEeZUAzk=",
-        "path": "/nix/store/pgi76l56rnng7aqhzsxmcjj8gfbk6rk7-source/extras",
+        "path": "/nix/store/awlk4ymq7xnka1fbjz2yngh13i5sfcnl-source/extras",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/pgi76l56rnng7aqhzsxmcjj8gfbk6rk7-source/extras",
+        "path": "/nix/store/awlk4ymq7xnka1fbjz2yngh13i5sfcnl-source/extras",
         "type": "path"
       }
     },
