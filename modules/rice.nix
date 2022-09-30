@@ -1,5 +1,7 @@
 { inputs, ... }: { pkgs, config, ... }:
 {
+  xsession.enable = true;
+
   home.packages = with pkgs; [
     sxhkd
     eww
@@ -57,6 +59,12 @@
     gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
   };
 
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
+  };
+
   qt = {
     enable = true;
     platformTheme = "gtk";
@@ -100,6 +108,44 @@
     };
   };
 
+  xsession.windowManager.bspwm = {
+    enable = true;
+
+    extraConfigEarly = ''
+      pgrep -x sxhkd > /dev/null || sxhkd &
+
+      # TODO: Iterate over all monitors
+      if [[ $(hostname) == "hydrogen" ]]; then
+        bspc monitor DVI-I-0 -d 1 2 3 4 5 6 7 8 9 10
+        bspc monitor HDMI-0 -d 1 2 3 4 5 6 7 8 9 10
+        eww open bar-desktop-1 &
+        eww open bar-desktop-2 &
+      else
+        bspc monitor -d 1 2 3 4 5 6 7 8 9 10
+        eww open bar-laptop &
+      fi
+    '';
+
+    settings = {
+      border_width = 2;
+      window_gap = 12;
+      split_ratio = 0.52;
+      borderless_monocle = true;
+      gapless_monocle = false;
+      focus_follows_pointer = true;
+    };
+
+    rules."*:*:Picture-in-Picture" = {
+      state = "floating";
+      sticky = true;
+    };
+
+    startupPrograms = [
+      "feh --bg-fill ~/.config/wallpaper.jpg"
+      "xsetroot -cursor_name left_ptr"
+    ];
+  };
+
   home.file =
     let
       ln = config.lib.file.mkOutOfStoreSymlink;
@@ -108,7 +154,8 @@
       # cursor theme
       ".icons/default".source = "${pkgs.gnome.adwaita-icon-theme}/share/icons/Adwaita";
 
-      ".config/bspwm".source = ln "/home/pta2002/nixos/configs/bspwm";
+      # ".config/bspwm".source = ln "/home/pta2002/nixos/configs/bspwm";
+      ".config/wallpaper.jpg".source = ../wallpaper.jpg;
       ".config/sxhkd".source = ln "/home/pta2002/nixos/configs/sxhkd";
       ".config/eww".source = ln "/home/pta2002/nixos/configs/eww";
     };
