@@ -19,24 +19,30 @@
   networking.firewall.enable = false;
 
   services.xserver.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.lightdm.background = ./wallpaper.jpg;
+  services.xserver.displayManager.lightdm = {
+    enable = true;
+    background = ./wallpaper.jpg;
+    greeters.gtk = {
+      enable = false;
+      theme.name = "Adwaita-Dark";
+    };
+
+    greeters.slick = {
+      enable = true;
+      theme.name = "Adwaita Dark";
+    };
+  };
   services.xserver.displayManager.session = [{
     manage = "desktop";
     name = "xsession";
     start = ''exec $HOME/.xsession'';
   }];
-  services.xserver.windowManager.awesome = {
-    enable = false;
-    luaModules = with pkgs.luaPackages; [
-      luarocks
-      upower_dbus
-      dbus_proxy
-      enum
-    ];
-  };
+  services.upower.enable = true;
   services.xserver.windowManager.bspwm.enable = true;
+
+  boot.plymouth = {
+    enable = true;
+  };
 
   services.xserver.libinput = {
     enable = true;

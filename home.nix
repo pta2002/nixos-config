@@ -53,7 +53,6 @@
     krita
     musescore
     virt-manager
-    gnome3.gnome-terminal
     qbittorrent
     spot
 
