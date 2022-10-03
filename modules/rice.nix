@@ -154,7 +154,6 @@
       # cursor theme
       ".icons/default".source = "${pkgs.gnome.adwaita-icon-theme}/share/icons/Adwaita";
 
-      # ".config/bspwm".source = ln "/home/pta2002/nixos/configs/bspwm";
       ".config/wallpaper.jpg".source = ../wallpaper.jpg;
       ".config/sxhkd".source = ln "/home/pta2002/nixos/configs/sxhkd";
       ".config/eww".source = ln "/home/pta2002/nixos/configs/eww";
