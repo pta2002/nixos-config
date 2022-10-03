@@ -4,6 +4,7 @@
     ./modules/argoweb.nix
     ./modules/yarr.nix
     ./modules/nextcloud.nix
+    ./modules/files.nix
   ];
 
   environment.systemPackages = [ pkgs.git ];
