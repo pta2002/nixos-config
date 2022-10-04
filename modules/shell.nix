@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = [ pkgs.any-nix-shell ];
+  home.packages = [ pkgs.any-nix-shell pkgs.fzf ];
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
@@ -25,7 +25,12 @@
 
       cat = "bat";
     };
-    plugins = [
+
+    plugins = with pkgs.fishPlugins; [
+      {
+        name = "fzf-fish";
+        src = fzf-fish.src;
+      }
       {
         name = "base16-fish";
         src = pkgs.fetchFromGitHub {
