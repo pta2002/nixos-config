@@ -83,6 +83,7 @@ inputs: { pkgs, ... }:
       showmode = false;
 
       scrolloff = 4;
+      clipboard = "unnamedplus";
     };
 
     globals.mapleader = " ";

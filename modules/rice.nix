@@ -49,6 +49,22 @@
 
   programs.rofi.enable = true;
 
+  services.dunst = {
+    enable = true;
+    settings = {
+      global = {
+        origin = "top-right";
+        offset = "12x58";
+        transparency = 30;
+        background = "#282828";
+        corner_radius = 12;
+
+        idle_threshold = "10m";
+        timeout = "10s";
+      };
+    };
+  };
+
   gtk = {
     enable = true;
     theme = {
@@ -65,6 +81,7 @@
     };
   };
 
+  # TODO: This isn't working for some reason
   qt = {
     enable = true;
     platformTheme = "gtk";
