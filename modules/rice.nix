@@ -140,6 +140,8 @@
       sticky = true;
     };
 
+    rules."Zathura".state = "tiled";
+
     startupPrograms = [
       "feh --bg-fill ~/.config/wallpaper.jpg"
       "xsetroot -cursor_name left_ptr"

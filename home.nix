@@ -95,20 +95,23 @@
     keyMode = "vi";
   };
 
-  # services.picom = {
-  #   enable = true;
-  #   experimentalBackends = true;
-  #
-  #   shadow = true;
-  #   shadowExclude = [ "window_type *= 'menu'" ];
-  #   backend = "glx";
-  #   vSync = true;
-  # };
+  programs.zathura = {
+    enable = true;
 
-  # xdg.configFile."picom/picom.conf".text = ''
-  #   shadow = true
-  #   shadow-opacity = 0.3
-  # '';
+    mappings = {
+      "b" = "toggle_statusbar";
+      "i" = "set recolor";
+      "f" = "toggle_fullscreen";
+    };
 
+    options = {
+      "selection-clipboard" = "clipboard";
+      "guioptions" = "";
+      "recolor-lightcolor" = "rgba(29,32,33,0)";
+      "default-bg" = "rgba(29,32,33,0.8)";
+      "recolor-keephue" = true;
+      recolor = true;
+    };
+  };
   nixpkgs.config.allowUnfree = true;
 }
