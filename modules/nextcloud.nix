@@ -16,10 +16,7 @@
 
   services.argoWeb = {
     enable = true;
-    ingress = [{
-      hostname = "nextcloud.pta2002.com";
-      service = "http://localhost:8322";
-    }];
+    ingress."nextcloud.pta2002.com" = "http://localhost:8322";
   };
 
   age.secrets.nextcloud = {

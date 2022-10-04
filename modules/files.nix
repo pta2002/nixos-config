@@ -4,28 +4,28 @@
     ./argoweb.nix
   ];
 
-  services.caddy = {
+  services.nginx = {
     enable = true;
 
     virtualHosts."files.pta2002.com" = {
       serverAliases = [ "www.files.pta2002.com" ];
 
-      extraOptions = ''
-        respond "Hello, world!"
-      '';
+      root = "/var/files";
     };
   };
 
   services.argoWeb = {
     enable = true;
-    ingress = [{
-      hostname = "files.pta2002.com";
-      service = "http://localhost:80";
-    }];
+    ingress."files.pta2002.com" = "http://localhost:80";
+  };
 
-    ingress = [{
-      hostname = "www.files.pta2002.com";
-      service = "http://localhost:80";
-    }];
+  users.users.files = {
+    group = "nginx";
+    isNormalUser = true;
+    home = "/var/files";
+    createHome = true;
+    homeMode = "755";
+
+    openssh.authorizedKeys.keys = import ../ssh-keys.nix;
   };
 }

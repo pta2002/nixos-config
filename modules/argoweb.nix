@@ -10,19 +10,8 @@ in
     enable = mkEnableOption "Cloudflare Argo Tunnel";
 
     ingress = mkOption {
-      default = [ ];
-      type = types.listOf (types.submodule {
-        options = {
-          hostname = mkOption {
-            type = types.nullOr types.str;
-            default = null;
-          };
-
-          service = mkOption {
-            type = types.str;
-          };
-        };
-      });
+      default = { };
+      type = types.attrsOf types.str;
     };
 
     dataDir = mkOption {
@@ -43,12 +32,14 @@ in
 
   config =
     let
+      ingress = lib.mapAttrsToList (hostname: service: { inherit hostname service; }) cfg.ingress;
+
       argoconfig = {
         tunnel = "cloudytunnel";
         origincert = config.age.secrets.cert.path;
         "credentials-file" = config.age.secrets.cloudflared.path;
 
-        ingress = cfg.ingress ++ [
+        ingress = ingress ++ [
           { service = "http_status:404"; }
         ];
       };

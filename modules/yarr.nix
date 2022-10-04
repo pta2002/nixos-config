@@ -10,12 +10,7 @@
 
   services.argoWeb = {
     enable = true;
-    ingress = [
-      {
-        hostname = "yarr.pta2002.com";
-        service = "http://localhost:7070";
-      }
-    ];
+    ingress."yarr.pta2002.com" = "http://localhost:7070";
   };
 
   systemd.services.yarr = {
