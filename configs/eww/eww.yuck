@@ -9,7 +9,11 @@
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
     (network)
-    (metric :label {volume["muted"] ? "寮" : "領"}
+    (metric :label {volume["muted"] ? "寮"
+      : volume["volume"] == 0 ? "尿"
+      : volume["volume"] <= 33 ? "禮"
+      : volume["volume"] <= 66 ? "例"
+      : "領"}
             :value {volume["volume"]}
             :onchange "pamixer --set-volume {}"
             :tooltip "Volume: ${volume["volume"]}%"
@@ -19,13 +23,26 @@
       :transition "slideleft"
       :reveal {battery["is_battery"]}
       :duration "0.3s"
-      (metric :label ""
+      (metric :label {battery["charging"] ? ""
+        : battery["percentage"] <= 10 ? ""
+        : battery["percentage"] <= 25 ? ""
+        : battery["percentage"] <= 50 ? ""
+        : battery["percentage"] <= 75 ? ""
+        : ""}
               :value {battery["percentage"]}
               :onchange ""
               :reveal true
               :tooltip "${round(battery["percentage"], 0)}% - ${battery["time_left"]} left"
               :green {battery["charging"]}))
     time))
+
+(defwidget baticon []
+  {battery["charging"] ? ""
+  : battery["percentage"] <= 10 ? ""
+  : battery["percentage"] <= 25 ? ""
+  : battery["percentage"] <= 50 ? ""
+  : battery["percentage"] <= 75 ? ""
+  : ""})
 
 (defwidget workspaces [monitor]
   (box :class "workspaces"
