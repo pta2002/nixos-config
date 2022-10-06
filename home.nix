@@ -35,6 +35,7 @@
     gh
     zbar
     gnupg
+    wget
 
     # Random programs
     discord

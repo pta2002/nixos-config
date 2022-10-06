@@ -37,6 +37,7 @@
         nixpkgs.overlays = [
           (import ./overlays/visual-paradigm.nix pkgs)
           (import ./overlays/lua pkgs)
+          (import ./overlays/my-scripts pkgs)
         ];
       });
     in
