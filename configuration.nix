@@ -4,6 +4,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.supportedFilesystems = [ "ntfs" ];
+
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
@@ -172,8 +174,6 @@
   networking.firewall.extraCommands = ''
     ip46tables -I INPUT 1 -i vboxnet+ -p tcp -m tcp --dport 2049 -j ACCEPT
   '';
-  virtualisation.virtualbox.host = {
-    enable = true;
-  };
+  virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "pta2002" ];
 }

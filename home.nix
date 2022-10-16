@@ -36,9 +36,10 @@
     zbar
     gnupg
     wget
+    ffmpeg
 
     # Random programs
-    discord
+    (discord.override { nss = nss_latest; })
     spotify
     texmacs
     lyx
@@ -56,6 +57,7 @@
     virt-manager
     qbittorrent
     spot
+    slack
 
     # freecad
     mindustry
@@ -114,5 +116,15 @@
       recolor = true;
     };
   };
+
+  programs.mpv = {
+    enable = true;
+    config = {
+      profile = "gpu-hq";
+      vo = "gpu";
+      hwdec = "auto-safe";
+    };
+  };
+
   nixpkgs.config.allowUnfree = true;
 }

@@ -13,14 +13,26 @@ in
 
   networking.interfaces.wlo1.useDHCP = true;
 
-  services.xserver.videoDrivers = [ "intel" ];
-  # services.xserver.videoDrivers = ["nvidia"];
-  # hardware.nvidia.prime = {
-  #   offload.enable = true;
-  #
-  #   intelBusId = "PCI:00:02:0";
-  #   nvidiaBusId = "PCI:02:00:0";
-  # };
+  services.xserver.videoDrivers = [ "intel" "nvidia" ];
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+
+  hardware.nvidia.prime = {
+    offload.enable = true;
+
+    intelBusId = "PCI:00:02:0";
+    nvidiaBusId = "PCI:02:00:0";
+  };
 
   environment.systemPackages = [ nvidia-offload ];
 
