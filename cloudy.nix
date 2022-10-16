@@ -5,6 +5,7 @@
     ./modules/yarr.nix
     ./modules/nextcloud.nix
     ./modules/files.nix
+    ./modules/transmission.nix
   ];
 
   environment.systemPackages = [ pkgs.git ];

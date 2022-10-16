@@ -6,4 +6,5 @@ in
   "cert.pem.age".publicKeys = keys;
   "yarr.age".publicKeys = keys;
   "nextcloud.age".publicKeys = keys;
+  "transmission.age".publicKeys = keys;
 }
