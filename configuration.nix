@@ -8,6 +8,7 @@
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
+  hardware.bluetooth.enable = true;
 
   networking.networkmanager.enable = true;
 

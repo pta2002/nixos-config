@@ -37,6 +37,7 @@
     gnupg
     wget
     ffmpeg
+    htop
 
     # Random programs
     (discord.override { nss = nss_latest; })
@@ -123,6 +124,15 @@
       profile = "gpu-hq";
       vo = "gpu";
       hwdec = "auto-safe";
+    };
+  };
+
+  services.mpris-proxy.enable = true;
+
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "application/pdf" = [ "org.pwmt.zathura.desktop" ];
     };
   };
 
