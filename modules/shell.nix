@@ -22,6 +22,8 @@
       gpl = "git pull";
 
       ls = "exa";
+      l = "exa -l";
+      tree = "exa -T";
 
       cat = "bat";
     };

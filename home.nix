@@ -22,6 +22,7 @@
     zls
     godot
     flutter
+    go
 
     # Utilities
     ripgrep
@@ -133,6 +134,8 @@
     enable = true;
     defaultApplications = {
       "application/pdf" = [ "org.pwmt.zathura.desktop" ];
+      "text/plain" = [ "nvim.desktop" ];
+      "text/markdown" = [ "nvim.desktop" ];
     };
   };
 
