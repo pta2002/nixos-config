@@ -31,6 +31,7 @@ inputs: { pkgs, ... }:
           zls.enable = true;
           pyright.enable = true;
           gopls.enable = true;
+          elixirls.enable = true;
         };
 
         onAttach = ''
