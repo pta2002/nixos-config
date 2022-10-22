@@ -41,7 +41,11 @@
     htop
 
     # Random programs
-    (discord.override { nss = nss_latest; })
+    (discord.override {
+      nss = nss_latest;
+      withOpenASAR = true;
+    })
+
     spotify
     texmacs
     lyx

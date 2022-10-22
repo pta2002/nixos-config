@@ -1,5 +1,10 @@
 { pkgs, lib, ... }:
 {
+  boot.loader.efi = {
+    canTouchEfiVariables = true;
+    efiSysMountPoint = "/boot/efi";
+  };
+
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
@@ -7,21 +12,13 @@
 
   fileSystems."/" =
     {
-      device = "/dev/disk/by-uuid/61bc8cb0-f704-42da-bdbe-8002ec9c39c9";
-      fsType = "btrfs";
-      options = [ "subvol=root" "compress" "autodefrag" ];
+      device = "/dev/disk/by-uuid/1e5ec187-b64e-4a3a-a058-259272aa54c5";
+      fsType = "ext4";
     };
 
-  fileSystems."/home" =
+  fileSystems."/boot/efi" =
     {
-      device = "/dev/disk/by-uuid/61bc8cb0-f704-42da-bdbe-8002ec9c39c9";
-      fsType = "btrfs";
-      options = [ "subvol=home" "compress" "autodefrag" ];
-    };
-
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/E209-5782";
+      device = "/dev/disk/by-uuid/3D21-52D1";
       fsType = "vfat";
     };
 
