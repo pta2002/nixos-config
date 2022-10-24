@@ -10,7 +10,7 @@ inputs: { pkgs, ... }:
 
       lualine = {
         enable = true;
-        # theme = "kanagawa";
+        theme = "gruvbox-material";
       };
 
       intellitab.enable = true;

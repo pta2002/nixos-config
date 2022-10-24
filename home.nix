@@ -64,6 +64,7 @@
     qbittorrent
     spot
     slack
+    emacs
 
     # freecad
     mindustry
@@ -72,6 +73,7 @@
     lutris
     # freecad
     google-chrome
+    notion-app-enhanced
 
     # IDEs
     jetbrains.idea-ultimate
