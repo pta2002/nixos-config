@@ -10,6 +10,7 @@
     maim
     xclip
     pamixer
+    xdotool
     inputs.eww-scripts.packages."${pkgs.system}".follows
     inputs.eww-scripts.packages."${pkgs.system}".upower-follow
     inputs.eww-scripts.packages."${pkgs.system}".pa-follow
@@ -47,7 +48,12 @@
     '';
   };
 
-  programs.rofi.enable = true;
+  programs.rofi = {
+    enable = true;
+    package = pkgs.rofi.override {
+      plugins = [ pkgs.rofi-emoji ];
+    };
+  };
 
   services.dunst = {
     enable = true;
@@ -122,6 +128,7 @@
       popup_menu = { shadow = false; blur = false; full-shadow = false; opacity = 1.0; };
       menu = { shadow = false; blur = false; full-shadow = false; opacity = 1.0; };
       tooltip = { shadow = false; blur = true; full-shadow = false; opacity = 1.0; };
+      dialog = { animation = false; };
     };
   };
 
