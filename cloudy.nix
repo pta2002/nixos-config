@@ -8,7 +8,10 @@
     ./modules/transmission.nix
   ];
 
-  environment.systemPackages = [ pkgs.git ];
+  environment.systemPackages = with pkgs; [
+    git
+    docker-compose
+  ];
 
   boot.loader.grub = {
     efiSupport = true;
@@ -32,11 +35,13 @@
     passwordAuthentication = false;
   };
 
+  virtualisation.docker.enable = true;
+
   users.users.pta2002 = {
     isNormalUser = true;
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = import ./ssh-keys.nix;
-    extraGroups = [ "wheel" "argoweb" ];
+    extraGroups = [ "wheel" "argoweb" "docker" ];
     password = "";
   };
 
