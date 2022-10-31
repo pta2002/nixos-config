@@ -125,6 +125,16 @@ inputs: { pkgs, ... }:
         version = "eede19c";
         src = inputs.vim-tup;
       })
+      (pkgs.vimUtils.buildVimPlugin rec {
+        pname = "vim-alloy";
+        version = "961d9608bdcfd34d6a01cecbb49c6ddf6382fb82";
+        src = pkgs.fetchFromGitHub {
+          owner = "runoshun";
+          repo = "vim-alloy";
+          rev = version;
+          sha256 = "1cdmbk3kwkwvkl5jqg7g6fcg00ca6svwl8hkdr4hiz4qf04qx77y";
+        };
+      })
       vim-endwise
       vim-terraform
     ];

@@ -120,7 +120,7 @@
   };
 
   programs.wireshark.enable = true;
-  programs.adb.enable = true;
+  # programs.adb.enable = true;
 
   virtualisation.docker.enable = true;
   virtualisation.libvirtd.enable = true;

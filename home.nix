@@ -12,6 +12,7 @@
   home.packages = with pkgs; [
     # Programming languages
     gcc
+    gdb
     gnumake
     jdk17
     maven
@@ -78,7 +79,7 @@
     # IDEs
     jetbrains.idea-ultimate
     jetbrains.clion
-    android-studio
+    # android-studio
 
     # Libraries and stuff
     sqlite

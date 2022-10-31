@@ -14,6 +14,10 @@ super + @space
 super + period
 	rofi -modi emoji -show emoji
 
+# calculator
+super + c
+	rofi -modi calc -show calc -calc-command "xdotool type --clearmodifiers '\{result\}'"
+
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd

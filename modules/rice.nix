@@ -51,7 +51,7 @@
   programs.rofi = {
     enable = true;
     package = pkgs.rofi.override {
-      plugins = [ pkgs.rofi-emoji ];
+      plugins = with pkgs; [ rofi-emoji rofi-calc ];
     };
   };
 
