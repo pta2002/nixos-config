@@ -69,6 +69,11 @@ inputs: { pkgs, ... }:
 
       lspsaga.enable = true;
 
+      null-ls = {
+        enable = true;
+        sources.formatting.black.enable = true;
+      };
+
       nvim-cmp = {
         enable = true;
         sources = [{ name = "nvim_lsp"; }];
@@ -79,7 +84,15 @@ inputs: { pkgs, ... }:
         formatting.fields = [ "kind" "abbr" "menu" ];
 
         window.completion = {
-          winhighlight = "Normal:Pmenu,FloatBordeR:Pmenu,Search:None";
+          winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
+          col_offset = -4;
+          side_padding = 0;
+          border = "single";
+        };
+
+        window.documentation = {
+          winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
+          border = "single";
         };
       };
 
@@ -118,6 +131,8 @@ inputs: { pkgs, ... }:
 
       scrolloff = 4;
       clipboard = "unnamedplus";
+
+      laststatus = 3;
     };
 
     globals.mapleader = " ";
@@ -231,6 +246,8 @@ inputs: { pkgs, ... }:
       CmpItemKindInterface = { fg = "#fbf1c7"; bg = "#83a598"; };
       CmpItemKindColor = { fg = "#fbf1c7"; bg = "#83a598"; };
       CmpItemKindTypeParameter = { fg = "#fbf1c7"; bg = "#83a598"; };
+
+      FloatBorder = { fg = "#a89984"; };
     };
   };
 }
