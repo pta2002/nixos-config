@@ -6,6 +6,8 @@
     ./modules/nextcloud.nix
     ./modules/files.nix
     ./modules/transmission.nix
+    ./modules/gotosocial.nix
+    ./modules/mastodon.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -65,5 +67,7 @@
   };
 
   system.stateVersion = "22.11";
+
+  nixpkgs.config.allowUnfree = true;
 }
 

@@ -53,8 +53,9 @@
             };
 
         unpackPhase = ''
-          mkdir -p $out
+          mkdir -p $out/bin
           tar -xvf $src --directory $out
+          mv $out/gotosocial $out/bin/gotosocial
         '';
 
         phases = [ "unpackPhase" ];
