@@ -1,5 +1,5 @@
 # This is the NixOS config file!
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -177,4 +177,6 @@
   '';
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "pta2002" ];
+
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
 }

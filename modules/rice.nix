@@ -99,19 +99,15 @@
 
   services.picom = {
     enable = true;
-    package = pkgs.picom.overrideAttrs (old: {
-      src = inputs.picom;
-    });
 
     backend = "glx";
-    experimentalBackends = true;
 
     shadow = true;
     shadowOpacity = 1.0;
 
     settings = {
       blur-background = true;
-      blur-method = "dual_kawase";
+      blur-method = "dual-kawase";
       blur-strength = 5;
       blur-background-exclude = [ "name ~= 'slop'" ];
 

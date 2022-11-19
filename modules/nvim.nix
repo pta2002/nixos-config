@@ -72,7 +72,11 @@ inputs: { pkgs, ... }:
       null-ls = {
         enable = true;
         sources.formatting.black.enable = true;
+        # sources.formatting.beautysh.enable = true;
+        sources.diagnostics.shellcheck.enable = true;
       };
+
+      trouble.enable = true;
 
       nvim-cmp = {
         enable = true;
