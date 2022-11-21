@@ -179,4 +179,7 @@
   users.extraGroups.vboxusers.members = [ "pta2002" ];
 
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
+  nix.registry.n.flake = inputs.nixpkgs;
+  nix.registry.stable.flake = inputs.nixpkgs-stable;
+  nix.registry.s.flake = inputs.nixpkgs-stable;
 }

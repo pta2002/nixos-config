@@ -74,11 +74,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-3Fi7mLPksA+K6k4PjMx5rnDpFLGjmL0PqeXiK+7TWsQ=",
-        "path": "/nix/store/h4ny14ig001k8kb0an5kdrqsk0srzni9-source/extras",
+        "path": "/nix/store/6685iglj1s4rppqhwxdicv0zpfy7631g-source/extras",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/h4ny14ig001k8kb0an5kdrqsk0srzni9-source/extras",
+        "path": "/nix/store/6685iglj1s4rppqhwxdicv0zpfy7631g-source/extras",
         "type": "path"
       }
     },
@@ -196,6 +196,22 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-stable": {
+      "locked": {
+        "lastModified": 1668908668,
+        "narHash": "sha256-oimCE4rY7Btuo/VYmA8khIyTHSMV7qUWTpz9w8yc9LQ=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "b68a6a27adb452879ab66c0eaac0c133e32823b2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-22.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -352,6 +368,7 @@
         "home": "home",
         "musnix": "musnix",
         "nixpkgs": "nixpkgs_4",
+        "nixpkgs-stable": "nixpkgs-stable",
         "nixvim": "nixvim",
         "phosphor-icons": "phosphor-icons",
         "picom": "picom",
