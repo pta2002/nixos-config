@@ -107,7 +107,7 @@
 
     settings = {
       blur-background = true;
-      blur-method = "dual-kawase";
+      blur-method = "dual_kawase";
       blur-strength = 5;
       blur-background-exclude = [ "name ~= 'slop'" ];
 
