@@ -58,6 +58,7 @@ inputs: { pkgs, ... }:
           pyright.enable = true;
           gopls.enable = true;
           elixirls.enable = true;
+          hls.enable = true;
         };
 
         onAttach = ''
@@ -65,7 +66,10 @@ inputs: { pkgs, ... }:
         '';
       };
 
-      lsp-lines.enable = true;
+      lsp-lines = {
+        enable = true;
+        currentLine = true;
+      };
 
       lspsaga.enable = true;
 
@@ -74,6 +78,8 @@ inputs: { pkgs, ... }:
         sources.formatting.black.enable = true;
         # sources.formatting.beautysh.enable = true;
         sources.diagnostics.shellcheck.enable = true;
+        sources.formatting.fourmolu.enable = true;
+        sources.formatting.fnlfmt.enable = true;
       };
 
       trouble.enable = true;
@@ -145,6 +151,7 @@ inputs: { pkgs, ... }:
       "<leader>t" = "<CMD>NvimTreeToggle<CR>";
       "<leader>ft" = "<CMD>Telescope find_files<CR>";
       "<leader>fg" = "<CMD>Telescope grep_string<CR>";
+      "<leader>ca" = "<CMD>Lspsaga code_action<CR>";
       "j" = "gj";
       "k" = "gk";
     };
@@ -205,6 +212,7 @@ inputs: { pkgs, ... }:
       vim-endwise
       vim-terraform
       nvim-colorizer-lua
+      gleam-vim
     ];
 
     extraPackages = [ pkgs.xclip ];

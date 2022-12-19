@@ -3,6 +3,7 @@
   imports = [
     ./modules/shell.nix
     ./modules/git.nix
+    ./modules/tiny.nix
     (import ./modules/rice.nix args)
   ];
 

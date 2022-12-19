@@ -18,6 +18,9 @@ super + period
 super + c
 	rofi -modi calc -show calc -calc-command "xdotool type --clearmodifiers '\{result\}'"
 
+XF86Calculator
+	rofi -modi calc -show calc -calc-command "xdotool type --clearmodifiers '\{result\}'"
+
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
