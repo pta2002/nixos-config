@@ -27,6 +27,7 @@
     go
 
     # Utilities
+    pciutils
     ripgrep
     fd
     exa

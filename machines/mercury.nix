@@ -38,8 +38,15 @@ in
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-intel" "kvmgt" "vfio-iommu-type1" "mdev" ];
   boot.extraModulePackages = [ ];
+
+  virtualisation.kvmgt.enable = true;
+  virtualisation.kvmgt.vgpus = {
+    "i915-GVTg_V5_4" = {
+      uuid = [ "5e11a2ba-88bb-11ed-b331-fb6b3c55f93f" ];
+    };
+  };
 
   fileSystems."/" =
     {
