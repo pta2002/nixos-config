@@ -8,7 +8,8 @@
     ./modules/transmission.nix
     ./modules/gotosocial.nix
     ./modules/mastodon.nix
-    ./modules/synapse.nix
+    # ./modules/synapse.nix
+    ./modules/fava.nix
   ];
 
   environment.systemPackages = with pkgs; [

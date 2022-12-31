@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = [ pkgs.any-nix-shell pkgs.fzf ];
+  home.packages = with pkgs; [ any-nix-shell fzf exa bat ];
   programs.fish = {
     enable = true;
     interactiveShellInit = ''

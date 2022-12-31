@@ -102,6 +102,7 @@
                 nixvim.homeManagerModules.nixvim
                 (import ./modules/nvim.nix inputs)
                 ./modules/git.nix
+                ./modules/shell.nix
               ];
             })
           ];

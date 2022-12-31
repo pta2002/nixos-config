@@ -7,4 +7,5 @@ in
   "yarr.age".publicKeys = keys;
   "nextcloud.age".publicKeys = keys;
   "transmission.age".publicKeys = keys;
+  "nginx.age".publicKeys = keys;
 }
