@@ -73,12 +73,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-3Fi7mLPksA+K6k4PjMx5rnDpFLGjmL0PqeXiK+7TWsQ=",
-        "path": "/nix/store/y95iqbj5rk01ji9ciqcx8lg21smmgrpc-source/extras",
+        "narHash": "sha256-4VNApq0wq2PnhegU2+G6g9iNFWGxo/ZQ5R2VhUViPQ8=",
+        "path": "/nix/store/6n54x3j1abdz0smbgfwbpcch9bf8d9z9-source/extras",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/y95iqbj5rk01ji9ciqcx8lg21smmgrpc-source/extras",
+        "path": "/nix/store/6n54x3j1abdz0smbgfwbpcch9bf8d9z9-source/extras",
         "type": "path"
       }
     },
@@ -424,15 +424,15 @@
     "yarr": {
       "flake": false,
       "locked": {
-        "lastModified": 1664304809,
-        "narHash": "sha256-96bGhNJyZnaJbEyThcGwAViHmDEE1f03vcym3hEsNPU=",
-        "owner": "nkanaev",
+        "lastModified": 1673051824,
+        "narHash": "sha256-oSa1dQMjiTmkgOlDQnfhQ2l7MW+wcZTsBfFoiuTmqCs=",
+        "owner": "pta2002",
         "repo": "yarr",
-        "rev": "56e5625adca9e935a7c135b6c1d161eb7f363e44",
+        "rev": "07d4845ae3c2b98b359fb9ff35797cdace4263ba",
         "type": "github"
       },
       "original": {
-        "owner": "nkanaev",
+        "owner": "pta2002",
         "repo": "yarr",
         "type": "github"
       }

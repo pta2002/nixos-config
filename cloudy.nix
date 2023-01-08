@@ -10,6 +10,7 @@
     ./modules/mastodon.nix
     # ./modules/synapse.nix
     ./modules/fava.nix
+    ./modules/vaultwarden.nix
   ];
 
   environment.systemPackages = with pkgs; [
