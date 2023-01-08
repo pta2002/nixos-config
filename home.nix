@@ -100,6 +100,8 @@
     extensions = with pkgs.vscode-extensions; [
       vscodevim.vim
       ms-vscode.cpptools
+      github.copilot
+      ms-toolsai.jupyter
     ];
   };
 
