@@ -108,6 +108,24 @@
           ];
           specialArgs = { inherit inputs nixvim; };
         };
+
+        pie = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = [
+            home.nixosModules.home-manager
+            ./machines/pie.nix
+            agenix.nixosModule
+	    ({ pkgs, ...}@args: {
+              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+	        { home.stateVersion = "23.05"; }
+		nixvim.homeManagerModules.nixvim
+		(import ./modules/nvim.nix inputs)
+		./modules/git.nix
+		./modules/shell.nix
+	      ];
+	    })
+          ];
+        };
       };
     };
 }
