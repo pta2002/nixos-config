@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [ any-nix-shell fzf exa bat ];
+
+  # systemd.user.sessionVariables.EDITOR = "nvim";
+
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
@@ -9,6 +12,7 @@
       base16-gruvbox-dark-hard
       set -x PROJECT_PATHS ~/Projects ~/sources
       set -Ua fish_user_paths ~/.pub-cache/bin
+      export EDITOR=nvim
     '';
 
     shellAliases = {
@@ -76,7 +80,12 @@
     enable = true;
     settings = {
       add_newline = false;
-      format = "$directory$git_branch$git_status$character";
+      format = "$hostname$directory$git_branch$git_status$character";
+      hostname = {
+        ssh_only = true;
+        format = "[\\($hostname\\)]($style) ";
+        style = "bold dimmed blue";
+      };
     };
 
     enableFishIntegration = true;

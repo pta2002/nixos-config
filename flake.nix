@@ -114,16 +114,17 @@
           modules = [
             home.nixosModules.home-manager
             ./machines/pie.nix
+            ./modules/argoweb.nix
             agenix.nixosModule
-	    ({ pkgs, ...}@args: {
+            ({ pkgs, ... }@args: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-	        { home.stateVersion = "23.05"; }
-		nixvim.homeManagerModules.nixvim
-		(import ./modules/nvim.nix inputs)
-		./modules/git.nix
-		./modules/shell.nix
-	      ];
-	    })
+                { home.stateVersion = "23.05"; }
+                nixvim.homeManagerModules.nixvim
+                (import ./modules/nvim.nix inputs)
+                ./modules/git.nix
+                ./modules/shell.nix
+              ];
+            })
           ];
         };
       };
