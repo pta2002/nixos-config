@@ -2,7 +2,7 @@
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
   inputs.yarr = {
-    url = "github:nkanaev/yarr";
+    url = "github:pta2002/yarr";
     flake = false;
   };
 
