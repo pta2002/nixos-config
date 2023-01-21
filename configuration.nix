@@ -4,7 +4,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.supportedFilesystems = [ "ntfs" ];
+  boot.supportedFilesystems = [ "ntfs" "zfs" ];
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
@@ -158,6 +158,8 @@
   security.sudo.extraConfig = ''
     Defaults pwfeedback
   '';
+
+  systemd.extraConfig = "DefaultLimitNOFILE=524288";
 
   system.stateVersion = "21.11";
 

@@ -68,6 +68,9 @@
     spot
     slack
     emacs
+    gnome.pomodoro
+    xournal
+    element-desktop
 
     # freecad
     mindustry

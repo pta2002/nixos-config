@@ -1,14 +1,21 @@
 { pkgs, lib, ... }:
 {
+  networking.hostId = "fa73900d";
+
   boot.loader.efi = {
     canTouchEfiVariables = true;
     efiSysMountPoint = "/boot/efi";
   };
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "vfio-pci" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.kernelParams = [
+    "iommu=pt"
+    "intel_iommu=on"
+    "vfio-pci.ids=8086:0412,8086:0c0c"
+  ];
 
   fileSystems."/" =
     {
