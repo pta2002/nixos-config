@@ -3,6 +3,7 @@
 {
   imports = [
     ../modules/home-assistant.nix
+    ../modules/samba.nix
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
