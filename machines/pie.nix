@@ -4,7 +4,11 @@
   imports = [
     ../modules/home-assistant.nix
     ../modules/samba.nix
+    ../modules/flood.nix
+    ../modules/argoweb.nix
   ];
+
+  services.argoWeb.enable = true;
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
   boot.initrd.kernelModules = [ ];
@@ -14,6 +18,12 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
     fsType = "ext4";
+  };
+
+  fileSystems."/mnt/data" = {
+    options = [ "compress=zstd" "subvol=data" ];
+    device = "/dev/sda";
+    fsType = "btrfs";
   };
 
   swapDevices = [ ];
@@ -77,7 +87,7 @@
 
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
+    settings.PasswordAuthentication = false;
   };
 
   services.tailscale.enable = true;

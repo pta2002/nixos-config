@@ -8,11 +8,12 @@ in
   ];
 
   services.argoWeb = {
-    ingress."flood.pta2002.com" = "http://localhost:${floodPort}";
+    ingress."flood.pta2002.com" = "http://localhost:${toString floodPort}";
   };
 
   services.rtorrent = {
     enable = true;
+    downloadDir = "/mnt/data/torrents";
   };
 
   systemd.services.flood = {
@@ -20,7 +21,7 @@ in
     wantedBy = [ "default.target" ];
     after = [ "network.target" ];
     serviceConfig = {
-      ExecStart = "${pkgs.flood}/bin/flood --port=${toString fllodPort} --rundir=${config.services.rtorrent.dataDir} --rtsocket=${config.services.rtorrent.rpcSocket}";
+      ExecStart = "${pkgs.flood}/bin/flood --port=${toString floodPort} --rundir=${config.services.rtorrent.dataDir} --rtsocket=${config.services.rtorrent.rpcSocket}";
       User = config.services.rtorrent.user;
       Group = config.services.rtorrent.group;
       Restart = "on-failure";
