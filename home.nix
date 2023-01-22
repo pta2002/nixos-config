@@ -42,6 +42,11 @@
     wget
     ffmpeg
     htop
+    gnome.nautilus
+    dnsutils
+    usbutils
+    pciutils
+    brightnessctl
 
     # Random programs
     (discord.override {
@@ -92,6 +97,7 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
+    MOZ_USE_XINPUT2 = true;
   };
 
   programs.firefox.enable = true;
