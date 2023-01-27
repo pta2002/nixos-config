@@ -6,7 +6,6 @@
     ./modules/nextcloud.nix
     ./modules/files.nix
     ./modules/transmission.nix
-    ./modules/gotosocial.nix
     ./modules/mastodon.nix
     # ./modules/synapse.nix
     ./modules/fava.nix
@@ -76,5 +75,16 @@
   nixpkgs.config.allowUnfree = true;
 
   services.tailscale.enable = true;
+
+  # Stuff for argo
+  age.secrets.cloudflared = {
+    file = ../secrets/cloudflared.json.age;
+    owner = "argoweb";
+  };
+
+  age.secrets.cert = {
+    file = ../secrets/cert.pem.age;
+    owner = "argoweb";
+  };
 }
 

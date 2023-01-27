@@ -8,4 +8,5 @@ in
   "nextcloud.age".publicKeys = keys;
   "transmission.age".publicKeys = keys;
   "nginx.age".publicKeys = keys;
+  "pietunnel.json.age".publicKeys = keys;
 }

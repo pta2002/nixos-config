@@ -28,6 +28,24 @@ in
       type = types.package;
       description = "cloudflared package to use.";
     };
+
+    tunnel = mkOption {
+      default = "cloudytunnel";
+      type = types.str;
+      description = "Tunnel name";
+    };
+
+    originCert = mkOption {
+      default = config.age.secrets.cert.path;
+      type = types.path;
+      description = "Origin certificate";
+    };
+
+    credentialsFile = mkOption {
+      default = config.age.secrets.cloudflared.path;
+      type = types.path;
+      description = "Credentials file";
+    };
   };
 
   config =
@@ -35,9 +53,9 @@ in
       ingress = lib.mapAttrsToList (hostname: service: { inherit hostname service; }) cfg.ingress;
 
       argoconfig = {
-        tunnel = "cloudytunnel";
-        origincert = config.age.secrets.cert.path;
-        "credentials-file" = config.age.secrets.cloudflared.path;
+        tunnel = cfg.tunnel;
+        origincert = cfg.originCert;
+        "credentials-file" = cfg.credentialsFile;
 
         ingress = ingress ++ [
           { service = "http_status:404"; }
@@ -50,16 +68,6 @@ in
       };
     in
     mkIf cfg.enable {
-      age.secrets.cloudflared = {
-        file = ../secrets/cloudflared.json.age;
-        owner = "argoweb";
-      };
-
-      age.secrets.cert = {
-        file = ../secrets/cert.pem.age;
-        owner = "argoweb";
-      };
-
       systemd.services.argoWeb = {
         description = "Cloudflare Argo Tunnel";
         after = [ "network-online.target" ];

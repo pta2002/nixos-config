@@ -94,5 +94,18 @@
 
   system.stateVersion = "23.05";
   nixpkgs.config.allowUnfree = true;
+
+  # Stuff for argo
+  age.secrets.cloudflared = {
+    file = ../secrets/pietunnel.json.age;
+    owner = "argoweb";
+  };
+
+  age.secrets.cert = {
+    file = ../secrets/cert.pem.age;
+    owner = "argoweb";
+  };
+
+  services.argoWeb.tunnel = "pietunnel";
 }
 
