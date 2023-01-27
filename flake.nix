@@ -5,6 +5,8 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
 
+    nixos-wsl.url = "github:nix-community/NixOS-WSL";
+
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -32,7 +34,7 @@
     extras.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, extras, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, extras, nixos-wsl, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -88,6 +90,24 @@
             })
           ];
           specialArgs = { inherit inputs nixvim; };
+        };
+
+        wsl2 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./machines/wsl2.nix
+            home.nixosModules.home-manager
+            ({ pkgs, ... }@args: {
+              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+                { home.stateVersion = "23.05"; }
+                nixvim.homeManagerModules.nixvim
+                (import ./modules/nvim.nix inputs)
+                ./modules/git.nix
+                ./modules/shell.nix
+              ];
+            })
+          ];
+          specialArgs = { inherit inputs nixvim nixos-wsl; };
         };
 
         cloudy = nixpkgs.lib.nixosSystem {
