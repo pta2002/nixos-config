@@ -97,7 +97,7 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
-    MOZ_USE_XINPUT2 = true;
+    MOZ_USE_XINPUT2 = "true";
   };
 
   programs.firefox.enable = true;
