@@ -11,6 +11,8 @@
     # ./modules/synapse.nix
     ./modules/fava.nix
     ./modules/vaultwarden.nix
+
+    ./modules/jellyfin.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -72,5 +74,7 @@
   system.stateVersion = "22.11";
 
   nixpkgs.config.allowUnfree = true;
+
+  services.tailscale.enable = true;
 }
 
