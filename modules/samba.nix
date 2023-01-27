@@ -18,19 +18,8 @@
       map to guest = bad user
     '';
     shares = {
-      public = {
-        path = "/mnt/Shares/Public";
-        browseable = "yes";
-        writable = "yes";
-        "read only" = "no";
-        "guest ok" = "yes";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        # "force user" = "username";
-        # "force group" = "groupname";
-      };
-      private = {
-        path = "/mnt/Shares/Private";
+      data = {
+        path = "/mnt/data";
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
