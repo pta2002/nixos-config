@@ -38,7 +38,7 @@
 
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
+    settings.PasswordAuthentication = false;
   };
 
   virtualisation.docker.enable = true;
@@ -78,13 +78,18 @@
 
   # Stuff for argo
   age.secrets.cloudflared = {
-    file = ../secrets/cloudflared.json.age;
+    file = ./secrets/cloudflared.json.age;
     owner = "argoweb";
   };
 
   age.secrets.cert = {
-    file = ../secrets/cert.pem.age;
+    file = ./secrets/cert.pem.age;
     owner = "argoweb";
+  };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "pta2002@pta2002.com";
   };
 }
 

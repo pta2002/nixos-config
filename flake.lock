@@ -74,11 +74,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-4VNApq0wq2PnhegU2+G6g9iNFWGxo/ZQ5R2VhUViPQ8=",
-        "path": "/nix/store/bzil2h57blfc333v74qbkhr8929krj82-source/extras",
+        "path": "/nix/store/00895yk2x77qcd7w1nfjfb4rpvmhlzil-source/extras",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/bzil2h57blfc333v74qbkhr8929krj82-source/extras",
+        "path": "/nix/store/00895yk2x77qcd7w1nfjfb4rpvmhlzil-source/extras",
         "type": "path"
       }
     },
@@ -403,11 +403,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1674764325,
-        "narHash": "sha256-3YEOnDIfcHkoQn4ozY9EI4MVt/94SmwElLy8cDlvWbg=",
+        "lastModified": 1674917700,
+        "narHash": "sha256-4NSCMIeOZbXJ47h2gv5gKsk8iPx90jwU7UDxSy6gi+0=",
         "owner": "pta2002",
         "repo": "nixvim",
-        "rev": "8a0056617afbdef0a5dee89505e1e20c2798295f",
+        "rev": "8ef6945e7550f81352564a70796554e7997be5c1",
         "type": "github"
       },
       "original": {
