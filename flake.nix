@@ -6,6 +6,9 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
+    nix-on-droid.url = "github:t184256/nix-on-droid";
+    nix-on-droid.inputs.nixpkgs.follows = "nixpkgs";
+    nix-on-droid.inputs.home-manager.follows = "home";
 
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
@@ -34,7 +37,7 @@
     extras.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, extras, nixos-wsl, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, extras, nixos-wsl, nix-on-droid, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -45,6 +48,26 @@
       });
     in
     {
+      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+        modules = [
+./machines/droid.nix
+            #home.nixosModules.home-manager
+            ({ pkgs, ... }@args: {
+              home-manager.config = nixpkgs.lib.mkMerge [
+                { home.stateVersion = "23.05"; }
+                nixvim.homeManagerModules.nixvim
+                (import ./modules/nvim.nix inputs)
+{
+programs.nixvim.enable=true;
+}
+                ./modules/git.nix
+                ./modules/shell.nix
+              ];
+            })
+          ];
+          #specialArgs = { inherit inputs nixvim nixos-wsl; };
+      };
+
       nixosConfigurations = {
         hydrogen = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";

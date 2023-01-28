@@ -16,7 +16,7 @@ inputs: { pkgs, ... }:
       intellitab.enable = true;
       nix.enable = true;
       bufferline = {
-        enable = true;
+        #enable = true;
         diagnostics = "nvim_lsp";
         separatorStyle = "slant";
       };
