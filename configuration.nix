@@ -143,6 +143,7 @@
     isNormalUser = true;
     shell = pkgs.fish;
     extraGroups = [ "wheel" "docker" "audio" "video" "networkmanager" "wireshark" "adbusers" "libvirtd" ];
+    openssh.authorizedKeys.keys = import ./ssh-keys.nix;
   };
 
   environment.etc.jdk.source = pkgs.jdk17;
@@ -159,6 +160,12 @@
   security.sudo.extraConfig = ''
     Defaults pwfeedback
   '';
+
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = false;
+  };
+  networking.firewall.allowedTCPPorts = [ 22 ];
 
   systemd.extraConfig = "DefaultLimitNOFILE=524288";
 

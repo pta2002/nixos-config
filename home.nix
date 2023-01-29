@@ -63,7 +63,7 @@
     signal-desktop
     tdesktop
     zotero
-    libreoffice
+    # libreoffice
     obsidian
     zoom-us
     krita
