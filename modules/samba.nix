@@ -25,8 +25,8 @@
         "guest ok" = "no";
         "create mask" = "0644";
         "directory mask" = "0755";
-        # "force user" = "username";
-        # "force group" = "groupname";
+        "force user" = "rtorrent";
+        "force group" = "rtorrent";
       };
     };
     openFirewall = true;
