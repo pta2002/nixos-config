@@ -14,6 +14,9 @@ in
   services.rtorrent = {
     enable = true;
     downloadDir = "/mnt/data/torrents";
+    configText = ''
+      system.umask.set = 0002
+    '';
   };
 
   systemd.services.flood = {
