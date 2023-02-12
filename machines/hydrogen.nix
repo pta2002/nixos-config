@@ -29,6 +29,17 @@
       fsType = "vfat";
     };
 
+  fileSystems."/mnt/drive0" = {
+    device = "/dev/sr0";
+    fsType = "auto";
+    options = [
+      "ro"
+      "user"
+      "noauto"
+      "unhide"
+    ];
+  };
+
   swapDevices = [ ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
