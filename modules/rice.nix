@@ -19,6 +19,10 @@
     jetbrains-mono
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
 
+    (pkgs.rofi.override {
+      plugins = with pkgs; [ rofi-emoji rofi-calc ];
+    })
+
     (stdenv.mkDerivation rec {
       pname = "phosphor-icons";
       version = "1.4.0";
@@ -47,13 +51,6 @@
       window_padding_width 4
       confirm_os_window_close 0
     '';
-  };
-
-  programs.rofi = {
-    enable = true;
-    package = pkgs.rofi.override {
-      plugins = with pkgs; [ rofi-emoji rofi-calc ];
-    };
   };
 
   services.dunst = {
@@ -180,5 +177,6 @@
       ".config/wallpaper.jpg".source = ../wallpaper.jpg;
       ".config/sxhkd".source = ln "/home/pta2002/nixos/configs/sxhkd";
       ".config/eww".source = ln "/home/pta2002/nixos/configs/eww";
+      ".config/rofi/config.rasi".source = ../configs/rofi.rasi;
     };
 }
