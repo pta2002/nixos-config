@@ -144,6 +144,12 @@ XF86AudioRaiseVolume
 XF86AudioMute
 	pamixer -t
 
+XF86BrightnessDown
+	brightnessctl s -10%
+
+XF86BrightnessUp
+	brightnessctl s +10%
+
 #
 # screenshots
 #
