@@ -71,6 +71,8 @@
     password = "";
   };
 
+  users.users.root.openssh.authorizedKeys.keys = import ../ssh-keys.nix;
+
   security.sudo.extraRules = [{
     users = [ "pta2002" ];
     commands = [{
