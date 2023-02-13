@@ -6,6 +6,10 @@ inputs: { pkgs, ... }:
       treesitter.enable = true;
       treesitter.nixGrammars = true;
       treesitter.ensureInstalled = "all";
+      treesitter.moduleConfig.autotag = {
+        enable = true;
+        filetypes = [ "html" "xml" "astro" "javascriptreact" "typescriptreact" "svelte" "vue" ];
+      };
       comment-nvim.enable = true;
 
       lualine = {
@@ -59,6 +63,8 @@ inputs: { pkgs, ... }:
           gopls.enable = true;
           elixirls.enable = true;
           hls.enable = true;
+          tsserver.enable = true;
+          astro.enable = true;
         };
 
         onAttach = ''
@@ -83,6 +89,10 @@ inputs: { pkgs, ... }:
       };
 
       trouble.enable = true;
+
+      copilot.enable = true;
+      cmp-copilot.enable = true;
+      cmp_luasnip.enable = true;
 
       nvim-cmp = {
         enable = true;
@@ -164,6 +174,7 @@ inputs: { pkgs, ... }:
     extraPlugins = with pkgs.vimPlugins; [
       vim-sleuth
       kanagawa-nvim
+      nvim-ts-autotag
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "vim-sxhkdrc";
         version = "7b8abc305ba346c3af7d57da0ebec2b2f2d3f5b0";

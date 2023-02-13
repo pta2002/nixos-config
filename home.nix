@@ -47,6 +47,8 @@
     usbutils
     pciutils
     brightnessctl
+    imagemagick
+    yt-dlp
 
     # Random programs
     (discord.override {

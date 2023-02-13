@@ -10,7 +10,7 @@ let
 in
 {
   networking.hostName = "mercury";
-
+  networking.hostId = "a3aa8a8f";
   networking.interfaces.wlo1.useDHCP = true;
 
   services.xserver.videoDrivers = [ "intel" "nvidia" ];
