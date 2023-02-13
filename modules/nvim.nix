@@ -166,6 +166,10 @@ inputs: { pkgs, ... }:
       "k" = "gk";
     };
 
+    maps.insert = {
+      "<C-S>" = "<C-O>:w<CR>";
+    };
+
     extraConfigLua = ''
       require("scope").setup()
       require("colorizer").setup()
