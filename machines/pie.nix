@@ -24,7 +24,7 @@
 
   fileSystems."/mnt/data" = {
     options = [ "compress=zstd" "subvol=data" ];
-    device = "/dev/sda";
+    device = "/dev/disk/by-uuid/7f988ede-8035-4b9e-aaff-4993d5c2452a";
     fsType = "btrfs";
   };
 
