@@ -10,6 +10,10 @@ inputs: { pkgs, ... }:
         enable = true;
         filetypes = [ "html" "xml" "astro" "javascriptreact" "typescriptreact" "svelte" "vue" ];
       };
+      treesitter.moduleConfig.highlight = {
+        additional_vim_regex_highlighting = [ "org" ];
+        enable = true;
+      };
       comment-nvim.enable = true;
 
       lualine = {
@@ -173,12 +177,22 @@ inputs: { pkgs, ... }:
     extraConfigLua = ''
       require("scope").setup()
       require("colorizer").setup()
+
+      require('orgmode').setup({
+        org_agenda_files = { '~/org/**/*' },
+        org_default_notes_file = '~/org/refile.org',
+      })
+    '';
+
+    extraConfigLuaPre = ''
+      require('orgmode').setup_ts_grammar()
     '';
 
     extraPlugins = with pkgs.vimPlugins; [
       vim-sleuth
       kanagawa-nvim
       nvim-ts-autotag
+      orgmode
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "vim-sxhkdrc";
         version = "7b8abc305ba346c3af7d57da0ebec2b2f2d3f5b0";
