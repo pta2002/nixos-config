@@ -49,6 +49,7 @@
     brightnessctl
     imagemagick
     yt-dlp
+    weechat
 
     # Random programs
     (discord.override {
@@ -78,6 +79,7 @@
     gnome.pomodoro
     xournal
     element-desktop
+    todoist-electron
 
     # freecad
     mindustry

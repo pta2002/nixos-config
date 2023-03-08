@@ -35,9 +35,12 @@
 
     extras.url = "./extras";
     extras.inputs.nixpkgs.follows = "nixpkgs";
+
+    my-switches.url = "github:pta2002/home-automation";
+    my-switches.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, extras, nixos-wsl, nix-on-droid, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, extras, nixos-wsl, nix-on-droid, my-switches, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -50,22 +53,22 @@
     {
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
         modules = [
-./machines/droid.nix
-            #home.nixosModules.home-manager
-            ({ pkgs, ... }@args: {
-              home-manager.config = nixpkgs.lib.mkMerge [
-                { home.stateVersion = "23.05"; }
-                nixvim.homeManagerModules.nixvim
-                (import ./modules/nvim.nix inputs)
-{
-programs.nixvim.enable=true;
-}
-                ./modules/git.nix
-                ./modules/shell.nix
-              ];
-            })
-          ];
-          #specialArgs = { inherit inputs nixvim nixos-wsl; };
+          ./machines/droid.nix
+          #home.nixosModules.home-manager
+          ({ pkgs, ... }@args: {
+            home-manager.config = nixpkgs.lib.mkMerge [
+              { home.stateVersion = "23.05"; }
+              nixvim.homeManagerModules.nixvim
+              (import ./modules/nvim.nix inputs)
+              {
+                programs.nixvim.enable = true;
+              }
+              ./modules/git.nix
+              ./modules/shell.nix
+            ];
+          })
+        ];
+        #specialArgs = { inherit inputs nixvim nixos-wsl; };
       };
 
       nixosConfigurations = {
@@ -138,7 +141,7 @@ programs.nixvim.enable=true;
           modules = [
             home.nixosModules.home-manager
             ./cloudy.nix
-            agenix.nixosModule
+            agenix.nixosModules.default
             ({ pkgs, ... }@args: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
                 { home.stateVersion = "22.11"; }
@@ -154,11 +157,12 @@ programs.nixvim.enable=true;
 
         pie = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
+          specialArgs = { inherit my-switches; };
           modules = [
             home.nixosModules.home-manager
             ./machines/pie.nix
             ./modules/argoweb.nix
-            agenix.nixosModule
+            agenix.nixosModules.default
             ({ pkgs, ... }@args: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
                 { home.stateVersion = "23.05"; }

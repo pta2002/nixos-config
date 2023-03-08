@@ -8,6 +8,7 @@
     ../modules/plex.nix
     ../modules/sonarr.nix
     ../modules/argoweb.nix
+    ../modules/quassel.nix
   ];
 
   services.argoWeb.enable = true;

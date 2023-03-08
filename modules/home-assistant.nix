@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, my-switches, ... }:
 let
   yeelight = {
     devices."192.168.1.86" = {
@@ -163,6 +163,21 @@ in
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
+      ExecStart = "${my-switches.packages.${pkgs.system}.default}/bin/my-switches";
+      Type = "simple";
+      User = "switches";
+      Group = "switches";
+      Restart = "on-failure";
+      RestartSec = "5s";
+    };
+  };
+
+  systemd.services.switches = {
+    description = "switches";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
       ExecStart = "${system-sensors}/bin/system-sensors ${sensorConfig}";
       Type = "simple";
       User = "sensors";
@@ -179,7 +194,13 @@ in
     group = "sensors";
   };
 
-  users.groups.sensors = { };
+  users.users.switches = {
+    isSystemUser = true;
+    group = "switches";
+  };
 
-  networking.firewall.allowedTCPPorts = [ 80 8123 8080 ];
+  users.groups.sensors = { };
+  users.groups.switches = { };
+
+  networking.firewall.allowedTCPPorts = [ 80 8123 8080 1883 ];
 }

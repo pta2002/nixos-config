@@ -16,10 +16,11 @@
       hosts deny = 0.0.0.0/0
       guest account = nobody
       map to guest = bad user
+      acl allow execute always = True
     '';
     shares = {
-      data = {
-        path = "/mnt/data";
+      torrents = {
+        path = "/mnt/data/torrents";
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
@@ -27,6 +28,17 @@
         "directory mask" = "0755";
         "force user" = "rtorrent";
         "force group" = "rtorrent";
+      };
+
+      files = {
+        path = "/mnt/data/files";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "pta2002";
+        "force group" = "users";
       };
     };
     openFirewall = true;
