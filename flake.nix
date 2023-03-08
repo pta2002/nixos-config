@@ -23,7 +23,7 @@
     eww-scripts.type = "git";
     eww-scripts.inputs.nixpkgs.follows = "nixpkgs";
 
-    phosphor-icons.url = "github:phosphor-icons/phosphor-icons";
+    phosphor-icons.url = "github:phosphor-icons/phosphor-icons/legacy";
     phosphor-icons.flake = false;
 
     nixvim.url = "github:pta2002/nixvim";

@@ -97,11 +97,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-4VNApq0wq2PnhegU2+G6g9iNFWGxo/ZQ5R2VhUViPQ8=",
-        "path": "/nix/store/nqw5rd4fw72xfipspc5hkqp9kaq7j96p-source/extras",
+        "path": "/nix/store/m3x5h0cbbnra1r7fx8pk73l1pkh2zp0m-source/extras",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/nqw5rd4fw72xfipspc5hkqp9kaq7j96p-source/extras",
+        "path": "/nix/store/m3x5h0cbbnra1r7fx8pk73l1pkh2zp0m-source/extras",
         "type": "path"
       }
     },
@@ -596,15 +596,16 @@
     "phosphor-icons": {
       "flake": false,
       "locked": {
-        "lastModified": 1678074722,
-        "narHash": "sha256-jXQUxx7X2G40CIbJUVkf3owXd0aLZlM49Yf2w7+zJfo=",
+        "lastModified": 1678074452,
+        "narHash": "sha256-u94xboTMcRHxsVVWhlhBDMaOC96omR9W9Jay7oBx3Jg=",
         "owner": "phosphor-icons",
         "repo": "phosphor-icons",
-        "rev": "91704ada4fb47957ce73b64b6e0b0a0dca75ef56",
+        "rev": "0705dc76e2172be42b32579a39d7f1a15b0104bb",
         "type": "github"
       },
       "original": {
         "owner": "phosphor-icons",
+        "ref": "legacy",
         "repo": "phosphor-icons",
         "type": "github"
       }
