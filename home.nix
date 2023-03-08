@@ -25,6 +25,8 @@
     godot
     flutter
     go
+    cmake
+    ninja
 
     # Utilities
     pciutils

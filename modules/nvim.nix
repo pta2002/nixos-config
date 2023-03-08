@@ -21,6 +21,17 @@ inputs: { pkgs, ... }:
         theme = "gruvbox-material";
       };
 
+      neorg = {
+        enable = true;
+        modules = {
+          "core.defaults" = { };
+          "core.norg.dirman".config.workspaces.uni = "~/notes/uni";
+          "core.norg.completion".config.engine = "nvim-cmp";
+          "core.norg.concealer" = { };
+          "core.norg.journal" = { };
+        };
+      };
+
       intellitab.enable = true;
       nix.enable = true;
       bufferline = {
