@@ -26,6 +26,7 @@ with lib;
     github-cli
     wget
     nodejs
+    ripgrep
   ];
 
   # Enable nix flakes
@@ -48,4 +49,10 @@ with lib;
   security.sudo.extraConfig = ''
     Defaults pwfeedback
   '';
+
+  services.tailscale.enable = true;
+
+  home-manager.users.pta2002 = {
+    programs.direnv.enable = true;
+  };
 }
