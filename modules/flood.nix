@@ -19,6 +19,11 @@ in
     '';
   };
 
+  users.users.${config.services.rtorrent.user} = {
+    home = "/var/lib/rtorrent";
+    createHome = true;
+  };
+
   systemd.services.flood = {
     enable = true;
     wantedBy = [ "default.target" ];
