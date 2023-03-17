@@ -88,7 +88,7 @@ inputs: { pkgs, ... }:
       };
 
       lsp-lines = {
-        enable = true;
+        enable = false;
         currentLine = true;
       };
 
