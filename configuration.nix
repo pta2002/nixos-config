@@ -135,6 +135,7 @@
     dedicatedServer.openFirewall = true;
   };
 
+  programs.fish.enable = true;
   environment.shells = with pkgs; [ bash fish ];
 
   documentation.dev.enable = true;

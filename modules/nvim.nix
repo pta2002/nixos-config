@@ -120,8 +120,8 @@ inputs: { pkgs, ... }:
 
         window.completion = {
           winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
-          col_offset = -4;
-          side_padding = 0;
+          colOffset = -4;
+          sidePadding = 0;
           border = "single";
         };
 

@@ -65,6 +65,7 @@
   };
 
   environment.shells = with pkgs; [ bash fish ];
+  programs.fish.enable = true;
   users.users.pta2002 = {
     isNormalUser = true;
     extraGroups = [ "wheel" "argoweb" "docker" ];

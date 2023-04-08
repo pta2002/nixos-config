@@ -54,10 +54,10 @@
   # musnix.kernel.realtime = true;
 
   # Fixing the damn keyboard...
-  services.xserver.displayManager.sessionCommands = ''
-    ${pkgs.xorg.xmodmap}/bin/xmodmap "${pkgs.writeText "xkb-layout" ''
-      keycode 94 = backslash bar backslash bar notsign notsign notsign
-      keycode 49 = less greater less greater backslash backslash backslash
-    ''}"
-  '';
+  # services.xserver.displayManager.sessionCommands = ''
+  #   ${pkgs.xorg.xmodmap}/bin/xmodmap "${pkgs.writeText "xkb-layout" ''
+  #     keycode 94 = backslash bar backslash bar notsign notsign notsign
+  #     keycode 49 = less greater less greater backslash backslash backslash
+  #   ''}"
+  # '';
 }
