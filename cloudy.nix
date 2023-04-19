@@ -43,6 +43,7 @@
 
   virtualisation.docker.enable = true;
 
+  programs.fish.enable = true;
   users.users.pta2002 = {
     isNormalUser = true;
     shell = pkgs.fish;
