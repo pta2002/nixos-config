@@ -27,6 +27,7 @@
     go
     cmake
     ninja
+    janet
 
     # Utilities
     pciutils
@@ -70,7 +71,7 @@
     tdesktop
     zotero
     # libreoffice
-    obsidian
+    # obsidian
     zoom-us
     krita
     musescore
@@ -82,7 +83,7 @@
     gnome.pomodoro
     xournal
     element-desktop
-    todoist-electron
+    # todoist-electron
 
     # freecad
     mindustry
@@ -92,6 +93,7 @@
     # freecad
     google-chrome
     notion-app-enhanced
+    blender
 
     # IDEs
     jetbrains.idea-ultimate

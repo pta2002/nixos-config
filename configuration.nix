@@ -173,7 +173,7 @@
   system.stateVersion = "21.11";
 
   nixpkgs.config.permittedInsecurePackages = [
-    "electron-13.6.9"
+    "electron-21.4.0"
   ];
 
   nixpkgs.overlays = [
@@ -193,4 +193,15 @@
   nix.registry.n.flake = inputs.nixpkgs;
   nix.registry.stable.flake = inputs.nixpkgs-stable;
   nix.registry.s.flake = inputs.nixpkgs-stable;
+
+  nix.settings = {
+    substituters = [
+      "https://cache.nixos.org/"
+      "https://cuda-maintainers.cachix.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+    ];
+  };
 }

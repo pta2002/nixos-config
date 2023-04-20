@@ -137,6 +137,8 @@ inputs: { pkgs, ... }:
         enable = true;
         extensions.fzf-native.enable = true;
       };
+
+      conjure.enable = true;
     };
 
     # colorscheme = "kanagawa";
@@ -170,7 +172,10 @@ inputs: { pkgs, ... }:
       laststatus = 3;
     };
 
-    globals.mapleader = " ";
+    globals = {
+      mapleader = " ";
+      maplocalleader = " ";
+    };
 
     maps.normal = {
       "<leader>t" = "<CMD>NvimTreeToggle<CR>";
@@ -204,6 +209,28 @@ inputs: { pkgs, ... }:
       kanagawa-nvim
       nvim-ts-autotag
       orgmode
+      (pkgs.vimUtils.buildVimPlugin rec {
+        pname = "janet-vim";
+        version = "61eca1138bd149a86edbde39dc20a3130f0d9b39";
+        src = pkgs.fetchFromGitHub {
+          owner = "janet-lang";
+          repo = "janet.vim";
+          rev = version;
+          sha256 = "1m9nyylwvb9ypgiqahjg6w6qzl8536p2s5vciais1slpjhrx9iqg";
+        };
+
+        buildInputs = with pkgs; [ janet ];
+      })
+      (pkgs.vimUtils.buildVimPlugin rec {
+        pname = "nvim-parinfer";
+        version = "c0d95d9f4c5f921872ba11790b76efbb02cc8af5";
+        src = pkgs.fetchFromGitHub {
+          owner = "gpanders";
+          repo = "nvim-parinfer";
+          rev = version;
+          sha256 = "0sk6nwppvxznr6lc5zh8rj8pgqa2qi18d0d4r97ap00d59krb6f4";
+        };
+      })
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "vim-sxhkdrc";
         version = "7b8abc305ba346c3af7d57da0ebec2b2f2d3f5b0";
