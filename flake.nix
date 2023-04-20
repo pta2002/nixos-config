@@ -35,6 +35,9 @@
 
     my-switches.url = "github:pta2002/home-automation";
     my-switches.inputs.nixpkgs.follows = "nixpkgs";
+
+    devenv.url = "github:cachix/devenv/latest";
+    # devenv.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, ... }@inputs:

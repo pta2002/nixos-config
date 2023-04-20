@@ -45,6 +45,7 @@
     ffmpeg
     htop
     gnome.nautilus
+    gnome.eog
     dnsutils
     usbutils
     pciutils
@@ -99,6 +100,10 @@
 
     # Libraries and stuff
     sqlite
+    cachix
+    nix-prefetch-git
+
+    inputs.devenv.packages.${pkgs.system}.devenv
   ];
 
   home.sessionVariables = {
@@ -162,6 +167,8 @@
       "application/pdf" = [ "org.pwmt.zathura.desktop" ];
       "text/plain" = [ "nvim.desktop" ];
       "text/markdown" = [ "nvim.desktop" ];
+      "image/jpeg" = [ "org.gnome.eog.desktop" ];
+      "image/png" = [ "org.gnome.eog.desktop" ];
     };
   };
 
