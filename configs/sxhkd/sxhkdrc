@@ -144,10 +144,10 @@ XF86AudioRaiseVolume
 XF86AudioMute
 	pamixer -t
 
-XF86KbdBrightnessDown
+XF86MonBrightnessDown
 	brightnessctl s 10%-
 
-XF86KbdBrightnessUp
+XF86MonBrightnessUp
 	brightnessctl s +10%
 
 #
@@ -155,3 +155,9 @@ XF86KbdBrightnessUp
 #
 super + shift + s
 	bash -c "maim -s | xclip -sel clip -t image/png"
+
+#
+# lock screen
+#
+super + x
+	i3lock-fancy

@@ -15,6 +15,7 @@
     inputs.eww-scripts.packages."${pkgs.system}".follows
     inputs.eww-scripts.packages."${pkgs.system}".upower-follow
     inputs.eww-scripts.packages."${pkgs.system}".pa-follow
+    i3lock-fancy
 
     jetbrains-mono
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
@@ -164,6 +165,11 @@
       "feh --bg-fill ~/.config/wallpaper.jpg"
       "xsetroot -cursor_name left_ptr"
     ];
+  };
+
+  services.screen-locker = {
+    enable = true;
+    lockCmd = "${pkgs.i3lock-fancy}/bin/i3lock-fancy";
   };
 
   home.file =
