@@ -129,6 +129,8 @@ inputs: { pkgs, ... }:
           winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
           border = "single";
         };
+
+        snippet.expand = "luasnip";
       };
 
       zig.enable = true;
@@ -209,6 +211,7 @@ inputs: { pkgs, ... }:
       kanagawa-nvim
       nvim-ts-autotag
       orgmode
+      luasnip
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "janet-vim";
         version = "61eca1138bd149a86edbde39dc20a3130f0d9b39";
