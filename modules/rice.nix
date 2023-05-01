@@ -189,5 +189,6 @@
       ".config/sxhkd".source = ln "/home/pta2002/nixos/configs/sxhkd";
       ".config/eww".source = ln "/home/pta2002/nixos/configs/eww";
       ".config/rofi/config.rasi".source = ../configs/rofi.rasi;
+      ".config/hypr".source = ln "/home/pta2002/nixos/configs/hypr";
     };
 }
