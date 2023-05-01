@@ -43,6 +43,8 @@
   services.upower.enable = true;
   services.xserver.windowManager.bspwm.enable = true;
 
+  programs.hyprland.enable = true;
+
   boot.plymouth = {
     enable = true;
   };

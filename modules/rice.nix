@@ -38,6 +38,11 @@
           install -m 644 -D ${ttf} $out/share/fonts/truetype/Phosphor.ttf
         '';
     })
+
+    hyprpaper
+    (waybar.overrideAttrs (o: {
+      mesonFlags = o.mesonFlags ++ [ "-Dexperimental=true" ];
+    }))
   ];
 
   programs.kitty = {
