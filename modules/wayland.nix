@@ -26,7 +26,6 @@
 
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.default;
     xwayland = {
       enable = true;
       hidpi = false;
@@ -34,6 +33,10 @@
 
     nvidiaPatches = true;
   };
+
+  environment.systemPackages = [
+    inputs.hypr-contrib.packages.${pkgs.system}.grimblast
+  ];
 
   services.xserver.displayManager.gdm = {
     enable = true;
