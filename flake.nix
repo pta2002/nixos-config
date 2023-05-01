@@ -37,10 +37,11 @@
     my-switches.inputs.nixpkgs.follows = "nixpkgs";
 
     devenv.url = "github:cachix/devenv/latest";
-    # devenv.inputs.nixpkgs.follows = "nixpkgs";
+
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, hyprland, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -80,6 +81,7 @@
             ./configuration.nix
             ./machines/hydrogen.nix
             home.nixosModules.home-manager
+            hyprland.nixosModules.default
 
             ({ pkgs, ... }@args: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
@@ -87,6 +89,7 @@
                 {
                   imports = [
                     nixvim.homeManagerModules.nixvim
+                    hyprland.homeManagerModules.default
                     (import ./modules/nvim.nix inputs)
                   ];
                 }
@@ -103,12 +106,14 @@
             ./configuration.nix
             ./machines/mercury.nix
             home.nixosModules.home-manager
+            hyprland.nixosModules.default
             ({ pkgs, ... }@args: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
                 (import ./home.nix args)
                 {
                   imports = [
                     nixvim.homeManagerModules.nixvim
+                    hyprland.homeManagerModules.default
                     (import ./modules/nvim.nix inputs)
                   ];
                 }

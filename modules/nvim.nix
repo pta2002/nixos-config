@@ -213,6 +213,16 @@ inputs: { pkgs, ... }:
       orgmode
       luasnip
       (pkgs.vimUtils.buildVimPlugin rec {
+        pname = "vim-lark-syntax";
+        version = "80891559f5686b5d2a897cc25628fdf5a2d0aff0";
+        src = pkgs.fetchFromGitHub {
+          owner = "lark-parser";
+          repo = "vim-lark-syntax";
+          rev = version;
+          sha256 = "12kmnggf4scjy5w0vywcajd4w3zrvdcpkzjpmdw1hvnc6ywj0n0n";
+        };
+      })
+      (pkgs.vimUtils.buildVimPlugin rec {
         pname = "janet-vim";
         version = "61eca1138bd149a86edbde39dc20a3130f0d9b39";
         src = pkgs.fetchFromGitHub {

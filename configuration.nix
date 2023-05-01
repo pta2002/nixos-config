@@ -1,6 +1,10 @@
 # This is the NixOS config file!
 { config, pkgs, inputs, ... }:
 {
+  imports = [
+    ./modules/wayland.nix
+  ];
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -23,7 +27,7 @@
 
   services.xserver.enable = true;
   services.xserver.displayManager.lightdm = {
-    enable = true;
+    enable = false;
     background = ./wallpaper.jpg;
     greeters.gtk = {
       enable = false;
@@ -35,6 +39,7 @@
       theme.name = "Adwaita Dark";
     };
   };
+
   services.xserver.displayManager.session = [{
     manage = "desktop";
     name = "xsession";
@@ -42,8 +47,6 @@
   }];
   services.upower.enable = true;
   services.xserver.windowManager.bspwm.enable = true;
-
-  programs.hyprland.enable = true;
 
   boot.plymouth = {
     enable = true;
@@ -155,10 +158,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings.trusted-users = [ "root" "pta2002" ];
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
 
   security.sudo.extraConfig = ''
     Defaults pwfeedback
@@ -200,10 +199,18 @@
     substituters = [
       "https://cache.nixos.org/"
       "https://cuda-maintainers.cachix.org"
+      "https://hyprland.cachix.org"
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
     ];
+
+    trusted-users = [ "root" "pta2002" ];
   };
+
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
 }
