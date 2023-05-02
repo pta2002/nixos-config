@@ -10,10 +10,10 @@
   (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
     (network)
     (metric :label {volume["muted"] ? "寮"
-      : volume["volume"] == 0 ? "尿"
-      : volume["volume"] <= 33 ? "禮"
-      : volume["volume"] <= 66 ? "例"
-      : "領"}
+                    : volume["volume"] == 0 ? "尿"
+                    : volume["volume"] <= 33 ? "禮"
+                    : volume["volume"] <= 66 ? "例"
+                    : "領"}
             :value {volume["volume"]}
             :onchange "pamixer --set-volume {}"
             :tooltip "Volume: ${volume["volume"]}%"
@@ -24,25 +24,25 @@
       :reveal {battery["is_battery"]}
       :duration "0.3s"
       (metric :label {battery["charging"] ? ""
-        : battery["percentage"] <= 10 ? ""
-        : battery["percentage"] <= 25 ? ""
-        : battery["percentage"] <= 50 ? ""
-        : battery["percentage"] <= 75 ? ""
-        : ""}
+                      : battery["percentage"] <= 10 ? ""
+                      : battery["percentage"] <= 25 ? ""
+                      : battery["percentage"] <= 50 ? ""
+                      : battery["percentage"] <= 75 ? ""
+                      : ""}
               :value {battery["percentage"]}
               :onchange ""
               :reveal true
               :tooltip "${round(battery["percentage"], 0)}% - ${battery["time_left"]} left"
-              :green {battery["charging"]}))
+              :green {battery["charging"] || false}))
     time))
 
 (defwidget baticon []
   {battery["charging"] ? ""
-  : battery["percentage"] <= 10 ? ""
-  : battery["percentage"] <= 25 ? ""
-  : battery["percentage"] <= 50 ? ""
-  : battery["percentage"] <= 75 ? ""
-  : ""})
+   : battery["percentage"] <= 10 ? ""
+   : battery["percentage"] <= 25 ? ""
+   : battery["percentage"] <= 50 ? ""
+   : battery["percentage"] <= 75 ? ""
+   : ""})
 
 (defwidget workspaces [monitor]
   (box :class "workspaces"
@@ -50,12 +50,10 @@
        :space-evenly false
        :halign "start"
        :spacing 18
-    (for desktop in {bspwm[monitor]}
-      (button
-        :onclick "bspc desktop -f ${monitor}:^${desktop["index"]}"
-        (label
-          :class "${desktop["status"]} ${desktop["focused"] ? "focused" : ""}"
-          :text {desktop["name"]})))))
+    (for desktop in {hypr[monitor].workspaces}
+      (label
+        :class "${desktop["status"]} ${desktop.id == hypr[monitor]["active-workspace"] ? "focused" : ""}"
+        :text {desktop["name"]}))))
 
 (defwidget music []
   (box :class "music"
@@ -89,8 +87,8 @@
        :space-evenly false
        :halign "center"
     (literal :content { network != "" && network["connection_type"] == "802-11-wireless" ? "(wifi)"
-    :
-    network != "" && network["connection_type"] == "802-3-ethernet" ? `(ethernet)` : `"disconnected"`})))
+                       :
+                       network != "" && network["connection_type"] == "802-3-ethernet" ? `(ethernet)` : `"disconnected"`})))
 
 (defwidget metric [label value onchange green tooltip reveal]
   (box :orientation "h"
@@ -106,12 +104,12 @@
       (scale :min 0
              :max 101
              :active {onchange != ""}
-             :value { value == "" ? 0 : value }
+             :value { value == "" ? 0 : value}
              :class {green ? "green" : "false"}
              :onchange onchange))))
 
 (deflisten music :initial ""
-  "playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
+  "playerctl --follow metadata --format '{{ artist }} - {{ title }}' -i firefox || true")
 
 (defpoll time :interval "10s"
   "date '+%H:%M %b %d, %Y'")
@@ -122,8 +120,8 @@
 (deflisten network :initial ""
   "scripts/follow")
 
-(deflisten bspwm :initial ""
-  "bspwm-follow")
+(deflisten hypr :initial ""
+  "scripts/hypr-follow")
 
 (deflisten battery :initial ""
   "upower-follow")
@@ -167,3 +165,26 @@
   :reserve (struts :side "top" :distance "46")
   (bar :primary true :monitor "HDMI-0"))
 
+(defwindow bar-desktop-1-wl
+  :monitor 0
+  :stacking "bg"
+  :exclusive true
+  :geometry (geometry :x "0%"
+                      :y "8px"
+                      :width "1656px"
+                      :height "34px"
+                      :anchor "top center")
+  :reserve (struts :side "top" :distance "46")
+  (bar :primary false :monitor "DVI-I-1"))
+
+(defwindow bar-desktop-2-wl
+  :monitor 1
+  :stacking "bg"
+  :exclusive true
+  :geometry (geometry :x "0%"
+                      :y "8px"
+                      :width "1896px"
+                      :height "34px"
+                      :anchor "top center")
+  :reserve (struts :side "top" :distance "46")
+  (bar :primary false :monitor "HDMI-A-3"))

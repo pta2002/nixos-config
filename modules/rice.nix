@@ -4,7 +4,6 @@
 
   home.packages = with pkgs; [
     sxhkd
-    eww
     feh
     playerctl
     maim
@@ -16,6 +15,7 @@
     inputs.eww-scripts.packages."${pkgs.system}".upower-follow
     inputs.eww-scripts.packages."${pkgs.system}".pa-follow
     i3lock-fancy
+    eww-wayland
 
     jetbrains-mono
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })

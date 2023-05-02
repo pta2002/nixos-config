@@ -36,6 +36,7 @@
 
   environment.systemPackages = [
     inputs.hypr-contrib.packages.${pkgs.system}.grimblast
+    pkgs.wl-clipboard
   ];
 
   services.xserver.displayManager.gdm = {
