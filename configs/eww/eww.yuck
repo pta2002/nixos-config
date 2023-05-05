@@ -52,7 +52,7 @@
        :spacing 18
     (for desktop in {hypr[monitor].workspaces}
       (label
-        :class "${desktop["status"]} ${desktop.id == hypr[monitor]["active-workspace"] ? "focused" : ""}"
+        :class "${desktop["status"]} ${desktop.id == hypr[monitor].activeWorkspace ? "focused" : ""}"
         :text {desktop["name"]}))))
 
 (defwidget music []
@@ -121,7 +121,7 @@
   "scripts/follow")
 
 (deflisten hypr :initial ""
-  "scripts/hypr-follow")
+  "hypr-follow")
 
 (deflisten battery :initial ""
   "upower-follow")
@@ -188,3 +188,15 @@
                       :anchor "top center")
   :reserve (struts :side "top" :distance "46")
   (bar :primary false :monitor "HDMI-A-3"))
+
+(defwindow bar-laptop-wl
+  :monitor 0
+  :stacking "bg"
+  :exclusive true
+  :geometry (geometry :x "0%"
+                      :y "8px"
+                      :width "1896px"
+                      :height "34px"
+                      :anchor "top center")
+  :reserve (struts :side "top" :distance "46")
+  (bar :primary false :monitor "eDP-1"))
