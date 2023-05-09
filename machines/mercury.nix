@@ -9,6 +9,11 @@ let
   '';
 in
 {
+  imports = [
+    ../modules/desktop.nix
+    ../modules/musnix.nix
+  ];
+
   networking.hostName = "mercury";
   networking.hostId = "a3aa8a8f";
   networking.interfaces.wlo1.useDHCP = true;

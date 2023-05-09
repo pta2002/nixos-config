@@ -1,150 +1,27 @@
-# This is the NixOS config file!
+# Common file for _all_ systems.
 { config, pkgs, inputs, ... }:
 {
-  imports = [
-    ./modules/wayland.nix
-  ];
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  boot.supportedFilesystems = [ "ntfs" "zfs" ];
-
-  hardware.cpu.intel.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
-  hardware.bluetooth.enable = true;
-
+  # Networking
   networking.networkmanager.enable = true;
+  networking.useDHCP = false;
+  services.tailscale.enable = true;
 
+  # Time
   time.timeZone = "Europe/Lisbon";
   time.hardwareClockInLocalTime = true;
 
-  networking.useDHCP = false;
-
-  services.tailscale.enable = true;
-
-  networking.firewall.enable = false;
-
-  services.xserver.enable = true;
-  services.xserver.displayManager.lightdm = {
-    enable = false;
-    background = ./wallpaper.jpg;
-    greeters.gtk = {
-      enable = false;
-      theme.name = "Adwaita-Dark";
-    };
-
-    greeters.slick = {
-      enable = true;
-      theme.name = "Adwaita Dark";
-    };
-  };
-
-  services.xserver.displayManager.session = [{
-    manage = "desktop";
-    name = "xsession";
-    start = ''exec $HOME/.xsession'';
-  }];
-  services.upower.enable = true;
-  services.xserver.windowManager.bspwm.enable = true;
-
-  boot.plymouth = {
-    enable = true;
-  };
-
-  services.xserver.libinput = {
-    enable = true;
-    touchpad.naturalScrolling = true;
-  };
-  services.xserver.wacom.enable = true;
-
-  services.xserver.layout = "pt";
-
-  services.fstrim.enable = true;
-
-  services.printing = {
-    enable = true;
-    drivers = [ pkgs.gutenprint ];
-  };
-
-  services.udisks2.enable = true;
-  services.gnome.gnome-keyring.enable = true;
-  services.gvfs.enable = true;
-
-  hardware.pulseaudio.enable = false;
-  sound.enable = true;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-
-    # config.pipewire = {
-    #   "context.properties" = {
-    #     "link.max-buffers" = 16;
-    #     "log.level" = 2;
-    #     "default.clock.rate" = 48000;
-    #     "default.clock.quantum" = 32;
-    #     "default.clock.min-quantum" = 32;
-    #     "default.clock.max-quantum" = 32;
-    #     "core.daemon" = true;
-    #     "core.name" = "pipewire-0";
-    #   };
-    #   "context.modules" = [
-    #     {
-    #       name = "libpipewire-module-rtkit";
-    #       args = {
-    #         "nice.level" = -15;
-    #         "rt.prio" = 88;
-    #         "rt.time.soft" = 200000;
-    #         "rt.time.hard" = 200000;
-    #       };
-    #       flags = [ "ifexists" "nofail" ];
-    #     }
-    #     { name = "libpipewire-module-protocol-native"; }
-    #     { name = "libpipewire-module-profiler"; }
-    #     { name = "libpipewire-module-metadata"; }
-    #     { name = "libpipewire-module-spa-device-factory"; }
-    #     { name = "libpipewire-module-spa-node-factory"; }
-    #     { name = "libpipewire-module-client-node"; }
-    #     { name = "libpipewire-module-client-device"; }
-    #     {
-    #       name = "libpipewire-module-portal";
-    #       flags = [ "ifexists" "nofail" ];
-    #     }
-    #     {
-    #       name = "libpipewire-module-access";
-    #       args = { };
-    #     }
-    #     { name = "libpipewire-module-adapter"; }
-    #     { name = "libpipewire-module-link-factory"; }
-    #     { name = "libpipewire-module-session-manager"; }
-    #   ];
-    # };
-  };
-
-  programs.wireshark.enable = true;
-  programs.adb.enable = true;
-
+  # Virtualisation
   virtualisation.docker.enable = true;
   virtualisation.libvirtd.enable = true;
 
-  # Required for virt-manager
-  programs.dconf.enable = true;
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-  };
-
+  # Shells
   programs.fish.enable = true;
   environment.shells = with pkgs; [ bash fish ];
 
+  # Misc.
   documentation.dev.enable = true;
 
+  # User
   users.users.pta2002 = {
     isNormalUser = true;
     shell = pkgs.fish;
@@ -152,65 +29,40 @@
     openssh.authorizedKeys.keys = import ./ssh-keys.nix;
   };
 
-  environment.etc.jdk.source = pkgs.jdk17;
-  environment.etc.jdk11.source = pkgs.jdk11;
-  environment.etc.jdk8.source = pkgs.jdk8;
-
-  nixpkgs.config.allowUnfree = true;
-
-
+  # Security
   security.sudo.extraConfig = ''
     Defaults pwfeedback
   '';
 
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = false;
+  # Nix
+  nixpkgs.config.allowUnfree = true;
+  nix = {
+    registry = {
+      nixpkgs.flake = inputs.nixpkgs;
+      n.flake = inputs.nixpkgs;
+      stable.flake = inputs.nixpkgs-stable;
+      s.flake = inputs.nixpkgs-stable;
+    };
+    settings = {
+      substituters = [
+        "https://cache.nixos.org/"
+        "https://cuda-maintainers.cachix.org"
+        "https://hyprland.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      ];
+
+      trusted-users = [ "root" "pta2002" ];
+    };
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
   };
-  networking.firewall.allowedTCPPorts = [ 22 ];
 
   systemd.extraConfig = "DefaultLimitNOFILE=524288";
 
   system.stateVersion = "21.11";
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-21.4.0"
-  ];
-
-  nixpkgs.overlays = [
-    (import ./overlays/sxiv)
-    (import ./overlays/my-scripts pkgs)
-  ];
-
-  # For vagrant
-  services.nfs.server.enable = true;
-  networking.firewall.extraCommands = ''
-    ip46tables -I INPUT 1 -i vboxnet+ -p tcp -m tcp --dport 2049 -j ACCEPT
-  '';
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "pta2002" ];
-
-  nix.registry.nixpkgs.flake = inputs.nixpkgs;
-  nix.registry.n.flake = inputs.nixpkgs;
-  nix.registry.stable.flake = inputs.nixpkgs-stable;
-  nix.registry.s.flake = inputs.nixpkgs-stable;
-
-  nix.settings = {
-    substituters = [
-      "https://cache.nixos.org/"
-      "https://cuda-maintainers.cachix.org"
-      "https://hyprland.cachix.org"
-    ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-    ];
-
-    trusted-users = [ "root" "pta2002" ];
-  };
-
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
 }

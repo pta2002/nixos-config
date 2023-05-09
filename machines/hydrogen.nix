@@ -1,5 +1,10 @@
 { pkgs, lib, ... }:
 {
+  imports = [
+    ../modules/desktop.nix
+    ../modules/musnix.nix
+  ];
+
   networking.hostId = "fa73900d";
 
   boot.loader.efi = {
@@ -52,7 +57,6 @@
   networking.hostName = "hydrogen";
   networking.interfaces.enp3s0.useDHCP = true;
 
-  musnix.enable = true;
   # musnix.kernel.optimize = true;
   # musnix.kernel.realtime = true;
 
@@ -72,5 +76,6 @@
     __GL_VRR_ALLOWED = "0";
     WLR_DRM_NO_ATOMIC = "1";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    WLR_NO_HARDWARE_CURSORS = "1";
   };
 }

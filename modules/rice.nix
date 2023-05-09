@@ -1,5 +1,9 @@
-{ inputs, ... }: { pkgs, config, ... }:
+{ pkgs, config, inputs, ... }:
 {
+  imports = [
+    inputs.hyprland.homeManagerModules.default
+  ];
+
   xsession.enable = true;
 
   home.packages = with pkgs; [

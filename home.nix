@@ -1,10 +1,14 @@
-{ inputs, ... }@args: { pkgs, lib, ... }:
+# Config file for common home manager
+{ pkgs, lib, inputs, ... }:
 {
   imports = [
+    inputs.nixvim.homeManagerModules.nixvim
+
     ./modules/shell.nix
     ./modules/git.nix
     ./modules/tiny.nix
-    (import ./modules/rice.nix args)
+    ./modules/nvim.nix
+    ./modules/rice.nix
   ];
 
   home.stateVersion = "21.11";
@@ -77,7 +81,6 @@
     musescore
     virt-manager
     qbittorrent
-    spot
     slack
     emacs
     gnome.pomodoro
