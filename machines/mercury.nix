@@ -11,7 +11,6 @@ in
 {
   imports = [
     ../modules/desktop.nix
-    ../modules/musnix.nix
   ];
 
   networking.hostName = "mercury";

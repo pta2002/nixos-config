@@ -73,12 +73,14 @@
             };
             home-manager.extraSpecialArgs = {
               inherit inputs;
+              hostname = name;
             };
           }
         ];
 
         specialArgs = {
           inherit inputs;
+          hostname = name;
         };
       };
     in

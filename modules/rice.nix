@@ -1,4 +1,4 @@
-{ pkgs, config, inputs, ... }:
+{ pkgs, config, inputs, hostname, ... }:
 {
   imports = [
     inputs.hyprland.homeManagerModules.default
@@ -194,6 +194,12 @@
       ".config/sxhkd".source = ln "/home/pta2002/nixos/configs/sxhkd";
       ".config/eww".source = ln "/home/pta2002/nixos/configs/eww";
       ".config/rofi/config.rasi".source = ../configs/rofi.rasi;
-      ".config/hypr".source = ln "/home/pta2002/nixos/configs/hypr";
+      ".config/hypr/hyprland.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprland.conf";
+      ".config/hypr/hyprpaper.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprpaper.conf";
+      ".config/hypr/machine.conf".source =
+        if hostname == "hydrogen" then
+          ln "/home/pta2002/nixos/configs/hypr/hydrogen.conf"
+        else
+          ln "/home/pta2002/nixos/configs/hypr/mercury.conf";
     };
 }
