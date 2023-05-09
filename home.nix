@@ -9,6 +9,8 @@
     ./modules/tiny.nix
     ./modules/nvim.nix
     ./modules/rice.nix
+
+    inputs.nix-index-database.hmModules.nix-index
   ];
 
   home.stateVersion = "21.11";
@@ -119,6 +121,8 @@
   programs.firefox.enable = true;
 
   programs.direnv.enable = true;
+  programs.nix-index.enable = true;
+  programs.nix-index-database.comma.enable = true;
 
   programs.vscode = {
     enable = true;
