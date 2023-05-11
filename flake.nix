@@ -181,7 +181,7 @@
           system = "aarch64-linux";
           modules = [
             home.nixosModules.home-manager
-            ./cloudy.nix
+            ./machines/cloudy.nix
             agenix.nixosModules.default
             ({ pkgs, ... }@args: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [

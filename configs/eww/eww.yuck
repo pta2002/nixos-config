@@ -167,7 +167,7 @@
 
 (defwindow bar-desktop-1-wl
   :monitor 0
-  :stacking "bg"
+  :stacking "fg"
   :exclusive true
   :geometry (geometry :x "0%"
                       :y "8px"
@@ -179,7 +179,7 @@
 
 (defwindow bar-desktop-2-wl
   :monitor 1
-  :stacking "bg"
+  :stacking "fg"
   :exclusive true
   :geometry (geometry :x "0%"
                       :y "8px"
@@ -191,7 +191,7 @@
 
 (defwindow bar-laptop-wl
   :monitor 0
-  :stacking "bg"
+  :stacking "fg"
   :exclusive true
   :geometry (geometry :x "0%"
                       :y "8px"

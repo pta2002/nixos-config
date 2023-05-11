@@ -1,17 +1,15 @@
 { pkgs, modulesPath, inputs, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    ./modules/argoweb.nix
-    ./modules/yarr.nix
-    ./modules/nextcloud.nix
-    ./modules/files.nix
-    ./modules/transmission.nix
-    ./modules/mastodon.nix
-    # ./modules/synapse.nix
-    ./modules/fava.nix
-    ./modules/vaultwarden.nix
-
-    ./modules/jellyfin.nix
+    ../modules/argoweb.nix
+    ../modules/yarr.nix
+    ../modules/nextcloud.nix
+    ../modules/files.nix
+    ../modules/transmission.nix
+    ../modules/mastodon.nix
+    ../modules/fava.nix
+    ../modules/vaultwarden.nix
+    ../modules/jellyfin.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -79,12 +77,12 @@
 
   # Stuff for argo
   age.secrets.cloudflared = {
-    file = ./secrets/cloudflared.json.age;
+    file = ../secrets/cloudflared.json.age;
     owner = "argoweb";
   };
 
   age.secrets.cert = {
-    file = ./secrets/cert.pem.age;
+    file = ../secrets/cert.pem.age;
     owner = "argoweb";
   };
 
