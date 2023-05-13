@@ -196,10 +196,6 @@
       ".config/rofi/config.rasi".source = ../configs/rofi.rasi;
       ".config/hypr/hyprland.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprland.conf";
       ".config/hypr/hyprpaper.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprpaper.conf";
-      ".config/hypr/machine.conf".source =
-        if hostname == "hydrogen" then
-          ln "/home/pta2002/nixos/configs/hypr/hydrogen.conf"
-        else
-          ln "/home/pta2002/nixos/configs/hypr/mercury.conf";
+      ".config/hypr/machine.conf".source = ../configs/hypr/${hostname}.conf;
     };
 }

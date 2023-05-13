@@ -66,11 +66,7 @@
 
           home.nixosModules.home-manager
           {
-            home-manager.users.pta2002 = {
-              imports = [
-                ./home.nix
-              ];
-            };
+            home-manager.users.pta2002 = ./home.nix;
             home-manager.extraSpecialArgs = {
               inherit inputs;
               hostname = name;
@@ -108,56 +104,6 @@
       nixosConfigurations = {
         hydrogen = mkMachine "hydrogen" "x86_64-linux";
         mercury = mkMachine "mercury" "x86_64-linux";
-
-        # hydrogen = nixpkgs.lib.nixosSystem {
-        #   system = "x86_64-linux";
-        #   modules = [
-        #     overlays
-        #     musnix.nixosModules.musnix
-        #     ./configuration.nix
-        #     ./machines/hydrogen.nix
-        #     home.nixosModules.home-manager
-        #     hyprland.nixosModules.default
-        #
-        #     ({ pkgs, ... }@args: {
-        #       home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-        #         (import ./home.nix args)
-        #         {
-        #           imports = [
-        #             nixvim.homeManagerModules.nixvim
-        #             hyprland.homeManagerModules.default
-        #             (import ./modules/nvim.nix inputs)
-        #           ];
-        #         }
-        #       ];
-        #     })
-        #   ];
-        #   specialArgs = { inherit inputs musnix nixvim; };
-        # };
-
-        # mercury = nixpkgs.lib.nixosSystem {
-        #   system = "x86_64-linux";
-        #   modules = [
-        #     overlays
-        #     ./configuration.nix
-        #     ./machines/mercury.nix
-        #     home.nixosModules.home-manager
-        #     hyprland.nixosModules.default
-        #     ({ pkgs, ... }@args: {
-        #       home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-        #         (import ./home.nix args)
-        #         {
-        #           imports = [
-        #             nixvim.homeManagerModules.nixvim
-        #             hyprland.homeManagerModules.default
-        #             (import ./modules/nvim.nix inputs)
-        #           ];
-        #         }
-        #       ];
-        #     })
-        #   ];
-        #   specialArgs = { inherit inputs nixvim; };
-        # };
 
         wsl2 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";

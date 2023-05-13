@@ -111,6 +111,8 @@
     nix-prefetch-git
 
     inputs.devenv.packages.${pkgs.system}.devenv
+
+    ryujinx
   ];
 
   home.sessionVariables = {
