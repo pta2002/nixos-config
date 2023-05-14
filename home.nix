@@ -84,7 +84,6 @@
     virt-manager
     qbittorrent
     slack
-    emacs
     gnome.pomodoro
     xournal
     element-desktop
@@ -103,6 +102,12 @@
     # IDEs
     jetbrains.idea-ultimate
     jetbrains.clion
+    emacsUnstable
+    # (emacsWithPackagesFromUsePackage {
+    #   config = /home/pta2002/.emacs.d/init.el;
+    #   package = emacsUnstable;
+    #   alwaysEnsure = true;
+    # })
     # android-studio
 
     # Libraries and stuff
@@ -114,6 +119,9 @@
 
     ryujinx
   ];
+
+  # This is just for parinfer-rust-mode
+  home.file.".emacs.d/parinfer-rust-mode".source = pkgs.parinfer-rust;
 
   home.sessionVariables = {
     EDITOR = "nvim";

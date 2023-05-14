@@ -159,7 +159,6 @@
       wrap = true;
       linebreak = true;
       hlsearch = false;
-      relativenumber = true;
       smartcase = true;
       ignorecase = true;
 
@@ -212,6 +211,16 @@
       nvim-ts-autotag
       orgmode
       luasnip
+      (pkgs.vimUtils.buildVimPlugin rec {
+        pname = "terminal-nvim";
+        version = "764b7c137512bcfba2e45cf3e25c08a9f4d3b733";
+        src = pkgs.fetchFromGitHub {
+          owner = "rebelot";
+          repo = "terminal.nvim";
+          rev = version;
+          sha256 = "1z8b16hp6gvy85wvrac5f7gsgl127src7z3s2zmkbrqksscxm0wf";
+        };
+      })
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "vim-lark-syntax";
         version = "80891559f5686b5d2a897cc25628fdf5a2d0aff0";

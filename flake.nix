@@ -44,15 +44,19 @@
 
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
+    emacs.url = "github:nix-community/emacs-overlay";
+    # emacs.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, hyprland, nix-index-database, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, hyprland, nix-index-database, emacs, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
           (import ./overlays/visual-paradigm.nix pkgs)
           (import ./overlays/lua pkgs)
           (import ./overlays/my-scripts pkgs)
+          emacs.overlays.default
         ];
       });
 
@@ -71,6 +75,8 @@
               inherit inputs;
               hostname = name;
             };
+            home-manager.sharedModules = [ overlays ];
+            # home-manager.backupFileExtension = ".hm-bak";
           }
         ];
 
