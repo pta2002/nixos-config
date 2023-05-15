@@ -3,7 +3,7 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = [ ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
   programs.xwayland.enable = true;

@@ -87,6 +87,7 @@
     gnome.pomodoro
     xournal
     element-desktop
+    microsoft-edge
     # todoist-electron
 
     # freecad

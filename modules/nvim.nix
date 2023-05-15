@@ -223,6 +223,7 @@
       nvim-ts-autotag
       orgmode
       luasnip
+      vim-pug
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "glowbeam-nvim";
         version = "master";
