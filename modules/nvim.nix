@@ -18,7 +18,7 @@
 
       lualine = {
         enable = true;
-        theme = "gruvbox-material";
+        theme = "kanagawa";
       };
 
       neorg = {
@@ -143,11 +143,12 @@
       conjure.enable = true;
     };
 
-    # colorscheme = "kanagawa";
     colorschemes.gruvbox = {
-      enable = true;
+      enable = false;
       contrastDark = "hard";
     };
+    # colorscheme = "glowbeam";
+    colorscheme = "kanagawa";
 
     options = {
       mouse = "a";
@@ -156,6 +157,7 @@
       smartindent = true;
       expandtab = true;
       number = true;
+      relativenumber = false;
       wrap = true;
       linebreak = true;
       hlsearch = false;
@@ -199,6 +201,16 @@
         org_agenda_files = { '~/org/**/*' },
         org_default_notes_file = '~/org/refile.org',
       })
+
+      -- Make LSP shut up
+      local notify = vim.notify
+      vim.notify = function(msg, ...)
+        if msg:match("warning: multiple different client offset_encodings") then
+          return
+        end
+
+        notify(msg, ...)
+      end
     '';
 
     extraConfigLuaPre = ''
@@ -211,6 +223,16 @@
       nvim-ts-autotag
       orgmode
       luasnip
+      (pkgs.vimUtils.buildVimPlugin rec {
+        pname = "glowbeam-nvim";
+        version = "master";
+        src = pkgs.fetchFromGitHub {
+          owner = "cooperuser";
+          repo = "glowbeam.nvim";
+          rev = "12144d6062455425028390095d2932d566cbc851";
+          hash = "sha256-EiwQYNLE2pRVifVkDw8WN7CkNcm5OOFu7jG3q7TlCyI=";
+        };
+      })
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "terminal-nvim";
         version = "764b7c137512bcfba2e45cf3e25c08a9f4d3b733";

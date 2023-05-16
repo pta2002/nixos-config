@@ -69,9 +69,9 @@
     settings = {
       global = {
         origin = "top-right";
-        offset = "12x58";
+        offset = "12x10";
         transparency = 30;
-        background = "#282828";
+        background = "#1F1F28";
         corner_radius = 12;
 
         idle_threshold = "10m";
