@@ -193,4 +193,8 @@
   };
 
   nixpkgs.config.allowUnfree = true;
+
+  home.file.".ideavimrc".text = ''
+    set commentary
+  '';
 }
