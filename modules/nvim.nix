@@ -59,8 +59,10 @@
         cmp.after = ''
           function(entry, vim_item, kind)
             local strings = vim.split(kind.kind, "%s", { trimempty = true })
-            kind.kind = " " .. strings[1] .. " "
-            kind.menu = "   " .. strings[2]
+            if #strings == 2 then
+              kind.kind = " " .. strings[1] .. " "
+              kind.menu = "   " .. strings[2]
+            end
 
             return kind
           end
