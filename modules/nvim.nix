@@ -3,17 +3,23 @@
   programs.nixvim = {
     enable = true;
     plugins = {
-      treesitter.enable = true;
-      treesitter.nixGrammars = true;
-      treesitter.ensureInstalled = "all";
-      treesitter.moduleConfig.autotag = {
+      treesitter = {
         enable = true;
-        filetypes = [ "html" "xml" "astro" "javascriptreact" "typescriptreact" "svelte" "vue" ];
+        nixGrammars = true;
+        ensureInstalled = "all";
+        moduleConfig.autotag = {
+          enable = true;
+          filetypes = [ "html" "xml" "astro" "javascriptreact" "typescriptreact" "svelte" "vue" ];
+        };
+        nixvimInjections = true;
+
+        moduleConfig.highlight = {
+          additional_vim_regex_highlighting = [ "org" ];
+          enable = true;
+          disable = [ "pug" ];
+        };
       };
-      treesitter.moduleConfig.highlight = {
-        additional_vim_regex_highlighting = [ "org" ];
-        enable = true;
-      };
+
       comment-nvim.enable = true;
 
       lualine = {
@@ -25,8 +31,8 @@
         enable = true;
         modules = {
           "core.defaults" = { };
-          "core.norg.dirman".config.workspaces.uni = "~/notes/uni";
-          "core.norg.completion".config.engine = "nvim-cmp";
+          "core.dirman".config.workspaces.uni = "~/notes/uni";
+          "core.completion".config.engine = "nvim-cmp";
           "core.norg.concealer" = { };
           "core.norg.journal" = { };
         };
@@ -198,10 +204,15 @@
     extraConfigLua = ''
       require("scope").setup()
       require("colorizer").setup()
+      require('git-conflict').setup()
 
       require('orgmode').setup({
         org_agenda_files = { '~/org/**/*' },
         org_default_notes_file = '~/org/refile.org',
+      })
+
+      require('toggleterm').setup({
+        open_mapping = "<leader>ot",
       })
 
       -- Make LSP shut up
@@ -226,6 +237,16 @@
       orgmode
       luasnip
       vim-pug
+      (pkgs.vimUtils.buildVimPlugin {
+        pname = "git-conflict.nvim";
+        version = "master";
+        src = pkgs.fetchFromGitHub {
+          owner = "akinsho";
+          repo = "git-conflict.nvim";
+          rev = "3c89812a83ac749b8851a473863958325a1cd57c";
+          hash = "sha256-yQvV8tDpjmMfmnWZrsXHgOEQsTFadHC46N6VdPXoX6o=";
+        };
+      })
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "glowbeam-nvim";
         version = "master";
@@ -327,6 +348,7 @@
       vim-terraform
       nvim-colorizer-lua
       gleam-vim
+      toggleterm-nvim
     ];
 
     extraPackages = [ pkgs.xclip ];

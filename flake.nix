@@ -46,10 +46,12 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     emacs.url = "github:nix-community/emacs-overlay";
-    # emacs.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixGL.url = "github:guibou/nixGL";
+    nixGL.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, hyprland, nix-index-database, emacs, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, hyprland, nix-index-database, emacs, nixGL, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -57,6 +59,7 @@
           (import ./overlays/lua pkgs)
           (import ./overlays/my-scripts pkgs)
           emacs.overlays.default
+          nixGL.overlay
         ];
       });
 

@@ -116,6 +116,11 @@
     inputs.devenv.packages.${pkgs.system}.devenv
 
     ryujinx
+
+    nixgl.auto.nixVulkanNvidia
+    nixgl.nixVulkanIntel
+    nixgl.auto.nixGLDefault
+    nixgl.auto.nixGLNvidiaBumblebee
   ];
 
   # This is just for parinfer-rust-mode
@@ -192,6 +197,10 @@
   nixpkgs.config.allowUnfree = true;
 
   home.file.".ideavimrc".text = ''
-    set commentary
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-commentary'
+    Plug 'vim-matchit'
   '';
+
+  nixpkgs.config.permittedInsecurePackages = [ "nodejs-16.20.0" ];
 }
