@@ -70,12 +70,8 @@
     spotify
     texmacs
     lyx
-    minecraft
     # visual-paradigm
     calibre
-    signal-desktop
-    tdesktop
-    zotero
     # libreoffice
     # obsidian
     zoom-us
@@ -115,6 +111,7 @@
     sqlite
     cachix
     nix-prefetch-git
+    nurl
 
     inputs.devenv.packages.${pkgs.system}.devenv
 
