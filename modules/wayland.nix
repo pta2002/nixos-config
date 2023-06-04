@@ -34,4 +34,7 @@
     enable = true;
     wayland = true;
   };
+
+  # This is because swaylock only works this way
+  security.pam.services.swaylock = { };
 }

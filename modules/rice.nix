@@ -7,7 +7,6 @@
   xsession.enable = true;
 
   home.packages = with pkgs; [
-    sxhkd
     feh
     playerctl
     maim
@@ -19,8 +18,8 @@
     inputs.eww-scripts.packages."${pkgs.system}".upower-follow
     inputs.eww-scripts.packages."${pkgs.system}".pa-follow
     inputs.eww-scripts.packages."${pkgs.system}".hypr-follow
-    i3lock-fancy
     eww-wayland
+    swaylock-effects
 
     jetbrains-mono
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
@@ -45,9 +44,6 @@
     })
 
     hyprpaper
-    (waybar.overrideAttrs (o: {
-      mesonFlags = o.mesonFlags ++ [ "-Dexperimental=true" ];
-    }))
   ];
 
   programs.kitty = {
@@ -138,7 +134,7 @@
   };
 
   xsession.windowManager.bspwm = {
-    enable = true;
+    enable = false;
 
     extraConfigEarly = ''
       pgrep -x sxhkd > /dev/null || sxhkd &
@@ -177,10 +173,21 @@
     ];
   };
 
-  services.screen-locker = {
-    enable = true;
-    lockCmd = "${pkgs.i3lock-fancy}/bin/i3lock-fancy";
-  };
+  services.swayidle =
+    let
+      cmd = "${pkgs.swaylock-effects}/bin/swaylock --screenshots --clock --effect-blur 10x7 --fade-in 0.2 --grace 1";
+    in
+    {
+      enable = true;
+      events = [{
+        event = "before-sleep";
+        command = cmd;
+      }];
+      timeouts = [{
+        timeout = 300;
+        command = cmd;
+      }];
+    };
 
   home.file =
     let

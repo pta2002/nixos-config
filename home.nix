@@ -23,7 +23,7 @@
     gnumake
     jdk17
     maven
-    texlive.combined.scheme-full
+    # texlive.combined.scheme-full
     nodejs
     python3
     zig
@@ -94,12 +94,12 @@
     # freecad
     google-chrome
     notion-app-enhanced
-    blender
+    # blender
 
     # IDEs
     jetbrains.idea-ultimate
     jetbrains.clion
-    emacsUnstable
+    # emacsUnstable
     # (emacsWithPackagesFromUsePackage {
     #   config = /home/pta2002/.emacs.d/init.el;
     #   package = emacsUnstable;
@@ -115,12 +115,10 @@
 
     inputs.devenv.packages.${pkgs.system}.devenv
 
-    ryujinx
-
-    nixgl.auto.nixVulkanNvidia
-    nixgl.nixVulkanIntel
-    nixgl.auto.nixGLDefault
-    nixgl.auto.nixGLNvidiaBumblebee
+    # nixgl.auto.nixVulkanNvidia
+    # nixgl.nixVulkanIntel
+    # nixgl.auto.nixGLDefault
+    # nixgl.auto.nixGLNvidiaBumblebee
   ];
 
   # This is just for parinfer-rust-mode
@@ -195,6 +193,7 @@
   };
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.cudaSupport = true;
 
   home.file.".ideavimrc".text = ''
     Plug 'tpope/vim-surround'

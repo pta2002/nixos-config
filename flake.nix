@@ -2,6 +2,9 @@
   description = "My NixOS system!";
 
   inputs = {
+    # nixpkgs.url = "github:numtide/nixpkgs-unfree";
+    # nixpkgs.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
 
@@ -51,6 +54,25 @@
     nixGL.inputs.nixpkgs.follows = "nixpkgs";
   };
 
+  nixConfig = {
+    substituters = [
+      "https://cache.nixos.org/"
+      "https://cuda-maintainers.cachix.org"
+      "https://hyprland.cachix.org"
+      "https://nix-community.cachix.org"
+      "https://nixpkgs-unfree.cachix.org"
+      "https://numtide.cachix.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "nixpkgs-unfree.cachix.org-1:hqvoInulhbV4nJ9yJOEr+4wxhDV4xq2d1DK7S6Nj6rs="
+      "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+    ];
+  };
+
   outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, hyprland, nix-index-database, emacs, nixGL, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
@@ -60,6 +82,12 @@
           (import ./overlays/my-scripts pkgs)
           emacs.overlays.default
           nixGL.overlay
+
+          (final: prev: {
+            opencv4 = prev.opencv4.override {
+              enableCuda = false;
+            };
+          })
         ];
       });
 

@@ -212,7 +212,7 @@
       })
 
       require('toggleterm').setup({
-        open_mapping = "<leader>ot",
+        open_mapping = "<C-t>",
       })
 
       -- Make LSP shut up

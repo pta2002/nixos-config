@@ -1,5 +1,5 @@
 # Config file for desktop systems
-{ pkgs, ... }: {
+{ pkgs, pkgs-nocuda, ... }: {
   imports = [
     ./ssh.nix
     ./wayland.nix
