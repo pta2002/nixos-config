@@ -2,20 +2,20 @@
 {
   services.sonarr = {
     enable = true;
-    user = "rtorrent";
-    group = "rtorrent";
+    user = "transmission";
+    group = "transmission";
   };
 
   services.radarr = {
     enable = true;
-    user = "rtorrent";
-    group = "rtorrent";
+    user = "transmission";
+    group = "transmission";
   };
 
   services.jackett = {
     enable = true;
-    user = "rtorrent";
-    group = "rtorrent";
+    user = "transmission";
+    group = "transmission";
   };
 
   services.argoWeb = {

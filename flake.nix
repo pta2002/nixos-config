@@ -6,6 +6,7 @@
     # nixpkgs.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:nixos/nixpkgs/285aa1f48e62932fed2089ddb04768172ae4a625";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
@@ -52,6 +53,9 @@
 
     nixGL.url = "github:guibou/nixGL";
     nixGL.inputs.nixpkgs.follows = "nixpkgs";
+
+    android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
+    android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {
@@ -82,6 +86,7 @@
           (import ./overlays/my-scripts pkgs)
           emacs.overlays.default
           nixGL.overlay
+          inputs.android-nixpkgs.overlays.default
 
           (final: prev: {
             opencv4 = prev.opencv4.override {
@@ -151,10 +156,14 @@
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
                 { home.stateVersion = "23.05"; }
                 nixvim.homeManagerModules.nixvim
-                (import ./modules/nvim.nix inputs)
+                ./modules/nvim.nix
                 ./modules/git.nix
                 ./modules/shell.nix
               ];
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                hostname = "wsl2";
+              };
             })
           ];
           specialArgs = { inherit inputs nixvim nixos-wsl; };
@@ -170,10 +179,15 @@
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
                 { home.stateVersion = "22.11"; }
                 nixvim.homeManagerModules.nixvim
-                (import ./modules/nvim.nix inputs)
+                ./modules/nvim.nix
                 ./modules/git.nix
                 ./modules/shell.nix
               ];
+
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                hostname = "cloudy";
+              };
             })
           ];
           specialArgs = { inherit inputs nixvim; };
@@ -191,10 +205,15 @@
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
                 { home.stateVersion = "23.05"; }
                 nixvim.homeManagerModules.nixvim
-                (import ./modules/nvim.nix inputs)
+                ./modules/nvim.nix
                 ./modules/git.nix
                 ./modules/shell.nix
               ];
+
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                hostname = "pie";
+              };
             })
           ];
         };

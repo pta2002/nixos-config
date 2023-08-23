@@ -113,8 +113,7 @@
 
       trouble.enable = true;
 
-      copilot.enable = true;
-      cmp-copilot.enable = true;
+      copilot-cmp.enable = true;
       cmp_luasnip.enable = true;
 
       nvim-cmp = {

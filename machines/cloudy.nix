@@ -5,7 +5,7 @@
     ../modules/yarr.nix
     ../modules/nextcloud.nix
     ../modules/files.nix
-    ../modules/transmission.nix
+    # ../modules/transmission.nix
     ../modules/mastodon.nix
     ../modules/fava.nix
     ../modules/vaultwarden.nix
@@ -45,7 +45,7 @@
   users.users.pta2002 = {
     isNormalUser = true;
     shell = pkgs.fish;
-    openssh.authorizedKeys.keys = import ./ssh-keys.nix;
+    openssh.authorizedKeys.keys = import ../ssh-keys.nix;
     extraGroups = [ "wheel" "argoweb" "docker" ];
     password = "";
   };

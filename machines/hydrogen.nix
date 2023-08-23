@@ -57,8 +57,17 @@
   networking.hostName = "hydrogen";
   networking.interfaces.enp3s0.useDHCP = true;
 
-  # musnix.kernel.optimize = true;
-  # musnix.kernel.realtime = true;
+  security.rtkit.enable = true;
+  environment.etc = {
+    "pipewire/pipewire.conf.d/92-low-latency.conf".text = ''
+      context.properties = {
+        default.clock.rate = 48000;
+        default.clock.quantum = 32;
+        default.clock.min-quantum = 32;
+        default.clock.max-quantum = 32;
+      }
+    '';
+  };
 
   # Fixing the damn keyboard...
   # services.xserver.displayManager.sessionCommands = ''

@@ -1,5 +1,5 @@
 # Config file for common home manager
-{ pkgs, lib, inputs, ... }:
+{ pkgs, lib, inputs, config, ... }:
 {
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
@@ -11,6 +11,8 @@
     ./modules/rice.nix
 
     inputs.nix-index-database.hmModules.nix-index
+
+    inputs.android-nixpkgs.hmModules.android
   ];
 
   home.stateVersion = "21.11";
@@ -112,8 +114,10 @@
     cachix
     nix-prefetch-git
     nurl
+    docker-compose
 
     inputs.devenv.packages.${pkgs.system}.devenv
+    android-studio
 
     # nixgl.auto.nixVulkanNvidia
     # nixgl.nixVulkanIntel
@@ -180,6 +184,18 @@
   };
 
   services.mpris-proxy.enable = true;
+
+  android-sdk.enable = false;
+  android-sdk.packages = sdkPkgs: with sdkPkgs; [
+    build-tools-33-0-0
+    cmdline-tools-latest
+    platform-tools
+    platforms-android-33
+    sources-android-33
+    emulator
+    tools
+  ];
+  android-sdk.path = "${config.home.homeDirectory}/.local/share/android";
 
   xdg.mimeApps = {
     enable = true;
