@@ -183,9 +183,11 @@
         event = "before-sleep";
         command = cmd;
       }];
+
+      # This should cause the system to go to sleep, which will mean that before-sleep runs!
       timeouts = [{
         timeout = 300;
-        command = cmd;
+        command = "systemctl suspend";
       }];
     };
 

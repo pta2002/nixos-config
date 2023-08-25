@@ -97,6 +97,7 @@
     google-chrome
     notion-app-enhanced
     # blender
+    zotero
 
     # IDEs
     jetbrains.idea-ultimate

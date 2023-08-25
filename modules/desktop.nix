@@ -26,6 +26,8 @@
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
 
+  services.xserver.desktopManager.gnome.enable = true;
+
   hardware.opentabletdriver.enable = true;
 
   # Video
@@ -41,6 +43,7 @@
   # Audio
   sound.enable = true;
   security.rtkit.enable = true;
+  hardware.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa.enable = true;

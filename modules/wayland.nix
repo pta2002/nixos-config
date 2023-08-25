@@ -1,9 +1,9 @@
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, lib, config, ... }: {
   services.dbus.enable = true;
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    # extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = lib.mkIf (config.services.xserver.desktopManager.gnome.enable == false) [ pkgs.xdg-desktop-portal-gtk ];
   };
 
   programs.xwayland.enable = true;
