@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 with lib.hm.gvariant;
 {
   dconf = {
@@ -17,6 +17,19 @@ with lib.hm.gvariant;
       "org/gnome/mutter" = {
         dynamic-workspaces = true;
       };
+
+      "org/gnome/shell".disable-user-extensions = false;
+      "org/gnome/shell".enabled-extensions = [
+        "bluetooth-quick-connect@bjarosze.gmail.com"
+        "caffeine@patapon.info"
+        "gTile@vibou"
+      ];
     };
   };
+
+  home.packages = with pkgs.gnomeExtensions; [
+    caffeine
+    bluetooth-quick-connect
+    gtile
+  ];
 }
