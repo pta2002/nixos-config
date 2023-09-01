@@ -30,9 +30,9 @@ in
 
     serviceConfig = {
       Restart = "on-failure";
-      User = config.services.rtorrent.user;
-      Group = config.services.rtorrent.group;
-      ExecStart = "${filebrowser}/bin/filebrowser -p 8334 -d /var/lib/rtorrent/filebrowser.db";
+      User = "transmission";
+      Group = "transmission";
+      ExecStart = "${filebrowser}/bin/filebrowser -p 8334 -d /var/lib/transmission/filebrowser.db";
       WorkingDirectory = "/mnt/data";
     };
   };

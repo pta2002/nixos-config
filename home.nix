@@ -9,6 +9,7 @@
     ./modules/tiny.nix
     ./modules/nvim.nix
     ./modules/rice.nix
+    ./modules/gnome.nix
 
     inputs.nix-index-database.hmModules.nix-index
 
