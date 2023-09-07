@@ -31,7 +31,7 @@
     python3
     zig
     zls
-    godot
+    godot3
     flutter
     go
     cmake
@@ -42,7 +42,6 @@
     pciutils
     ripgrep
     fd
-    exa
     unzip
     zip
     libqalculate

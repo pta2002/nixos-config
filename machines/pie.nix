@@ -10,6 +10,7 @@
     ../modules/sonarr.nix
     ../modules/argoweb.nix
     ../modules/quassel.nix
+    ../modules/jellyfin.nix
   ];
 
   services.argoWeb.enable = true;

@@ -49,8 +49,6 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    emacs.url = "github:nix-community/emacs-overlay";
-
     nixGL.url = "github:guibou/nixGL";
     nixGL.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -77,14 +75,13 @@
     ];
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, hyprland, nix-index-database, emacs, nixGL, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, hyprland, nix-index-database, nixGL, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
           (import ./overlays/visual-paradigm.nix pkgs)
           (import ./overlays/lua pkgs)
           (import ./overlays/my-scripts pkgs)
-          emacs.overlays.default
           nixGL.overlay
           inputs.android-nixpkgs.overlays.default
 

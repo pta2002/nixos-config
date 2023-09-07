@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [ any-nix-shell fzf exa bat ];
+  home.packages = with pkgs; [ any-nix-shell fzf eza bat ];
 
   # systemd.user.sessionVariables.EDITOR = "nvim";
 
@@ -25,9 +25,9 @@
       gc = "git commit";
       gpl = "git pull";
 
-      ls = "exa";
-      l = "exa -l";
-      tree = "exa -T";
+      ls = "eza";
+      l = "eza -l";
+      tree = "eza -T";
 
       cat = "bat";
     };
