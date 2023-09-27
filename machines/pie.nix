@@ -40,7 +40,7 @@
   boot.loader.grub.enable = false;
   # Enables the generation of /boot/extlinux/extlinux.conf
   boot.loader.generic-extlinux-compatible.enable = true;
-  boot.tmpOnTmpfs = true;
+  boot.tmp.useTmpfs = true;
   boot.kernelParams = [ "8250.nr_uarts=1" "cma=512M" ];
   nix = {
     settings.auto-optimise-store = true;

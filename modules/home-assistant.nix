@@ -1,11 +1,5 @@
 { pkgs, lib, my-switches, ... }:
 let
-  yeelight = {
-    devices."192.168.1.86" = {
-      name = "Luz teto";
-    };
-  };
-
   config = pkgs.writeTextFile {
     name = "configuration.yaml";
     text = ''
@@ -28,8 +22,6 @@ let
       automation: !include automations.yaml
       script: !include scripts.yaml
       scene: !include scenes.yaml
-
-      yeelight: ${builtins.toJSON yeelight}
     '';
   };
   sensorPython = pkgs.python3.withPackages (ps: with ps; [
@@ -141,21 +133,25 @@ in
     };
   };
 
-  services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-    virtualHosts."pie" = {
-      forceSSL = false;
-      enableACME = false;
-      extraConfig = ''
-        proxy_buffering off;
-      '';
-      locations."/" = {
-        proxyPass = "http://localhost:8123";
-        proxyWebsockets = true;
-      };
-    };
+  services.argoWeb = {
+    ingress."home.pta2002.com" = "http://localhost:8123";
   };
+
+  # services.nginx = {
+  #   enable = true;
+  #   recommendedProxySettings = true;
+  #   virtualHosts."pie" = {
+  #     forceSSL = false;
+  #     enableACME = false;
+  #     extraConfig = ''
+  #       proxy_buffering off;
+  #     '';
+  #     locations."/" = {
+  #       proxyPass = "http://localhost:8123";
+  #       proxyWebsockets = true;
+  #     };
+  #   };
+  # };
 
   systemd.services.sensors = {
     description = "sensors";
