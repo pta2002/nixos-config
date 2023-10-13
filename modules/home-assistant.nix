@@ -12,6 +12,7 @@ let
           - ::1
           - 127.0.0.1
           - 0.0.0.0
+          - 172.30.33.0/24
 
       frontend:
         themes: !include_dir_merge_named themes
@@ -22,6 +23,13 @@ let
       automation: !include automations.yaml
       script: !include scripts.yaml
       scene: !include scenes.yaml
+      google_assistant:
+        project_id: hass-92213
+        service_account: !include SERVICE_ACCOUNT.JSON
+        report_state: true
+        exposed_domains:
+          - switch
+          - light
     '';
   };
   sensorPython = pkgs.python3.withPackages (ps: with ps; [
