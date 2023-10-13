@@ -148,6 +148,8 @@
       };
 
       conjure.enable = true;
+
+      typst-vim.enable = true;
     };
 
     colorschemes.gruvbox = {
@@ -187,18 +189,15 @@
       maplocalleader = " ";
     };
 
-    maps.normal = {
-      "<leader>t" = "<CMD>NvimTreeToggle<CR>";
-      "<leader>ft" = "<CMD>Telescope find_files<CR>";
-      "<leader>fg" = "<CMD>Telescope grep_string<CR>";
-      "<leader>ca" = "<CMD>Lspsaga code_action<CR>";
-      "j" = "gj";
-      "k" = "gk";
-    };
-
-    maps.insert = {
-      "<C-S>" = "<C-O>:w<CR>";
-    };
+    keymaps = [
+      { key = "<leader>t"; action = "<CMD>NvimTreeToggle<CR>"; mode = "n"; }
+      { key = "<leader>ft"; action = "<CMD>Telescope find_files<CR>"; mode = "n"; }
+      { key = "<leader>fg"; action = "<CMD>Telescope grep_string<CR>"; mode = "n"; }
+      { key = "<leader>ca"; action = "<CMD>Lspsaga code_action<CR>"; mode = "n"; }
+      { key = "j"; action = "gj"; mode = "n"; }
+      { key = "k"; action = "gk"; mode = "n"; }
+      { key = "<C-S>"; action = "<C-O>:w<CR>"; mode = "i"; }
+    ];
 
     extraConfigLua = ''
       require("scope").setup()

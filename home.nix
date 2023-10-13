@@ -74,22 +74,19 @@
     lyx
     # visual-paradigm
     calibre
-    # libreoffice
+    libreoffice
     # obsidian
     zoom-us
     krita
-    musescore
     virt-manager
     qbittorrent
     slack
-    gnome.pomodoro
     xournal
     element-desktop
-    microsoft-edge
+    plex-media-player
     # todoist-electron
 
     # freecad
-    mindustry
     reaper
     bottles
     lutris

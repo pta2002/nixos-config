@@ -38,6 +38,8 @@ in
     nvidiaBusId = "PCI:02:00:0";
   };
 
+  hardware.nvidia.nvidiaSettings = false;
+
   environment.systemPackages = [ nvidia-offload ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
@@ -51,6 +53,8 @@ in
       uuid = [ "5e11a2ba-88bb-11ed-b331-fb6b3c55f93f" ];
     };
   };
+
+  boot.supportedFilesystems = [ "bcachefs" ];
 
   fileSystems."/" =
     {

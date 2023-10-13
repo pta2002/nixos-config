@@ -110,6 +110,7 @@ in
       image = "ghcr.io/home-assistant/home-assistant:stable";
       extraOptions = [
         "--network=host"
+        "--pull=newer"
       ];
     };
 

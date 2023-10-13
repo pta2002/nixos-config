@@ -9,8 +9,8 @@
     ../modules/plex.nix
     ../modules/sonarr.nix
     ../modules/argoweb.nix
-    ../modules/quassel.nix
-    ../modules/jellyfin.nix
+    # ../modules/quassel.nix
+    # ../modules/jellyfin.nix
   ];
 
   services.argoWeb.enable = true;
