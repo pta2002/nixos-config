@@ -75,7 +75,7 @@
     # visual-paradigm
     calibre
     libreoffice
-    # obsidian
+    obsidian
     zoom-us
     krita
     virt-manager
