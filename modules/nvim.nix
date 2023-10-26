@@ -90,8 +90,6 @@
           astro.enable = true;
         };
 
-        enabledServers = [ "gleam" ];
-
         onAttach = ''
           vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
         '';

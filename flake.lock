@@ -527,11 +527,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1677720528,
-        "narHash": "sha256-7vB9eqKOckIzaoGBmzWxr/oF0pG8rD+kZrT0XF4rtMo=",
+        "lastModified": 1698362073,
+        "narHash": "sha256-W81LbID+c4ymAzX75t8BOLqbP87yh/0m//cvEGob544=",
         "owner": "pta2002",
         "repo": "home-automation",
-        "rev": "db0df3935ca24fb4b3c1d88dfdda503f7f27569c",
+        "rev": "bfdfdd2bdd6c732d90a9a3e98b98d431c7a69f55",
         "type": "github"
       },
       "original": {
