@@ -37,6 +37,10 @@
     cmake
     ninja
     janet
+    gleam
+    elixir
+    erlang
+    rebar3
 
     # Utilities
     pciutils

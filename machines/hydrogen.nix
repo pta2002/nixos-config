@@ -14,13 +14,15 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "vfio-pci" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-intel" "i2c-dev" ];
   boot.extraModulePackages = [ ];
   boot.kernelParams = [
     "iommu=pt"
     "intel_iommu=on"
     "vfio-pci.ids=8086:0412,8086:0c0c"
   ];
+  hardware.i2c.enable = true;
+  services.udev.packages = [ pkgs.openrgb ];
 
   fileSystems."/" =
     {
