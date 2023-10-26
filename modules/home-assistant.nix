@@ -107,29 +107,63 @@ let
 in
 {
   # Do it this way otherwise it'll take forever to build
-  virtualisation.oci-containers = {
-    backend = "docker";
-    containers.homeassistant = {
-      volumes = [
-        "${config}:/config/configuration.yaml"
-        "/docker/home-assistant:/config"
-      ];
-      environment.TZ = "Europe/Lisbon";
-      image = "ghcr.io/home-assistant/home-assistant:stable";
-      extraOptions = [
-        "--network=host"
-        "--pull=newer"
-      ];
-    };
+  # virtualisation.oci-containers = {
+  #   backend = "docker";
+  #   containers.homeassistant = {
+  #     volumes = [
+  #       "${config}:/config/configuration.yaml"
+  #       "/docker/home-assistant:/config"
+  #     ];
+  #     environment.TZ = "Europe/Lisbon";
+  #     image = "ghcr.io/home-assistant/home-assistant:stable";
+  #     extraOptions = [
+  #       "--network=host"
+  #       "--pull=newer"
+  #     ];
+  #   };
+  # };
 
-    containers.mqtt = {
-      image = "eclipse-mosquitto:2.0";
-      volumes = [ "mosquitto:/mosquitto" ];
-      ports = [ "1883:1883" "9001:9001" ];
-      cmd = [ "mosquitto" "-c" "/mosquitto-no-auth.conf" ];
+  services.home-assistant = {
+    enable = true;
+    openFirewall = true;
+
+    extraComponents = [ "esphome" "met" ];
+
+    config = {
+      default_config = { };
+
+      homeassistant = {
+        name = "Home";
+        time_zone = "Europe/Lisbon";
+        temperature_unit = "C";
+        unit_system = "metric";
+      };
+
+      mqtt = {
+        # Home assistant decided that they want to make you jump through hoops to set up this kind of thing...:w
+        # Why? I have absolutely no idea. But I hope one of these days I can
+        # move to something that actually respects me...
+
+        # broker = "localhost";
+        # port = 1883;
+        # discovery = true;
+
+
+      };
+
+      http = {
+        use_x_forwarded_for = true;
+        trusted_proxies = [
+          "::1"
+          "127.0.0.1"
+          "0.0.0.0"
+          "172.30.33.0/24"
+        ];
+      };
     };
   };
 
+  # Web UI is at :8080
   services.zigbee2mqtt = {
     enable = true;
     settings = {
@@ -142,28 +176,17 @@ in
     };
   };
 
+  services.mosquitto = {
+    enable = true;
+    listeners = [ ];
+  };
+
   services.argoWeb = {
     ingress."home.pta2002.com" = "http://localhost:8123";
   };
 
-  # services.nginx = {
-  #   enable = true;
-  #   recommendedProxySettings = true;
-  #   virtualHosts."pie" = {
-  #     forceSSL = false;
-  #     enableACME = false;
-  #     extraConfig = ''
-  #       proxy_buffering off;
-  #     '';
-  #     locations."/" = {
-  #       proxyPass = "http://localhost:8123";
-  #       proxyWebsockets = true;
-  #     };
-  #   };
-  # };
-
-  systemd.services.sensors = {
-    description = "sensors";
+  systemd.services.switches = {
+    description = "switches";
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
@@ -177,35 +200,12 @@ in
     };
   };
 
-  systemd.services.switches = {
-    description = "switches";
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "${system-sensors}/bin/system-sensors ${sensorConfig}";
-      Type = "simple";
-      User = "sensors";
-      Group = "sensors";
-      Restart = "on-failure";
-      RestartSec = "5s";
-    };
-  };
-
-  users.users.sensors = {
-    home = "/var/lib/sensors";
-    createHome = true;
-    isSystemUser = true;
-    group = "sensors";
-  };
-
   users.users.switches = {
     isSystemUser = true;
     group = "switches";
   };
 
-  users.groups.sensors = { };
   users.groups.switches = { };
 
-  networking.firewall.allowedTCPPorts = [ 80 8123 8080 1883 ];
+  networking.firewall.allowedTCPPorts = [ 80 8123 8080 1883 9001 ];
 }

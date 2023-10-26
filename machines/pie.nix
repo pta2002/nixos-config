@@ -3,11 +3,11 @@
 {
   imports = [
     ../modules/home-assistant.nix
-    ../modules/samba.nix
+    # ../modules/samba.nix
     ../modules/flood.nix
-    ../modules/filespi.nix
+    # ../modules/filespi.nix
     ../modules/plex.nix
-    ../modules/sonarr.nix
+    # ../modules/sonarr.nix
     ../modules/argoweb.nix
     # ../modules/quassel.nix
     # ../modules/jellyfin.nix
@@ -19,22 +19,33 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
+  boot.supportedFilesystems = [ "bcachefs" ];
 
-  # fileSystems."/" = {
-  #   device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
-  #   fsType = "ext4";
-  # };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
+    fsType = "ext4";
+  };
 
-  fileSystems."/mnt/data" = {
-    options = [ "compress=zstd" "subvol=data" ];
-    device = "/dev/disk/by-uuid/7f988ede-8035-4b9e-aaff-4993d5c2452a";
-    fsType = "btrfs";
+  # For now, mounting multi-device bcachefs on fstab does not work :c
+  # Just use a systemd service :shrug:
+  systemd.services."data-volume" = {
+    description = "Mount BcacheFS storage";
+    requires = [ "-.mount" "dev-sda.device" "dev-sdb.device" ];
+    after = [ "-.mount" "dev-sda.device" "dev-sdb.device" ];
+
+    wantedBy = [ "local-fs.target" ];
+
+    serviceConfig.Type = "oneshot";
+    # serviceConfig.ExecStart = "${pkgs.bcachefs-tools}/bin/bcachefs mount -v UUID=ae0fadc6-5110-4a67-ac19-b89c117e36e3 /mnt/data";
+    serviceConfig.ExecStart = "${pkgs.bcachefs-tools}/bin/bcachefs mount -v /dev/sda:/dev/sdb /mnt/data";
   };
 
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = "aarch64-linux";
   powerManagement.cpuFreqGovernor = "ondemand";
+
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
@@ -88,8 +99,9 @@
   environment.systemPackages = with pkgs; [
     git
     cloudflared
+    htop
   ];
-  virtualisation.docker.enable = true;
+  # virtualisation.docker.enable = true;
 
   nix.settings.trusted-users = [ "root" "pta2002" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
