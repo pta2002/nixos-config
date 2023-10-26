@@ -95,6 +95,8 @@
         onAttach = ''
           vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
         '';
+
+        enabledServers = [ "gleam" ];
       };
 
       lsp-lines = {
@@ -351,7 +353,7 @@
       toggleterm-nvim
     ];
 
-    extraPackages = [ pkgs.xclip ];
+    extraPackages = [ pkgs.xclip pkgs.glslls ];
 
     highlight = {
       PmenuSel = { bg = "#504945"; fg = "NONE"; };

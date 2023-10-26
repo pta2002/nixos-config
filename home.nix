@@ -27,6 +27,7 @@
     jdk17
     maven
     # texlive.combined.scheme-full
+    typst
     nodejs
     python3
     zig
@@ -148,6 +149,7 @@
       ms-vscode.cpptools
       github.copilot
       ms-toolsai.jupyter
+      mgt19937.typst-preview
     ];
   };
 
