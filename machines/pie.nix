@@ -5,7 +5,7 @@
     ../modules/home-assistant.nix
     # ../modules/samba.nix
     ../modules/flood.nix
-    # ../modules/filespi.nix
+    ../modules/filespi.nix
     ../modules/plex.nix
     # ../modules/sonarr.nix
     ../modules/argoweb.nix
