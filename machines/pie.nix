@@ -9,6 +9,7 @@
     ../modules/plex.nix
     # ../modules/sonarr.nix
     ../modules/argoweb.nix
+    ../modules/grafana.nix
     # ../modules/quassel.nix
     # ../modules/jellyfin.nix
   ];

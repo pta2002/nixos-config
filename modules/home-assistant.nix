@@ -147,9 +147,9 @@ in
         # broker = "localhost";
         # port = 1883;
         # discovery = true;
-
-
       };
+
+      tailscale = { };
 
       http = {
         use_x_forwarded_for = true;
