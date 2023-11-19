@@ -66,7 +66,6 @@
     brightnessctl
     imagemagick
     yt-dlp
-    weechat
 
     # Random programs
     (discord.override {
@@ -76,29 +75,22 @@
 
     spotify
     texmacs
-    lyx
-    # visual-paradigm
     calibre
     libreoffice
-    obsidian
     zoom-us
     krita
     virt-manager
     qbittorrent
-    slack
     xournal
     element-desktop
     plex-media-player
     # todoist-electron
 
-    # freecad
     reaper
     bottles
     lutris
-    # freecad
     google-chrome
     notion-app-enhanced
-    # blender
     zotero
 
     # IDEs
@@ -218,4 +210,5 @@
     Plug 'vim-matchit'
   '';
 
+  nixpkgs.config.permittedInsecurePackages = [ "nodejs-16.20.0" "zotero-6.0.27" ];
 }
