@@ -2,14 +2,10 @@
   description = "My NixOS system!";
 
   inputs = {
-    # nixpkgs.url = "github:numtide/nixpkgs-unfree";
-    # nixpkgs.inputs.nixpkgs.follows = "nixpkgs-unstable";
-
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # nixpkgs.url = "github:nixos/nixpkgs/285aa1f48e62932fed2089ddb04768172ae4a625";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
     nix-on-droid.url = "github:t184256/nix-on-droid";
     nix-on-droid.inputs.nixpkgs.follows = "nixpkgs";
     nix-on-droid.inputs.home-manager.follows = "home";
@@ -34,23 +30,20 @@
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     musnix.url = "github:musnix/musnix";
+    musnix.inputs.nixpkgs.follows = "nixpkgs";
 
     agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.inputs.home-manager.follows = "home";
 
     my-switches.url = "github:pta2002/home-automation";
     my-switches.inputs.nixpkgs.follows = "nixpkgs";
 
     devenv.url = "github:cachix/devenv/latest";
-
-    hyprland.url = "github:hyprwm/Hyprland";
-    hypr-contrib.url = "github:hyprwm/contrib";
-    hypr-contrib.inputs.nixpkgs.follows = "nixpkgs";
+    # devenv.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
-    nixGL.url = "github:guibou/nixGL";
-    nixGL.inputs.nixpkgs.follows = "nixpkgs";
 
     android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
     android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
@@ -75,21 +68,14 @@
     ];
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, hyprland, nix-index-database, nixGL, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, nix-index-database, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
           (import ./overlays/visual-paradigm.nix pkgs)
           (import ./overlays/lua pkgs)
           (import ./overlays/my-scripts pkgs)
-          nixGL.overlay
           inputs.android-nixpkgs.overlays.default
-
-          (final: prev: {
-            opencv4 = prev.opencv4.override {
-              enableCuda = false;
-            };
-          })
         ];
       });
 
@@ -109,6 +95,7 @@
               hostname = name;
             };
             home-manager.sharedModules = [ overlays ];
+            home-manager.useGlobalPkgs = true;
             # home-manager.backupFileExtension = ".hm-bak";
           }
         ];
@@ -135,6 +122,7 @@
               ./modules/git.nix
               ./modules/shell.nix
             ];
+            home-manager.useGlobalPkgs = true;
           })
         ];
         #specialArgs = { inherit inputs nixvim nixos-wsl; };
@@ -161,6 +149,7 @@
                 inherit inputs;
                 hostname = "wsl2";
               };
+              home-manager.useGlobalPkgs = true;
             })
           ];
           specialArgs = { inherit inputs nixvim nixos-wsl; };
@@ -185,6 +174,7 @@
                 inherit inputs;
                 hostname = "cloudy";
               };
+              home-manager.useGlobalPkgs = true;
             })
           ];
           specialArgs = { inherit inputs nixvim; };
@@ -207,6 +197,7 @@
                 ./modules/shell.nix
               ];
 
+              home-manager.useGlobalPkgs = true;
               home-manager.extraSpecialArgs = {
                 inherit inputs;
                 hostname = "pie";

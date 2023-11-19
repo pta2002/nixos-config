@@ -52,7 +52,12 @@
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.opengl.enable = true;
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+    extraPackages = [ pkgs.mesa.drivers ];
+  };
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.powerManagement.enable = true;
 
@@ -78,8 +83,6 @@
   #     keycode 49 = less greater less greater backslash backslash backslash
   #   ''}"
   # '';
-
-  programs.hyprland.nvidiaPatches = true;
 
   environment.sessionVariables = {
     GDM_BACKEND = "nvidia-drm";

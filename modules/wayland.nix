@@ -17,15 +17,7 @@
     MOZ_ENABLE_WAYLAND = "1";
   };
 
-  programs.hyprland = {
-    enable = true;
-    xwayland = {
-      enable = true;
-    };
-  };
-
   environment.systemPackages = [
-    inputs.hypr-contrib.packages.${pkgs.system}.grimblast
     pkgs.wl-clipboard
   ];
 

@@ -1,9 +1,5 @@
 { pkgs, config, inputs, hostname, ... }:
 {
-  imports = [
-    inputs.hyprland.homeManagerModules.default
-  ];
-
   xsession.enable = true;
 
   home.packages = with pkgs; [
@@ -42,8 +38,6 @@
           install -m 644 -D ${ttf} $out/share/fonts/truetype/Phosphor.ttf
         '';
     })
-
-    hyprpaper
   ];
 
   programs.kitty = {

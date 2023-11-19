@@ -119,7 +119,7 @@
     nurl
     docker-compose
 
-    inputs.devenv.packages.${pkgs.system}.devenv
+    # inputs.devenv.packages.${pkgs.system}.devenv
     android-studio
 
     # nixgl.auto.nixVulkanNvidia
@@ -212,14 +212,10 @@
     };
   };
 
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.cudaSupport = true;
-
   home.file.".ideavimrc".text = ''
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-commentary'
     Plug 'vim-matchit'
   '';
 
-  nixpkgs.config.permittedInsecurePackages = [ "nodejs-16.20.0" "zotero-6.0.27" ];
 }
