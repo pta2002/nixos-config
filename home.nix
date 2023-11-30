@@ -210,5 +210,5 @@
     Plug 'vim-matchit'
   '';
 
-  nixpkgs.config.permittedInsecurePackages = [ "nodejs-16.20.0" "zotero-6.0.27" ];
+  # nixpkgs.config.permittedInsecurePackages = [ "nodejs-16.20.0" "zotero-6.0.27" ];
 }
