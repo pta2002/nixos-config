@@ -14,7 +14,7 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "vfio-pci" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" "i2c-dev" ];
+  boot.kernelModules = [ "kvm-intel" "i2c-dev" "snd-seq" "snd-rawmidi" ];
   boot.extraModulePackages = [ ];
   boot.kernelParams = [
     "iommu=pt"
