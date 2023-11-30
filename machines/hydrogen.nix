@@ -20,6 +20,7 @@
     "iommu=pt"
     "intel_iommu=on"
     "vfio-pci.ids=8086:0412,8086:0c0c"
+    "preempt=full"
   ];
   hardware.i2c.enable = true;
   services.udev.packages = [ pkgs.openrgb ];
@@ -64,17 +65,18 @@
   networking.hostName = "hydrogen";
   networking.interfaces.enp3s0.useDHCP = true;
 
+  musnix.enable = true;
   security.rtkit.enable = true;
-  environment.etc = {
-    "pipewire/pipewire.conf.d/92-low-latency.conf".text = ''
-      context.properties = {
-        default.clock.rate = 48000;
-        default.clock.quantum = 32;
-        default.clock.min-quantum = 32;
-        default.clock.max-quantum = 32;
-      }
-    '';
-  };
+  # environment.etc = {
+  #   "pipewire/pipewire.conf.d/92-low-latency.conf".text = ''
+  #     context.properties = {
+  #       default.clock.rate = 48000;
+  #       default.clock.quantum = 32;
+  #       default.clock.min-quantum = 32;
+  #       default.clock.max-quantum = 32;
+  #     }
+  #   '';
+  # };
 
   # Fixing the damn keyboard...
   # services.xserver.displayManager.sessionCommands = ''
