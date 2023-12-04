@@ -97,7 +97,7 @@
   };
 
   services.picom = {
-    enable = true;
+    enable = false;
 
     backend = "glx";
 
@@ -172,7 +172,7 @@
       cmd = "${pkgs.swaylock-effects}/bin/swaylock --screenshots --clock --effect-blur 10x7 --fade-in 0.2 --grace 1";
     in
     {
-      enable = true;
+      enable = false;
       events = [{
         event = "before-sleep";
         command = cmd;
