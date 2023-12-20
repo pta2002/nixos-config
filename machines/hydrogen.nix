@@ -125,11 +125,6 @@
 
   environment.sessionVariables = {
     GDM_BACKEND = "nvidia-drm";
-    __GL_GSYNC_ALLOWED = "0";
-    __GL_VRR_ALLOWED = "0";
-    WLR_DRM_NO_ATOMIC = "1";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    WLR_NO_HARDWARE_CURSORS = "1";
-    NIXOS_OZONE_WL = "0";
   };
 }
