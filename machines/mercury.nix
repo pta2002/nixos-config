@@ -13,6 +13,13 @@ in
     ../modules/desktop.nix
   ];
 
+  boot.loader.refind.extraConfig = ''
+    menuentry "Windows 11" {
+      icon \\EFI\\refind\\themes\\rEFInd-minimal-dark\\icons_dark\\os_win11.png
+      loader \\EFI\\Microsoft\\Boot\\bootmgfw.efi
+    }
+  '';
+
   networking.hostName = "mercury";
   networking.hostId = "a3aa8a8f";
   networking.interfaces.wlo1.useDHCP = true;

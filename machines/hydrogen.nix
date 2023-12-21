@@ -3,7 +3,6 @@
   imports = [
     ../modules/desktop.nix
     ../modules/musnix.nix
-    ../modules/refind.nix
   ];
 
   networking.hostId = "fa73900d";
@@ -13,41 +12,6 @@
     efiSysMountPoint = "/boot/efi";
   };
 
-  boot.loader.refind =
-    let
-      theme = pkgs.stdenv.mkDerivation {
-        name = "rEFInd-minimal-themes";
-        version = "master";
-
-        src = pkgs.fetchFromGitHub {
-          owner = "quantrancse";
-          repo = "rEFInd-minimal-themes";
-          rev = "ba0742e235b33d5f13e6c7e2b6a46fe7ba1634aa";
-          hash = "sha256-A2rsWyCldo1TjySVKs4PO5PyCM/adn+LPp3lXyNpZoA=";
-        };
-
-        patches = [ ../modules/refind-theme.patch ];
-
-        dontConfigure = true;
-        dontBuild = true;
-        dontFixup = true;
-
-        installPhase = ''
-          mkdir -p $out
-          cp -r * $out
-        '';
-      };
-    in
-    {
-      enable = true;
-      extraConfig = ''
-        resolution 1920 1080
-        include themes/rEFInd-minimal-dark/theme.conf
-        scanfor external,manual
-      '';
-      extraThemes = [ theme ];
-    };
-  boot.loader.systemd-boot.enable = lib.mkForce false;
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "vfio-pci" ];
   boot.initrd.kernelModules = [ ];

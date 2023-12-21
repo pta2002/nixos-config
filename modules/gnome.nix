@@ -22,7 +22,6 @@ with lib.hm.gvariant;
       "org/gnome/shell".enabled-extensions = [
         "bluetooth-quick-connect@bjarosze.gmail.com"
         "caffeine@patapon.info"
-        "gTile@vibou"
       ];
     };
   };
@@ -30,6 +29,5 @@ with lib.hm.gvariant;
   home.packages = with pkgs.gnomeExtensions; [
     caffeine
     bluetooth-quick-connect
-    gtile
   ];
 }

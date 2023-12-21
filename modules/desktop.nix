@@ -3,6 +3,7 @@
   imports = [
     ./ssh.nix
     ./wayland.nix
+    ./refind.nix
   ];
 
   # CPU
@@ -10,10 +11,44 @@
   hardware.enableRedistributableFirmware = true;
 
   # Boot
-  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "ntfs" "zfs" ];
+  boot.supportedFilesystems = [ "ntfs" ];
   boot.plymouth.enable = true;
+
+  boot.loader.refind =
+    let
+      theme = pkgs.stdenv.mkDerivation {
+        name = "rEFInd-minimal-themes";
+        version = "master";
+
+        src = pkgs.fetchFromGitHub {
+          owner = "quantrancse";
+          repo = "rEFInd-minimal-themes";
+          rev = "ba0742e235b33d5f13e6c7e2b6a46fe7ba1634aa";
+          hash = "sha256-A2rsWyCldo1TjySVKs4PO5PyCM/adn+LPp3lXyNpZoA=";
+        };
+
+        patches = [ ../modules/refind-theme.patch ];
+
+        dontConfigure = true;
+        dontBuild = true;
+        dontFixup = true;
+
+        installPhase = ''
+          mkdir -p $out
+          cp -r * $out
+        '';
+      };
+    in
+    {
+      enable = true;
+      extraConfig = ''
+        resolution 1920 1080
+        include themes/rEFInd-minimal-dark/theme.conf
+        scanfor external,manual
+      '';
+      extraThemes = [ theme ];
+    };
 
   # Networking
   networking.firewall.enable = false;
