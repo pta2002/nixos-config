@@ -70,4 +70,13 @@
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
   };
+
+  i18n.inputMethod = {
+    enabled = "ibus";
+    ibus.engines = with pkgs.ibus-engines; [
+      uniemoji
+      table
+      anthy
+    ];
+  };
 }

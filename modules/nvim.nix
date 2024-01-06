@@ -80,6 +80,8 @@
         servers = {
           rnix-lsp.enable = true;
           rust-analyzer.enable = true;
+          rust-analyzer.installRustc = true;
+          rust-analyzer.installCargo = true;
           clangd.enable = true;
           zls.enable = true;
           pyright.enable = true;
@@ -104,7 +106,7 @@
 
       lspsaga.enable = true;
 
-      null-ls = {
+      none-ls = {
         enable = true;
         sources.formatting.black.enable = true;
         # sources.formatting.beautysh.enable = true;

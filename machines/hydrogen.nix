@@ -97,7 +97,7 @@
     extraPackages = [ pkgs.mesa.drivers ];
   };
   hardware.nvidia.modesetting.enable = true;
-  hardware.nvidia.powerManagement.enable = true;
+  # hardware.nvidia.powerManagement.enable = true;
 
   networking.hostName = "hydrogen";
   networking.interfaces.enp3s0.useDHCP = true;
