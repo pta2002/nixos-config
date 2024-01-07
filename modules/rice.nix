@@ -5,43 +5,43 @@
   home.packages = with pkgs; [
     feh
     playerctl
-    maim
+    # maim
     xclip
-    pamixer
-    xdotool
+    # pamixer
+    # xdotool
     brightnessctl
-    inputs.eww-scripts.packages."${pkgs.system}".follows
-    inputs.eww-scripts.packages."${pkgs.system}".upower-follow
-    inputs.eww-scripts.packages."${pkgs.system}".pa-follow
-    inputs.eww-scripts.packages."${pkgs.system}".hypr-follow
-    eww-wayland
-    swaylock-effects
+    # inputs.eww-scripts.packages."${pkgs.system}".follows
+    # inputs.eww-scripts.packages."${pkgs.system}".upower-follow
+    # inputs.eww-scripts.packages."${pkgs.system}".pa-follow
+    # inputs.eww-scripts.packages."${pkgs.system}".hypr-follow
+    # eww-wayland
+    # swaylock-effects
 
     jetbrains-mono
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
 
-    (pkgs.rofi.override {
-      plugins = with pkgs; [ rofi-emoji rofi-calc ];
-    })
+    # (pkgs.rofi.override {
+    #   plugins = with pkgs; [ rofi-emoji rofi-calc ];
+    # })
 
-    (stdenv.mkDerivation rec {
-      pname = "phosphor-icons";
-      version = "1.4.0";
-
-      ttf = ''${inputs.phosphor-icons}/src/fonts/Phosphor.ttf'';
-
-      dontUnpack = true;
-
-      buildPhase = "";
-      installPhase =
-        ''
-          install -m 644 -D ${ttf} $out/share/fonts/truetype/Phosphor.ttf
-        '';
-    })
+    # (stdenv.mkDerivation rec {
+    #   pname = "phosphor-icons";
+    #   version = "1.4.0";
+    #
+    #   ttf = ''${inputs.phosphor-icons}/src/fonts/Phosphor.ttf'';
+    #
+    #   dontUnpack = true;
+    #
+    #   buildPhase = "";
+    #   installPhase =
+    #     ''
+    #       install -m 644 -D ${ttf} $out/share/fonts/truetype/Phosphor.ttf
+    #     '';
+    # })
   ];
 
   programs.kitty = {
-    enable = true;
+    enable = false;
     font = {
       name = "JetBrainsMono Nerd Font";
       size = 12;
@@ -55,7 +55,7 @@
   };
 
   services.dunst = {
-    enable = true;
+    enable = false;
     settings = {
       global = {
         origin = "top-right";
@@ -194,11 +194,11 @@
       ".icons/default".source = "${pkgs.gnome.adwaita-icon-theme}/share/icons/Adwaita";
 
       ".config/wallpaper.jpg".source = ../wallpaper.jpg;
-      ".config/sxhkd".source = ln "/home/pta2002/nixos/configs/sxhkd";
-      ".config/eww".source = ln "/home/pta2002/nixos/configs/eww";
-      ".config/rofi/config.rasi".source = ../configs/rofi.rasi;
-      ".config/hypr/hyprland.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprland.conf";
-      ".config/hypr/hyprpaper.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprpaper.conf";
-      ".config/hypr/machine.conf".source = ../configs/hypr/${hostname}.conf;
+      # ".config/sxhkd".source = ln "/home/pta2002/nixos/configs/sxhkd";
+      # ".config/eww".source = ln "/home/pta2002/nixos/configs/eww";
+      # ".config/rofi/config.rasi".source = ../configs/rofi.rasi;
+      # ".config/hypr/hyprland.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprland.conf";
+      # ".config/hypr/hyprpaper.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprpaper.conf";
+      # ".config/hypr/machine.conf".source = ../configs/hypr/${hostname}.conf;
     };
 }

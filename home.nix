@@ -78,7 +78,7 @@
     calibre
     libreoffice
     zoom-us
-    krita
+    # krita
     virt-manager
     qbittorrent
     xournal
@@ -119,9 +119,6 @@
     # nixgl.auto.nixGLDefault
     # nixgl.auto.nixGLNvidiaBumblebee
   ];
-
-  # This is just for parinfer-rust-mode
-  home.file.".emacs.d/parinfer-rust-mode".source = pkgs.parinfer-rust;
 
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -209,6 +206,4 @@
     Plug 'tpope/vim-commentary'
     Plug 'vim-matchit'
   '';
-
-  # nixpkgs.config.permittedInsecurePackages = [ "nodejs-16.20.0" "zotero-6.0.27" ];
 }
