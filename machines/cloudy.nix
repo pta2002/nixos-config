@@ -5,8 +5,6 @@
     ../modules/yarr.nix
     ../modules/nextcloud.nix
     ../modules/files.nix
-    # ../modules/transmission.nix
-    ../modules/mastodon.nix
     ../modules/fava.nix
     ../modules/vaultwarden.nix
     ../modules/jellyfin.nix
