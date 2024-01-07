@@ -3,7 +3,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ../modules/argoweb.nix
     ../modules/yarr.nix
-    ../modules/nextcloud.nix
     ../modules/files.nix
     ../modules/fava.nix
     ../modules/vaultwarden.nix
