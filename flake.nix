@@ -128,6 +128,23 @@
         #specialArgs = { inherit inputs nixvim nixos-wsl; };
       };
 
+      homeConfigurations = {
+        pta2002 = home.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages."x86_64-linux";
+          extraSpecialArgs = { inherit inputs nixvim nixos-wsl; };
+          modules = [
+            nixvim.homeManagerModules.nixvim
+            ./modules/nvim.nix
+            ./modules/git.nix
+            {
+              home.stateVersion = "24.05";
+              home.username = "pta2002";
+              home.homeDirectory = "/home/pta2002";
+            }
+          ];
+        };
+      };
+
       nixosConfigurations = {
         hydrogen = mkMachine "hydrogen" "x86_64-linux";
         mercury = mkMachine "mercury" "x86_64-linux";
