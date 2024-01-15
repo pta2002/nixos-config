@@ -19,13 +19,6 @@
     vim-tup.url = "github:dunedain289/vim-tup";
     vim-tup.flake = false;
 
-    eww-scripts.url = "file:///home/pta2002/Projects/eww-scripts";
-    eww-scripts.type = "git";
-    eww-scripts.inputs.nixpkgs.follows = "nixpkgs";
-
-    phosphor-icons.url = "github:phosphor-icons/phosphor-icons/legacy";
-    phosphor-icons.flake = false;
-
     nixvim.url = "github:pta2002/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -140,6 +133,7 @@
               home.stateVersion = "24.05";
               home.username = "pta2002";
               home.homeDirectory = "/home/pta2002";
+              programs.home-manager.enable = true;
             }
           ];
         };

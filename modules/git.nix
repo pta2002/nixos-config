@@ -10,5 +10,12 @@
       core.autocrlf = "input";
       safe.directory = [ "/home/pta2002/nixos" ];
     };
+
+    includes = [
+      {
+        condition = "gitdir:~/CTW/";
+        path = "~/.config/git/ctwconf";
+      }
+    ];
   };
 }
