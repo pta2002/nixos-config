@@ -130,6 +130,7 @@
             ./modules/nvim.nix
             ./modules/git.nix
             ./modules/gpg.nix
+            ./modules/shell.nix
             {
               home.stateVersion = "24.05";
               home.username = "pta2002";

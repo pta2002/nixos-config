@@ -29,7 +29,7 @@
       l = "eza -l";
       tree = "eza -T";
 
-      cat = "bat";
+      # cat = "bat";
     };
 
     plugins = with pkgs.fishPlugins; [
