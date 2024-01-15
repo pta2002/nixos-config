@@ -129,6 +129,7 @@
             nixvim.homeManagerModules.nixvim
             ./modules/nvim.nix
             ./modules/git.nix
+            ./modules/gpg.nix
             {
               home.stateVersion = "24.05";
               home.username = "pta2002";
