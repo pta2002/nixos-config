@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [ any-nix-shell fzf eza bat ];
+  home.packages = with pkgs; [ any-nix-shell fzf eza bat ripgrep fd ];
 
   # systemd.user.sessionVariables.EDITOR = "nvim";
 
