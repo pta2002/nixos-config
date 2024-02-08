@@ -12,6 +12,9 @@
     efiSysMountPoint = "/boot/efi";
   };
 
+  boot.loader.refind.extraConfig = ''
+    resolution 3440 1440
+  '';
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "vfio-pci" ];
   boot.initrd.kernelModules = [ ];

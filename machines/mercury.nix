@@ -14,6 +14,7 @@ in
   ];
 
   boot.loader.refind.extraConfig = ''
+    resolution 1920 1080
     menuentry "Windows 11" {
       icon \\EFI\\refind\\themes\\rEFInd-minimal-dark\\icons_dark\\os_win11.png
       loader \\EFI\\Microsoft\\Boot\\bootmgfw.efi

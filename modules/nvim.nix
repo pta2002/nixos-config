@@ -158,7 +158,7 @@
 
     colorschemes.gruvbox = {
       enable = false;
-      contrastDark = "hard";
+      settings.contrast_dark = "hard";
     };
     # colorscheme = "glowbeam";
     colorscheme = "kanagawa";

@@ -43,7 +43,6 @@
     {
       enable = true;
       extraConfig = ''
-        resolution 1920 1080
         include themes/rEFInd-minimal-dark/theme.conf
         scanfor external,manual
       '';
@@ -68,7 +67,7 @@
   # Video
   services.xserver = {
     enable = true;
-    layout = "pt";
+    xkb.layout = "pt";
     libinput = {
       enable = true;
       touchpad.naturalScrolling = true;
