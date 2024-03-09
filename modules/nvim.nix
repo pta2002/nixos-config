@@ -152,14 +152,18 @@
       conjure.enable = true;
 
       typst-vim.enable = true;
+
+      ts-autotag.enable = true;
+
+      endwise.enable = true;
+
+      nvim-colorizer.enable = true;
+
+      toggleterm.enable = true;
+      toggleterm.openMapping = "<C-t>";
     };
 
-    colorschemes.gruvbox = {
-      enable = false;
-      settings.contrast_dark = "hard";
-    };
-    # colorscheme = "glowbeam";
-    colorscheme = "kanagawa";
+    colorschemes.kanagawa.enable = true;
 
     options = {
       mouse = "a";
@@ -203,16 +207,11 @@
 
     extraConfigLua = ''
       require("scope").setup()
-      require("colorizer").setup()
       require('git-conflict').setup()
 
       require('orgmode').setup({
         org_agenda_files = { '~/org/**/*' },
         org_default_notes_file = '~/org/refile.org',
-      })
-
-      require('toggleterm').setup({
-        open_mapping = "<C-t>",
       })
 
       -- Make LSP shut up
@@ -232,11 +231,8 @@
 
     extraPlugins = with pkgs.vimPlugins; [
       vim-sleuth
-      kanagawa-nvim
-      nvim-ts-autotag
       orgmode
       luasnip
-      vim-pug
       (pkgs.vimUtils.buildVimPlugin {
         pname = "git-conflict.nvim";
         version = "master";
@@ -265,16 +261,6 @@
           repo = "terminal.nvim";
           rev = version;
           sha256 = "1z8b16hp6gvy85wvrac5f7gsgl127src7z3s2zmkbrqksscxm0wf";
-        };
-      })
-      (pkgs.vimUtils.buildVimPlugin rec {
-        pname = "vim-lark-syntax";
-        version = "80891559f5686b5d2a897cc25628fdf5a2d0aff0";
-        src = pkgs.fetchFromGitHub {
-          owner = "lark-parser";
-          repo = "vim-lark-syntax";
-          rev = version;
-          sha256 = "12kmnggf4scjy5w0vywcajd4w3zrvdcpkzjpmdw1hvnc6ywj0n0n";
         };
       })
       (pkgs.vimUtils.buildVimPlugin rec {
@@ -325,16 +311,6 @@
         src = inputs.vim-tup;
       })
       (pkgs.vimUtils.buildVimPlugin rec {
-        pname = "vim-alloy";
-        version = "961d9608bdcfd34d6a01cecbb49c6ddf6382fb82";
-        src = pkgs.fetchFromGitHub {
-          owner = "runoshun";
-          repo = "vim-alloy";
-          rev = version;
-          sha256 = "1cdmbk3kwkwvkl5jqg7g6fcg00ca6svwl8hkdr4hiz4qf04qx77y";
-        };
-      })
-      (pkgs.vimUtils.buildVimPlugin rec {
         pname = "scope-nvim";
         version = "2db6d31de8e3a98d2b41c0f0d1f5dc299ee76875";
         src = pkgs.fetchFromGitHub {
@@ -344,11 +320,8 @@
           sha256 = "10l7avsjcgzh0s29az4zzskqcp9jw5xpvdiih02rf7c1j85zxm85";
         };
       })
-      vim-endwise
       vim-terraform
-      nvim-colorizer-lua
       gleam-vim
-      toggleterm-nvim
     ];
 
     extraPackages = [ pkgs.xclip pkgs.glslls ];

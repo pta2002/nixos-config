@@ -12,12 +12,5 @@
       safe.directory = [ "/home/pta2002/nixos" ];
       rerere.enabled = true;
     };
-
-    includes = [
-      {
-        condition = "gitdir:~/CTW/";
-        path = "~/.config/git/ctwconf";
-      }
-    ];
   };
 }
