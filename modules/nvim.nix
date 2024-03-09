@@ -120,7 +120,7 @@
       copilot-cmp.enable = true;
       cmp_luasnip.enable = true;
 
-      nvim-cmp = {
+      cmp = {
         enable = true;
         sources = [{ name = "nvim_lsp"; }];
         mappingPresets = [ "insert" ];
