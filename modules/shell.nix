@@ -73,6 +73,15 @@
           sha256 = "0lxfy17r087q1lhaz5rivnklb74ky448llniagkz8fy393d8k9cp";
         };
       }
+      {
+        name = "nvm.fish";
+        src = pkgs.fetchFromGitHub {
+          owner = "jorgebucaran";
+          repo = "nvm.fish";
+          rev = "c69e5d1017b21bcfca8f42c93c7e89fff6141a8a";
+          sha256 = "084wvdinas1d7v3da16lim7s8asimh389frmfamr7q70fy44spid";
+        };
+      }
     ];
   };
 
@@ -95,4 +104,6 @@
     enable = true;
     config.theme = "gruvbox-dark";
   };
+
+  services.ssh-agent.enable = true;
 }
