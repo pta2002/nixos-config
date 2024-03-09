@@ -90,13 +90,12 @@
           hls.enable = true;
           tsserver.enable = true;
           astro.enable = true;
+          gleam.enable = true;
         };
 
-        onAttach = ''
+        onAttach = /* lua */ ''
           vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
         '';
-
-        enabledServers = [ "gleam" ];
       };
 
       lsp-lines = {
@@ -117,31 +116,30 @@
 
       trouble.enable = true;
 
-      copilot-cmp.enable = true;
       cmp_luasnip.enable = true;
 
       cmp = {
         enable = true;
-        sources = [{ name = "nvim_lsp"; }];
-        mappingPresets = [ "insert" ];
-        mapping = {
-          "<CR>" = "cmp.mapping.confirm({ select = true })";
-        };
-        formatting.fields = [ "kind" "abbr" "menu" ];
+        settings.sources = [{ name = "nvim_lsp"; }];
+        # mappingPresets = [ "insert" ];
+        # mapping = {
+        #   "<CR>" = "cmp.mapping.confirm({ select = true })";
+        # };
+        settings.formatting.fields = [ "kind" "abbr" "menu" ];
 
-        window.completion = {
+        settings.window.completion = {
           winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
           colOffset = -4;
           sidePadding = 0;
           border = "single";
         };
 
-        window.documentation = {
+        settings.window.documentation = {
           winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
           border = "single";
         };
 
-        snippet.expand = "luasnip";
+        settings.snippet.expand = "luasnip";
       };
 
       zig.enable = true;
