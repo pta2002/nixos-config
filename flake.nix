@@ -99,7 +99,7 @@
         };
       };
     in
-    {
+    rec {
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
         modules = [
           ./machines/droid.nix
@@ -121,24 +121,26 @@
         #specialArgs = { inherit inputs nixvim nixos-wsl; };
       };
 
+      homeManagerConfig = {
+        pkgs = nixpkgs.legacyPackages."x86_64-linux";
+        extraSpecialArgs = { inherit inputs nixvim nixos-wsl; };
+        modules = [
+          nixvim.homeManagerModules.nixvim
+          ./modules/nvim.nix
+          ./modules/git.nix
+          ./modules/gpg.nix
+          ./modules/shell.nix
+          {
+            home.stateVersion = "24.05";
+            home.username = "pta2002";
+            home.homeDirectory = "/home/pta2002";
+            programs.home-manager.enable = true;
+          }
+        ];
+      };
+
       homeConfigurations = {
-        pta2002 = home.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages."x86_64-linux";
-          extraSpecialArgs = { inherit inputs nixvim nixos-wsl; };
-          modules = [
-            nixvim.homeManagerModules.nixvim
-            ./modules/nvim.nix
-            ./modules/git.nix
-            ./modules/gpg.nix
-            ./modules/shell.nix
-            {
-              home.stateVersion = "24.05";
-              home.username = "pta2002";
-              home.homeDirectory = "/home/pta2002";
-              programs.home-manager.enable = true;
-            }
-          ];
-        };
+        pta2002 = home.lib.homeManagerConfiguration homeManagerConfig;
       };
 
       nixosConfigurations = {
