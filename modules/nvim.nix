@@ -153,7 +153,7 @@
 
       typst-vim.enable = true;
 
-      ts-autotag.enable = true;
+      # ts-autotag.enable = true;
 
       endwise.enable = true;
 
