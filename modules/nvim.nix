@@ -110,7 +110,7 @@
         enable = true;
         sources.formatting.black.enable = true;
         # sources.formatting.beautysh.enable = true;
-        sources.diagnostics.shellcheck.enable = true;
+        # sources.diagnosticsFormat.shellcheck.enable = true;
         sources.formatting.fourmolu.enable = true;
         sources.formatting.fnlfmt.enable = true;
       };
