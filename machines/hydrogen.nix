@@ -25,6 +25,7 @@
     "intel_iommu=on"
     "vfio-pci.ids=8086:0412,8086:0c0c"
     "preempt=full"
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
   ];
   hardware.i2c.enable = true;
   services.udev.packages = [ pkgs.openrgb ];
@@ -64,7 +65,7 @@
     extraPackages = [ pkgs.mesa.drivers ];
   };
   hardware.nvidia.modesetting.enable = true;
-  # hardware.nvidia.powerManagement.enable = true;
+  hardware.nvidia.powerManagement.enable = true;
 
   networking.hostName = "hydrogen";
   networking.interfaces.enp3s0.useDHCP = true;

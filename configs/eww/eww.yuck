@@ -139,55 +139,18 @@
   :reserve (struts :side "top" :distance "46")
   (bar :primary false :monitor "eDP1"))
 
-(defwindow bar-desktop-1
-  :monitor "DVI-I-0"
-  :windowtype "dock" ; TODO: Fix this, should be 'bg' but if it is then it's not clickable
-  :geometry (geometry :x "0%"
-                      :y "8px"
-                      :width "1656px"
-                      :height "34px"
-                      :anchor "top center")
-  :stacking "bg"
-  :wm-ignore false
-  :reserve (struts :side "top" :distance "46")
-  (bar :primary false :monitor "DVI-I-0"))
-
-(defwindow bar-desktop-2
-  :monitor "HDMI-0"
-  :windowtype "dock" ; TODO: Fix this, should be 'bg' but if it is then it's not clickable
-  :geometry (geometry :x "0%"
-                      :y "8px"
-                      :width "1896px"
-                      :height "34px"
-                      :anchor "top center")
-  :stacking "bg"
-  :wm-ignore false
-  :reserve (struts :side "top" :distance "46")
-  (bar :primary true :monitor "HDMI-0"))
-
-(defwindow bar-desktop-1-wl
+(defwindow bar-desktop-wl
   :monitor 0
   :stacking "fg"
   :exclusive true
-  :geometry (geometry :x "0%"
-                      :y "8px"
-                      :width "1656px"
-                      :height "34px"
+  :geometry (geometry :x "0px"
+                      :y "0px"
+                      :width "3440"
+                      :height "40px"
                       :anchor "top center")
-  :reserve (struts :side "top" :distance "46")
-  (bar :primary false :monitor "DVI-I-1"))
-
-(defwindow bar-desktop-2-wl
-  :monitor 1
-  :stacking "fg"
-  :exclusive true
-  :geometry (geometry :x "0%"
-                      :y "8px"
-                      :width "1896px"
-                      :height "34px"
-                      :anchor "top center")
-  :reserve (struts :side "top" :distance "46")
-  (bar :primary false :monitor "HDMI-A-3"))
+  :reserve (struts :side "top" :distance "66")
+  :namespace "eww-bar"
+  (bar :primary false :monitor "DP-1"))
 
 (defwindow bar-laptop-wl
   :monitor 0

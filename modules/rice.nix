@@ -10,19 +10,23 @@
     # pamixer
     # xdotool
     brightnessctl
-    # inputs.eww-scripts.packages."${pkgs.system}".follows
-    # inputs.eww-scripts.packages."${pkgs.system}".upower-follow
-    # inputs.eww-scripts.packages."${pkgs.system}".pa-follow
-    # inputs.eww-scripts.packages."${pkgs.system}".hypr-follow
+    inputs.eww-scripts.packages."${pkgs.system}".follows
+    inputs.eww-scripts.packages."${pkgs.system}".upower-follow
+    inputs.eww-scripts.packages."${pkgs.system}".pa-follow
+    inputs.eww-scripts.packages."${pkgs.system}".hypr-follow
     # eww-wayland
-    # swaylock-effects
+    swaylock-effects
+
+    eww-wayland
+
+    hyprpaper
 
     jetbrains-mono
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
 
-    # (pkgs.rofi.override {
-    #   plugins = with pkgs; [ rofi-emoji rofi-calc ];
-    # })
+    (pkgs.rofi.override {
+      plugins = with pkgs; [ rofi-emoji rofi-calc ];
+    })
 
     # (stdenv.mkDerivation rec {
     #   pname = "phosphor-icons";
@@ -41,7 +45,7 @@
   ];
 
   programs.kitty = {
-    enable = false;
+    enable = true;
     font = {
       name = "JetBrainsMono Nerd Font";
       size = 12;
@@ -78,6 +82,12 @@
     };
     gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
     gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
+  };
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.gnome.adwaita-icon-theme;
+    name = "Adwaita";
   };
 
   dconf.settings = {
@@ -172,7 +182,7 @@
       cmd = "${pkgs.swaylock-effects}/bin/swaylock --screenshots --clock --effect-blur 10x7 --fade-in 0.2 --grace 1";
     in
     {
-      enable = false;
+      enable = true;
       events = [{
         event = "before-sleep";
         command = cmd;
@@ -195,10 +205,10 @@
 
       ".config/wallpaper.jpg".source = ../wallpaper.jpg;
       # ".config/sxhkd".source = ln "/home/pta2002/nixos/configs/sxhkd";
-      # ".config/eww".source = ln "/home/pta2002/nixos/configs/eww";
-      # ".config/rofi/config.rasi".source = ../configs/rofi.rasi;
-      # ".config/hypr/hyprland.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprland.conf";
-      # ".config/hypr/hyprpaper.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprpaper.conf";
+      ".config/eww".source = ln "/home/pta2002/nixos/configs/eww";
+      ".config/rofi/config.rasi".source = ../configs/rofi.rasi;
+      ".config/hypr/hyprland.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprland.conf";
+      ".config/hypr/hyprpaper.conf".source = ln "/home/pta2002/nixos/configs/hypr/hyprpaper.conf";
       # ".config/hypr/machine.conf".source = ../configs/hypr/${hostname}.conf;
     };
 }

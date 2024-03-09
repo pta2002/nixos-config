@@ -74,6 +74,11 @@
     };
   };
 
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
   # Audio
   sound.enable = true;
   security.rtkit.enable = true;
