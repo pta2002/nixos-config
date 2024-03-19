@@ -53,7 +53,7 @@ in
   systemd.services.fava-update = {
     script = ''
       set -eu
-      ${pkgs.beancount}/bin/bean-price ${ledgerFile} >> /var/lib/fava/investments.beancount
+      ${pkgs.beancount}/bin/bean-price -d `date -u +%Y-%m-%dT%H:%M:%S` ${ledgerFile} >> /var/lib/fava/investments.beancount
     '';
     serviceConfig = {
       Type = "oneshot";
