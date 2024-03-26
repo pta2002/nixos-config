@@ -1,6 +1,11 @@
 { pkgs, lib, config, ... }:
 let
   ledgerFile = "/var/lib/fava/ledger.beancount";
+  fava-pkg = pkgs.fava.override (prev: {
+    propagatedBuildInputs = prev ++ [
+      ../configs/beancount
+    ];
+  });
 in
 {
   imports = [
