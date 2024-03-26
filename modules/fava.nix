@@ -3,7 +3,7 @@ let
   ledgerFile = "/var/lib/fava/ledger.beancount";
   fava-pkg = pkgs.fava.override (prev: {
     propagatedBuildInputs = prev ++ [
-      ../configs/beancount
+      (pkgs.callPackage ../configs/beancount_importers {})
     ];
   });
 in
@@ -39,7 +39,7 @@ in
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      ExecStart = "${pkgs.fava}/bin/fava ${ledgerFile}";
+      ExecStart = "${fava-pkg}/bin/fava ${ledgerFile}";
       Type = "simple";
       User = "fava";
       Group = "fava";
@@ -58,7 +58,7 @@ in
   systemd.services.fava-update = {
     script = ''
       set -eu
-      ${pkgs.beancount}/bin/bean-price -d `date -u +%Y-%m-%dT%H:%M:%S` ${ledgerFile} >> /var/lib/fava/investments.beancount
+      ${fava-pkg}/bin/bean-price -d `date -u +%Y-%m-%dT%H:%M:%S` ${ledgerFile} >> /var/lib/fava/investments.beancount
     '';
     serviceConfig = {
       Type = "oneshot";
