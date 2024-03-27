@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "beancount-importers"
+version = "0.1.0"
+description = ""
+authors = ["Pedro Alves <pta2002@pta2002.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+beancount = "^2.3.6"
+pypdf = "^3.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

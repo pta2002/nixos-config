@@ -90,12 +90,12 @@ class Importer(importer.ImporterProtocol):
         )
 
     def file_account(self, _):
-        return "Income:Salary"
+        return "Income:Salary:Main"
 
     def file_name(self, file):
-        return f"earnings.{self.file_date(file).strftime}"
+        return f"earnings.{self.file_date(file).strftime('%Y-%m')}.pdf"
 
-    def file_date(self, file) -> datetime.date:
+    def file_date(self, file):
         base = path.basename(file.name)
         date_part = base.split(" ")[1]
         [mon, year] = date_part.split("_")
@@ -135,8 +135,7 @@ class Importer(importer.ImporterProtocol):
                 case "Vencimento Base" | "Desconta Vencimento":
                     acct = "Income:Salary:Main"
                 case (
-                    "Isenção Horário de Trabalho"
-                    | "Desconta Isenção Horario Trabalho"
+                    "Isenção Horário de Trabalho" | "Desconta Isenção Horario Trabalho"
                 ):
                     acct = "Income:Salary:Isenção"
                 case "Duodecimos Sub Ferias 100%":

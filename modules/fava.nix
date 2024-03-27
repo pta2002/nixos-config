@@ -1,11 +1,12 @@
 { pkgs, lib, config, ... }:
 let
   ledgerFile = "/var/lib/fava/ledger.beancount";
-  fava-pkg = pkgs.fava.override (prev: {
-    propagatedBuildInputs = prev ++ [
-      (pkgs.callPackage ../configs/beancount_importers {})
+  fava-pkg = pkgs.python3.buildEnv.override {
+    extraLibs = [
+      (pkgs.python3Packages.toPythonModule (pkgs.callPackage ../configs/beancount_importers { }))
+      (pkgs.python3Packages.toPythonModule pkgs.fava)
     ];
-  });
+  };
 in
 {
   imports = [
