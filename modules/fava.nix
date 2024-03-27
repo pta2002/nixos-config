@@ -4,7 +4,14 @@ let
   fava-pkg = pkgs.python3.buildEnv.override {
     extraLibs = [
       (pkgs.python3Packages.toPythonModule (pkgs.callPackage ../configs/beancount_importers { }))
-      (pkgs.python3Packages.toPythonModule pkgs.fava)
+      (pkgs.python3Packages.toPythonModule (pkgs.fava.override {
+        src = pkgs.fetchFromGitHub {
+          owner = "pta2002";
+          repo = "fava";
+          hash = "sha256-CA6GfEKL8ssOCsMOUWM+nY/2K8Pv3ricGv1SEG8FOkQ=";
+          rev = "7313467faf4e1d4e6ef577e82b6a64761666cc53";
+        };
+      }))
     ];
   };
 in
