@@ -4,14 +4,16 @@ let
   fava-pkg = pkgs.python3.buildEnv.override {
     extraLibs = [
       (pkgs.python3Packages.toPythonModule (pkgs.callPackage ../configs/beancount_importers { }))
-      (pkgs.python3Packages.toPythonModule (pkgs.fava.override {
-        src = pkgs.fetchFromGitHub {
-          owner = "pta2002";
-          repo = "fava";
-          hash = "sha256-CA6GfEKL8ssOCsMOUWM+nY/2K8Pv3ricGv1SEG8FOkQ=";
-          rev = "7313467faf4e1d4e6ef577e82b6a64761666cc53";
+      (pkgs.python3Packages.toPythonModule (pkgs.fava.overrideAttrs (prev: {
+        src = pkgs.fetchurl {
+          url = "https://github.com/pta2002/fava/releases/download/v1.27.3-pwa/fava-1.27.4.dev4+g7313467f.tar.gz";
+          sha256 = "0w4dlxq180m466dnwl0jlfmc7qlnx9yailgpzrg3ixibn1vday5a";
         };
-      }))
+
+        propagatedBuildInputs = prev.propagatedBuildInputs ++ [
+          pkgs.python3Packages.watchfiles
+        ];
+      })))
     ];
   };
 in
@@ -38,6 +40,8 @@ in
 
       locations."/".proxyPass = "http://localhost:5000";
       locations."/".basicAuthFile = config.age.secrets.nginx.path;
+      locations."/static/manifest.json".proxyPass = "http://localhost:5000";
+      locations."/static/manifest.json".basicAuthFile = null;
     };
   };
 
