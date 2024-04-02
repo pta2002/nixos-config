@@ -20,7 +20,7 @@
         };
       };
 
-      comment-nvim.enable = true;
+      comment.enable = true;
 
       lualine = {
         enable = true;
@@ -165,7 +165,7 @@
 
     colorschemes.kanagawa.enable = true;
 
-    options = {
+    opts = {
       mouse = "a";
       shiftwidth = 2;
       tabstop = 2;
