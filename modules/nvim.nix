@@ -160,7 +160,7 @@
       nvim-colorizer.enable = true;
 
       toggleterm.enable = true;
-      toggleterm.openMapping = "<C-t>";
+      toggleterm.settings.open_mapping = "[[<c-t>]]";
     };
 
     colorschemes.kanagawa.enable = true;
