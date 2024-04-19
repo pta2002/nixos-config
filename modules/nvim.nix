@@ -27,16 +27,16 @@
         theme = "kanagawa";
       };
 
-      neorg = {
-        enable = true;
-        modules = {
-          "core.defaults" = { };
-          "core.dirman".config.workspaces.uni = "~/notes/uni";
-          "core.completion".config.engine = "nvim-cmp";
-          "core.norg.concealer" = { };
-          "core.norg.journal" = { };
-        };
-      };
+      # neorg = {
+      #   enable = true;
+      #   modules = {
+      #     "core.defaults" = { };
+      #     "core.dirman".config.workspaces.uni = "~/notes/uni";
+      #     "core.completion".config.engine = "nvim-cmp";
+      #     "core.norg.concealer" = { };
+      #     "core.norg.journal" = { };
+      #   };
+      # };
 
       intellitab.enable = true;
       nix.enable = true;
