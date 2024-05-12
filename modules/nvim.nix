@@ -27,17 +27,6 @@
         theme = "kanagawa";
       };
 
-      # neorg = {
-      #   enable = true;
-      #   modules = {
-      #     "core.defaults" = { };
-      #     "core.dirman".config.workspaces.uni = "~/notes/uni";
-      #     "core.completion".config.engine = "nvim-cmp";
-      #     "core.norg.concealer" = { };
-      #     "core.norg.journal" = { };
-      #   };
-      # };
-
       intellitab.enable = true;
       nix.enable = true;
       bufferline = {
@@ -78,7 +67,7 @@
       lsp = {
         enable = true;
         servers = {
-          rnix-lsp.enable = true;
+          nixd.enable = true;
           rust-analyzer.enable = true;
           rust-analyzer.installRustc = true;
           rust-analyzer.installCargo = true;
