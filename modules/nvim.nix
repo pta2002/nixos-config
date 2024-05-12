@@ -209,11 +209,6 @@
       require("scope").setup()
       require('git-conflict').setup()
 
-      require('orgmode').setup({
-        org_agenda_files = { '~/org/**/*' },
-        org_default_notes_file = '~/org/refile.org',
-      })
-
       -- Make LSP shut up
       local notify = vim.notify
       vim.notify = function(msg, ...)
@@ -231,7 +226,6 @@
 
     extraPlugins = with pkgs.vimPlugins; [
       vim-sleuth
-      orgmode
       luasnip
       (pkgs.vimUtils.buildVimPlugin {
         pname = "git-conflict.nvim";
