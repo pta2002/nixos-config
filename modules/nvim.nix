@@ -220,10 +220,6 @@
       end
     '';
 
-    extraConfigLuaPre = ''
-      require('orgmode').setup_ts_grammar()
-    '';
-
     extraPlugins = with pkgs.vimPlugins; [
       vim-sleuth
       luasnip
