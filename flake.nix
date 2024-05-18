@@ -42,6 +42,7 @@
     android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
 
     raspberry-pi-nix.url = "github:tstat/raspberry-pi-nix";
+    raspberry-pi-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {

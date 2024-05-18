@@ -34,6 +34,10 @@
     };
   };
 
+  raspberry-pi-nix = {
+    libcamera-overlay.enable = lib.mkForce false;
+  };
+
   # For now, mounting multi-device bcachefs on fstab does not work :c
   # Just use a systemd service :shrug:
   # systemd.services."data-volume" = {
@@ -118,7 +122,7 @@
     settings.PasswordAuthentication = false;
   };
 
-  services.tailscale.enable = true;
+  # services.tailscale.enable = true;
 
   system.stateVersion = "24.11";
   nixpkgs.config.allowUnfree = true;
