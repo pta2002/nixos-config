@@ -41,7 +41,7 @@
     android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
     android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
 
-    raspberry-pi-nix.url = "github:tstat/raspberry-pi-nix";
+    raspberry-pi-nix.url = "git+file:///home/pta2002/raspberry-pi-nix";
     raspberry-pi-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 

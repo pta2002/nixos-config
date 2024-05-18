@@ -14,6 +14,11 @@
     # ../modules/jellyfin.nix
   ];
 
+  # boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.rpi-kernels.latest.kernel.override {
+  #   argsOverride.kernelPatches = [ ];
+  #   kernelPatches = [ ];
+  # }));
+
   # services.argoWeb.enable = true;
 
   # boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
@@ -36,6 +41,7 @@
 
   raspberry-pi-nix = {
     libcamera-overlay.enable = lib.mkForce false;
+    pin-kernel.enable = false;
   };
 
   # For now, mounting multi-device bcachefs on fstab does not work :c
@@ -55,7 +61,7 @@
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = "aarch64-linux";
-  powerManagement.cpuFreqGovernor = "ondemand";
+  # powerManagement.cpuFreqGovernor = "ondemand";
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
@@ -122,7 +128,7 @@
     settings.PasswordAuthentication = false;
   };
 
-  # services.tailscale.enable = true;
+  services.tailscale.enable = true;
 
   system.stateVersion = "24.11";
   nixpkgs.config.allowUnfree = true;
