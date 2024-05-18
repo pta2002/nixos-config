@@ -21,7 +21,7 @@ buildGoModule rec {
   tags = [ "sqlite_foreign_keys" "release" ];
 
   subPackages = [ "src" ];
-  vendorSha256 = null;
+  vendorHash = null;
 
   postInstall = ''
     mv $out/bin/src $out/bin/yarr
