@@ -40,6 +40,8 @@
 
     android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
     android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
+
+    raspberry-pi-nix.url = "github:tstat/raspberry-pi-nix";
   };
 
   nixConfig = {
@@ -50,6 +52,7 @@
       "https://nix-community.cachix.org"
       "https://nixpkgs-unfree.cachix.org"
       "https://numtide.cachix.org"
+      "https://raspberry-pi-nix.cachix.org"
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -58,10 +61,11 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "nixpkgs-unfree.cachix.org-1:hqvoInulhbV4nJ9yJOEr+4wxhDV4xq2d1DK7S6Nj6rs="
       "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+      "raspberry-pi-nix.cachix.org-1:WmV2rdSangxW0rZjY/tBvBDSaNFQ3DyEQsVw8EvHn9o="
     ];
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, nix-index-database, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, nix-index-database, raspberry-pi-nix, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -218,6 +222,15 @@
                 hostname = "pie";
               };
             })
+          ];
+        };
+
+        mars = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = [
+            raspberry-pi-nix.nixosModules.raspberry-pi
+            home.nixosModules.home-manager
+            ./machines/mars.nix
           ];
         };
       };
