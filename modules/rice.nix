@@ -10,10 +10,10 @@
     # pamixer
     # xdotool
     brightnessctl
-    inputs.eww-scripts.packages."${pkgs.system}".follows
-    inputs.eww-scripts.packages."${pkgs.system}".upower-follow
-    inputs.eww-scripts.packages."${pkgs.system}".pa-follow
-    inputs.eww-scripts.packages."${pkgs.system}".hypr-follow
+    # inputs.eww-scripts.packages."${pkgs.system}".follows
+    # inputs.eww-scripts.packages."${pkgs.system}".upower-follow
+    # inputs.eww-scripts.packages."${pkgs.system}".pa-follow
+    # inputs.eww-scripts.packages."${pkgs.system}".hypr-follow
     # eww-wayland
     swaylock-effects
 
