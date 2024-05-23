@@ -41,8 +41,7 @@
     android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
     android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
 
-    raspberry-pi-nix.url = "git+file:///home/pta2002/raspberry-pi-nix";
-    raspberry-pi-nix.inputs.nixpkgs.follows = "nixpkgs";
+    raspberry-pi-nix.url = "github:tstat/raspberry-pi-nix";
   };
 
   nixConfig = {
@@ -229,9 +228,25 @@
         mars = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           modules = [
+            agenix.nixosModules.default
             raspberry-pi-nix.nixosModules.raspberry-pi
             home.nixosModules.home-manager
             ./machines/mars.nix
+            ({ pkgs, ... }@args: {
+              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+                { home.stateVersion = "23.11"; }
+                nixvim.homeManagerModules.nixvim
+                ./modules/nvim.nix
+                ./modules/git.nix
+                ./modules/shell.nix
+              ];
+
+              home-manager.useGlobalPkgs = true;
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                hostname = "mars";
+              };
+            })
           ];
         };
       };

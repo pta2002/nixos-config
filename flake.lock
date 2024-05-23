@@ -947,6 +947,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_4": {
+      "locked": {
+        "lastModified": 1715218190,
+        "narHash": "sha256-R98WOBHkk8wIi103JUVQF3ei3oui4HvoZcz9tYOAwlk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "9a9960b98418f8c385f52de3b09a63f9c561427a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "9a9960b98418f8c385f52de3b09a63f9c561427a",
+        "type": "github"
+      }
+    },
     "nixvim": {
       "inputs": {
         "devshell": "devshell_2",
@@ -1131,9 +1147,7 @@
         "libcamera-apps-src": "libcamera-apps-src",
         "libcamera-src": "libcamera-src",
         "libpisp-src": "libpisp-src",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs_4",
         "rpi-bluez-firmware-src": "rpi-bluez-firmware-src",
         "rpi-firmware-nonfree-src": "rpi-firmware-nonfree-src",
         "rpi-firmware-src": "rpi-firmware-src",
@@ -1141,16 +1155,17 @@
         "u-boot-src": "u-boot-src"
       },
       "locked": {
-        "dirtyRev": "cf9500ba4cd917dd225328dc8fa9b126ddc2c95e-dirty",
-        "dirtyShortRev": "cf9500b-dirty",
-        "lastModified": 1715724643,
-        "narHash": "sha256-ov4k3ToP1zsa2Aa/NJgFaLSLg3qy0hop0/JdyZCEquQ=",
-        "type": "git",
-        "url": "file:///home/pta2002/raspberry-pi-nix"
+        "lastModified": 1716298142,
+        "narHash": "sha256-UEMIk330LiFh05AfGaX7u5nBGD5uSs/ldWZe4948OaE=",
+        "owner": "tstat",
+        "repo": "raspberry-pi-nix",
+        "rev": "26d6ba2a91e6384252bfea5e94c3364e7f8879f2",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/pta2002/raspberry-pi-nix"
+        "owner": "tstat",
+        "repo": "raspberry-pi-nix",
+        "type": "github"
       }
     },
     "root": {

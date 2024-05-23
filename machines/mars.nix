@@ -4,7 +4,7 @@
   imports = [
     # ../modules/home-assistant.nix
     # ../modules/samba.nix
-    # ../modules/flood.nix
+    ../modules/flood.nix
     # ../modules/filespi.nix
     # ../modules/plex.nix
     # ../modules/sonarr.nix
@@ -12,28 +12,24 @@
     # ../modules/grafana.nix
     # ../modules/quassel.nix
     # ../modules/jellyfin.nix
+    # ../modules/rpi-kernel.nix
   ];
 
-  # boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.rpi-kernels.latest.kernel.override {
-  #   argsOverride.kernelPatches = [ ];
-  #   kernelPatches = [ ];
-  # }));
+  # TODO: This is another raspberry-pi-nix quirk. It assumes an SD card which
+  # would have this kind of partition ID, and therefore this gets set on the
+  # kernel cmdline to be the root partition to boot from.
+  sdImage.firmwarePartitionID = "3c7dbdf7";
 
-  # services.argoWeb.enable = true;
-
-  # boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
-  # boot.initrd.kernelModules = [ ];
-  # boot.kernelModules = [ ];
-  # boot.extraModulePackages = [ ];
   # boot.supportedFilesystems = [ "bcachefs" ];
 
+  # TODO: Once no longer dependent on raspberry-pi-nix, set this to a proper value.
+  # For now, it sets it to /dev/disk/by-label/NIXOS_SD, so it can't be changed safely.
   # fileSystems."/" = {
   #   device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
   #   fsType = "ext4";
   # };
 
   hardware = {
-    # bluetooth.enable = true;
     raspberry-pi = {
       config = { };
     };
@@ -41,7 +37,7 @@
 
   raspberry-pi-nix = {
     libcamera-overlay.enable = lib.mkForce false;
-    pin-kernel.enable = false;
+    uboot.enable = false;
   };
 
   # For now, mounting multi-device bcachefs on fstab does not work :c
@@ -61,7 +57,7 @@
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = "aarch64-linux";
-  # powerManagement.cpuFreqGovernor = "ondemand";
+  powerManagement.cpuFreqGovernor = "ondemand";
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
@@ -117,8 +113,8 @@
   environment.systemPackages = with pkgs; [
     git
     htop
+    tmux
   ];
-  # virtualisation.docker.enable = true;
 
   nix.settings.trusted-users = [ "root" "pta2002" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -130,7 +126,7 @@
 
   services.tailscale.enable = true;
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
 
   # Stuff for argo

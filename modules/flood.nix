@@ -1,7 +1,4 @@
 { pkgs, config, ... }:
-let
-  floodPort = 48328;
-in
 {
   imports = [
     ./argoweb.nix
@@ -16,9 +13,9 @@ in
   #   ingress."flood.pta2002.com" = "http://localhost:${toString floodPort}";
   # };
 
-  services.argoWeb = {
-    ingress."transmission.pta2002.com" = "http://localhost:9091";
-  };
+  # services.argoWeb = {
+  #   ingress."transmission.pta2002.com" = "http://localhost:9091";
+  # };
 
 
   services.transmission = {
@@ -44,16 +41,4 @@ in
     home = config.services.transmission.home;
     createHome = true;
   };
-
-  # systemd.services.flood = {
-  #   enable = false;
-  #   wantedBy = [ "default.target" ];
-  #   after = [ "network.target" ];
-  #   serviceConfig = {
-  #     ExecStart = "${pkgs.flood}/bin/flood --port=${toString floodPort} --rundir=${config.services.rtorrent.dataDir}";
-  #     User = config.services.transmission.user;
-  #     Group = config.services.transmission.group;
-  #     Restart = "on-failure";
-  #   };
-  # };
 }
