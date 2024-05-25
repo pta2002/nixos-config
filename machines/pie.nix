@@ -4,7 +4,7 @@
   imports = [
     ../modules/home-assistant.nix
     # ../modules/samba.nix
-    ../modules/flood.nix
+    ../modules/transmission.nix
     ../modules/filespi.nix
     ../modules/plex.nix
     # ../modules/sonarr.nix

@@ -127,6 +127,10 @@ in
     enable = true;
     openFirewall = true;
 
+    extraPackages = p: with p; [
+      gtts
+    ];
+
     extraComponents = [ "esphome" "met" ];
 
     config = {
@@ -148,8 +152,6 @@ in
         # port = 1883;
         # discovery = true;
       };
-
-      tailscale = { };
 
       http = {
         use_x_forwarded_for = true;
@@ -181,7 +183,7 @@ in
     listeners = [ ];
   };
 
-  services.argoWeb = {
+  services.cloudflared.tunnels.mars = {
     ingress."home.pta2002.com" = "http://localhost:8123";
   };
 

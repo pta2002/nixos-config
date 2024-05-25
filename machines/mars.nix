@@ -2,13 +2,12 @@
 { config, pkgs, lib, ... }:
 {
   imports = [
-    # ../modules/home-assistant.nix
+    ../modules/home-assistant.nix
     # ../modules/samba.nix
-    ../modules/flood.nix
+    ../modules/transmission.nix
     # ../modules/filespi.nix
-    # ../modules/plex.nix
-    # ../modules/sonarr.nix
-    # ../modules/argoweb.nix
+    ../modules/plex.nix
+    ../modules/sonarr.nix
     # ../modules/grafana.nix
     # ../modules/quassel.nix
     # ../modules/jellyfin.nix
@@ -124,22 +123,22 @@
     settings.PasswordAuthentication = false;
   };
 
+  services.cloudflared = {
+    enable = true;
+
+    tunnels.mars.credentialsFile = config.age.secrets.marstunnel.path;
+    tunnels.mars.default = "http_status:404";
+  };
+
   services.tailscale.enable = true;
 
   system.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
 
   # Stuff for argo
-  # age.secrets.cloudflared = {
-  #   file = ../secrets/pietunnel.json.age;
-  #   owner = "argoweb";
-  # };
-
-  # age.secrets.cert = {
-  #   file = ../secrets/cert.pem.age;
-  #   owner = "argoweb";
-  # };
-  #
-  # services.argoWeb.tunnel = "pietunnel";
+  age.secrets.marstunnel = {
+    file = ../secrets/marstunnel.json.age;
+    owner = config.services.cloudflared.user;
+  };
 }
 

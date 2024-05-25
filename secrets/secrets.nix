@@ -9,4 +9,5 @@ in
   "transmission.age".publicKeys = keys;
   "nginx.age".publicKeys = keys;
   "pietunnel.json.age".publicKeys = keys;
+  "marstunnel.json.age".publicKeys = keys;
 }

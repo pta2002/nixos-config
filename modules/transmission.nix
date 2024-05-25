@@ -1,24 +1,33 @@
-{ config, lib, ... }:
+{ pkgs, config, ... }:
 {
-  imports = [
-    ./argoweb.nix
-  ];
-
   age.secrets.transmission = {
     file = ../secrets/transmission.age;
+    owner = config.services.transmission.user;
   };
+
+  services.cloudflared.tunnels."mars".ingress."transmission.pta2002.com" = "http://localhost:9091";
 
   services.transmission = {
     enable = true;
-    downloadDirPermissions = "777";
-    openPeerPorts = true;
+    user = "transmission";
+
+    home = "/var/lib/transmission";
+
+    settings.download-dir = "/mnt/data/torrents";
+    settings.incomplete-dir = "/mnt/data/torrents/.incomplete";
     settings.rpc-authentication-required = true;
     settings.rpc-host-whitelist = "transmission.pta2002.com";
+
+    openPeerPorts = true;
+
+    downloadDirPermissions = "777";
+    settings.umask = 2;
+
     credentialsFile = config.age.secrets.transmission.path;
   };
 
-  services.argoWeb = {
-    enable = true;
-    ingress."transmission.pta2002.com" = "http://localhost:9091";
+  users.users.${config.services.transmission.user} = {
+    home = config.services.transmission.home;
+    createHome = true;
   };
 }

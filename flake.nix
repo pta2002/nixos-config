@@ -227,6 +227,7 @@
 
         mars = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
+          specialArgs = { inherit my-switches; };
           modules = [
             agenix.nixosModules.default
             raspberry-pi-nix.nixosModules.raspberry-pi
