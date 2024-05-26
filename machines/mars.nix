@@ -3,7 +3,7 @@
 {
   imports = [
     ../modules/home-assistant.nix
-    # ../modules/samba.nix
+    ../modules/samba.nix
     ../modules/transmission.nix
     # ../modules/filespi.nix
     ../modules/plex.nix
@@ -11,7 +11,7 @@
     # ../modules/grafana.nix
     # ../modules/quassel.nix
     # ../modules/jellyfin.nix
-    # ../modules/rpi-kernel.nix
+    ../modules/rpi-kernel.nix
   ];
 
   # TODO: This is another raspberry-pi-nix quirk. It assumes an SD card which
@@ -30,9 +30,12 @@
 
   hardware = {
     raspberry-pi = {
-      config = { };
+      config = {};
     };
   };
+
+  boot.loader.rpi-5.enable = true;
+  raspberry-pi-nix.firmware-migration-service.enable = false;
 
   raspberry-pi-nix = {
     libcamera-overlay.enable = lib.mkForce false;
