@@ -40,6 +40,8 @@ in
       "com.pta2002.rpi5" = {
         # TODO: This should be a parameter
         "firmwarePartition" = "/boot/firmware/";
+        # TODO: We can get the dtb and overlays files from the kernel build.
+        # What's left is the firmware files - bootcode.bin, fixup.dat and start.elf. Those are in the RPi firmware repository.
         "firmwarePath" = "${pkgs.raspberrypifw}/share/raspberrypi/boot";
         # TODO: This should be handled by me
         "configPath" = "${config.hardware.raspberry-pi.config-output}";
@@ -47,6 +49,5 @@ in
     };
 
     boot.loader.initScript.enable = lib.mkForce false;
-    boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor rpi-kernel);
   };
 }

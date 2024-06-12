@@ -65,7 +65,7 @@
     ];
   };
 
-  outputs = { self, nixpkgs, home, nixvim, musnix, agenix, nixos-wsl, nix-on-droid, my-switches, nix-index-database, raspberry-pi-nix, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, agenix, nixos-wsl, nix-on-droid, my-switches, nix-index-database, raspberry-pi-nix, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [

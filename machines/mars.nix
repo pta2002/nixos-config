@@ -19,13 +19,46 @@
   # kernel cmdline to be the root partition to boot from.
   sdImage.firmwarePartitionID = "3c7dbdf7";
 
-  # boot.supportedFilesystems = [ "bcachefs" ];
+  boot.supportedFilesystems = [ "btrfs" ];
 
-  # TODO: Once no longer dependent on raspberry-pi-nix, set this to a proper value.
-  # For now, it sets it to /dev/disk/by-label/NIXOS_SD, so it can't be changed safely.
-  # fileSystems."/" = {
+  # fileSystems."/" = lib.mkForce {
   #   device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
   #   fsType = "ext4";
+  # };
+  #
+  # fileSystems."/boot/firmware" = lib.mkForce {
+  #   device = "/dev/disk/by-label/FIRMWARE";
+  #   fsType = "vfat";
+  # };
+
+  fileSystems."/mnt/data" = {
+    device = "/dev/disk/by-id/ata-ST500LT012-1DG142_WBYK8FNL";
+    options = [
+      "compress=zstd"
+      "noatime"
+      "subvol=data"
+      "device=/dev/disk/by-id/ata-WDC_WD10EZEX-75WN4A0_WD-WCC6Y7SY7KJU"
+    ];
+    fsType = "btrfs";
+  };
+
+  # disko.devices = {
+  #   disk.sda = {
+  #     type = "disk";
+  #     device = "/dev/disk/by-id/ata-ST500LT012-1DG142_WBYK8FNL";
+  #     content = {
+  #       type = "gpt";
+  #       partitions.data = {
+  #         size = "100%";
+  #         content = {
+  #           type = "btrfs";
+  #           extraArgs = ["-f"];
+  #           mountpoint = "/mnt/data2";
+  #           mountOptions = [ "compress=zstd" "noatime" ];
+  #         };
+  #       };
+  #     };
+  #   };
   # };
 
   hardware = {
