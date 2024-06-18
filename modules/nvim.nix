@@ -68,9 +68,10 @@
         enable = true;
         servers = {
           nixd.enable = true;
-          rust-analyzer.enable = true;
-          rust-analyzer.installRustc = true;
-          rust-analyzer.installCargo = true;
+          # TODO: https://github.com/nix-community/nixvim/issues/1702
+          # rust-analyzer.enable = true;
+          # rust-analyzer.installRustc = true;
+          # rust-analyzer.installCargo = true;
           clangd.enable = true;
           zls.enable = true;
           pyright.enable = true;

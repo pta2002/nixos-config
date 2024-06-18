@@ -20,7 +20,8 @@
     vim-tup.flake = false;
 
     nixvim.url = "github:pta2002/nixvim";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    # TODO: https://github.com/nix-community/nixvim/issues/1702
+    # nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
