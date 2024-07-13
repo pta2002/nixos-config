@@ -202,7 +202,11 @@
 
       luasnip.enable = true;
       sleuth.enable = true;
+
       git-conflict.enable = true;
+      neogit = {
+        enable = true;
+      };
 
       parinfer-rust.enable = true;
     };
@@ -249,6 +253,7 @@
       { key = "j"; action = "gj"; mode = "n"; }
       { key = "k"; action = "gk"; mode = "n"; }
       { key = "<C-S>"; action = "<C-O>:w<CR>"; mode = "i"; }
+      { key ="<leader>g"; action = "<CMD>Neogit cwd=%:p:h<CR> kind=auto"; mode = "n"; }
     ];
 
     autoCmd = [
