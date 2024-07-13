@@ -1,5 +1,4 @@
-{ lib, pkgs, ... }:
-with lib.hm.gvariant;
+{ pkgs, ... }:
 {
   dconf = {
     enable = true;
@@ -22,6 +21,7 @@ with lib.hm.gvariant;
       "org/gnome/shell".enabled-extensions = [
         "bluetooth-quick-connect@bjarosze.gmail.com"
         "caffeine@patapon.info"
+        "tiling-assistant@leleat-on-github"
       ];
     };
   };
@@ -29,5 +29,6 @@ with lib.hm.gvariant;
   home.packages = with pkgs.gnomeExtensions; [
     caffeine
     bluetooth-quick-connect
+    tiling-assistant
   ];
 }

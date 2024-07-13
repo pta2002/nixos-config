@@ -55,7 +55,7 @@
           nvim_lua = "[Lua]";
           latex_symbols = "[Latex]";
         };
-        cmp.after = ''
+        cmp.after = /* lua */ ''
           function(entry, vim_item, kind)
             local strings = vim.split(kind.kind, "%s", { trimempty = true })
             if #strings == 2 then
@@ -108,30 +108,76 @@
 
       trouble.enable = true;
 
+      cmp-nvim-lsp.enable = true;
       cmp_luasnip.enable = true;
-
       cmp = {
+        autoEnableSources = true;
         enable = true;
-        settings.sources = [{ name = "nvim_lsp"; }];
-        # mappingPresets = [ "insert" ];
-        # mapping = {
-        #   "<CR>" = "cmp.mapping.confirm({ select = true })";
-        # };
-        settings.formatting.fields = [ "kind" "abbr" "menu" ];
+        settings = {
+          sources = [{ name = "nvim_lsp"; } { name = "luasnip"; }];
+          formatting.fields = [ "kind" "abbr" "menu" ];
 
-        settings.window.completion = {
-          winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
-          colOffset = -4;
-          sidePadding = 0;
-          border = "single";
+          snippet.expand = /* lua */ ''function(args)
+            require('luasnip').lsp_expand(args.body)
+          end'';
+
+          window.completion = {
+            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
+            colOffset = -4;
+            sidePadding = 0;
+            border = "single";
+          };
+
+          mapping = {
+            "<CR>" = /* lua */ ''
+              cmp.mapping.confirm({
+                i = function(fallback)
+                  if cmp.visible() and cmp.get_active_entry() then
+                    cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+                  else
+                    fallback()
+                  end
+                end,
+                s = cmp.mapping.confirm({ select = true }),
+                c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+              })
+            '';
+            "<C-Space>" = "cmp.mapping.complete()";
+            "<Down>" = /* lua */ ''cmp.mapping(cmp.mapping.select_next_item({
+              beahavior = cmp.SelectBehavior.Select
+            }), {'i', 'c'})'';
+            "<Up>" = /* lua */ ''cmp.mapping(cmp.mapping.select_prev_item({
+              beahavior = cmp.SelectBehavior.Select
+            }), {'i', 'c'})'';
+
+            "<Tab>" = /* lua */ ''cmp.mapping(function(fallback)
+              local luasnip = require("luasnip")
+              if cmp.visible() then
+                cmp.select_next_item()
+              elseif luasnip.locally_jumpable(1) then
+                luasnip.jump(1)
+              else
+                fallback()
+              end
+            end, { 'i', 's' })'';
+
+            "<S-Tab>" = /* lua */ ''cmp.mapping(function(fallback)
+              local luasnip = require("luasnip")
+              if cmp.visible() then
+                cmp.select_next_item()
+              elseif luasnip.locally_jumpable(-1) then
+                luasnip.jump(-1)
+              else
+                fallback()
+              end
+            end, { 'i', 's' })'';
+          };
+
+          window.documentation = {
+            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
+            border = "single";
+          };
         };
-
-        settings.window.documentation = {
-          winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
-          border = "single";
-        };
-
-        settings.snippet.expand = "luasnip";
       };
 
       zig.enable = true;
@@ -205,6 +251,14 @@
       { key = "<C-S>"; action = "<C-O>:w<CR>"; mode = "i"; }
     ];
 
+    autoCmd = [
+      {
+        event = "User";
+        pattern = "UnceptionEditRequestReceived";
+        command = "ToggleTerm";
+      }
+    ];
+
     extraConfigLua = ''
       require("scope").setup()
 
@@ -220,14 +274,14 @@
     '';
 
 
-    extraPlugins = with pkgs.vimPlugins; [
+    extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "glowbeam-nvim";
-        version = "master";
+        version = "12144d6062455425028390095d2932d566cbc851";
         src = pkgs.fetchFromGitHub {
           owner = "cooperuser";
           repo = "glowbeam.nvim";
-          rev = "12144d6062455425028390095d2932d566cbc851";
+          rev = version;
           hash = "sha256-EiwQYNLE2pRVifVkDw8WN7CkNcm5OOFu7jG3q7TlCyI=";
         };
       })
@@ -251,7 +305,7 @@
           sha256 = "1m9nyylwvb9ypgiqahjg6w6qzl8536p2s5vciais1slpjhrx9iqg";
         };
 
-        buildInputs = with pkgs; [ janet ];
+        buildInputs = [ pkgs.janet ];
       })
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "vim-sxhkdrc";
@@ -288,8 +342,9 @@
           sha256 = "10l7avsjcgzh0s29az4zzskqcp9jw5xpvdiih02rf7c1j85zxm85";
         };
       })
-      vim-terraform
-      gleam-vim
+      pkgs.vimPlugins.vim-terraform
+      pkgs.vimPlugins.gleam-vim
+      pkgs.vimPlugins.nvim-unception
     ];
 
     extraPackages = [ pkgs.xclip pkgs.glslls ];
