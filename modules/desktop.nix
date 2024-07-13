@@ -64,14 +64,15 @@
 
   hardware.opentabletdriver.enable = true;
 
-  # Video
+  # Video + keyboard
   services.xserver = {
     enable = true;
     xkb.layout = "pt";
-    libinput = {
-      enable = true;
-      touchpad.naturalScrolling = true;
-    };
+  };
+
+  services.libinput = {
+    enable = true;
+    touchpad.naturalScrolling = true;
   };
 
   programs.hyprland = {

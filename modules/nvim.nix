@@ -6,23 +6,21 @@
       treesitter = {
         enable = true;
         nixGrammars = true;
-
-        settings = {
-          ensure_installed = ["all"];
-          settings.auto_install = false;
-        };
-
-        moduleConfig.autotag = {
-          enable = true;
-          filetypes = [ "html" "xml" "astro" "javascriptreact" "typescriptreact" "svelte" "vue" ];
-        };
-
         nixvimInjections = true;
 
-        moduleConfig.highlight = {
-          additional_vim_regex_highlighting = [ "org" ];
-          enable = true;
-          disable = [ "pug" ];
+        settings = {
+          autotag = {
+            enable = true;
+            filetypes = [ "html" "xml" "astro" "javascriptreact" "typescriptreact" "svelte" "vue" ];
+          };
+
+          highlight = {
+            additional_vim_regex_highlighting = [ "org" ];
+            enable = true;
+            disable = [ "pug" ];
+          };
+
+          folding = true;
         };
       };
 
@@ -75,7 +73,7 @@
         servers = {
           nixd = {
             enable = true;
-            settings.formatting.command = ["nixpkgs-fmt"];
+            settings.formatting.command = [ "nixpkgs-fmt" ];
           };
           # TODO: https://github.com/nix-community/nixvim/issues/1702
           # rust-analyzer.enable = true;
@@ -95,11 +93,6 @@
 
       lsp-format = {
         enable = true;
-      };
-
-      lsp-lines = {
-        enable = false;
-        currentLine = true;
       };
 
       lspsaga.enable = true;
@@ -193,6 +186,8 @@
       clipboard = "unnamedplus";
 
       laststatus = 3;
+      # Don't want folding at startup
+      foldenable = false;
     };
 
     globals = {

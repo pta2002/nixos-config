@@ -25,7 +25,6 @@
     "intel_iommu=on"
     "vfio-pci.ids=8086:0412,8086:0c0c"
     "preempt=full"
-    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
   ];
   hardware.i2c.enable = true;
   services.udev.packages = [ pkgs.openrgb ];
@@ -58,7 +57,7 @@
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     extraPackages = [ pkgs.mesa.drivers ];
   };
@@ -80,14 +79,6 @@
   #     }
   #   '';
   # };
-
-  # Fixing the damn keyboard...
-  # services.xserver.displayManager.sessionCommands = ''
-  #   ${pkgs.xorg.xmodmap}/bin/xmodmap "${pkgs.writeText "xkb-layout" ''
-  #     keycode 94 = backslash bar backslash bar notsign notsign notsign
-  #     keycode 49 = less greater less greater backslash backslash backslash
-  #   ''}"
-  # '';
 
   environment.sessionVariables = {
     GDM_BACKEND = "nvidia-drm";

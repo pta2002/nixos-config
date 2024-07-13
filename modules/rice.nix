@@ -99,7 +99,7 @@
   # TODO: This isn't working for some reason
   qt = {
     enable = true;
-    platformTheme = "gtk";
+    platformTheme.name = "gtk";
     style = {
       package = pkgs.adwaita-qt;
       name = "Adwaita-dark";
