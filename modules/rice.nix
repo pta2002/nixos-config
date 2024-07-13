@@ -17,7 +17,7 @@
     # eww-wayland
     swaylock-effects
 
-    eww-wayland
+    eww
 
     hyprpaper
 
@@ -77,7 +77,7 @@
   gtk = {
     enable = true;
     theme = {
-      package = pkgs.gnome.gnome-themes-extra;
+      package = pkgs.gnome-themes-extra;
       name = "Adwaita-dark";
     };
     gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
@@ -86,7 +86,7 @@
 
   home.pointerCursor = {
     gtk.enable = true;
-    package = pkgs.gnome.adwaita-icon-theme;
+    package = pkgs.adwaita-icon-theme;
     name = "Adwaita";
   };
 
@@ -201,7 +201,7 @@
     in
     {
       # cursor theme
-      ".icons/default".source = "${pkgs.gnome.adwaita-icon-theme}/share/icons/Adwaita";
+      ".icons/default".source = "${pkgs.adwaita-icon-theme}/share/icons/Adwaita";
 
       ".config/wallpaper.jpg".source = ../wallpaper.jpg;
       # ".config/sxhkd".source = ln "/home/pta2002/nixos/configs/sxhkd";

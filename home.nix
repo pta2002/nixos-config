@@ -58,8 +58,8 @@
     wget
     ffmpeg
     htop
-    gnome.nautilus
-    gnome.eog
+    nautilus
+    eog
     dnsutils
     usbutils
     pciutils
@@ -138,7 +138,6 @@
       ms-vscode.cpptools
       github.copilot
       ms-toolsai.jupyter
-      mgt19937.typst-preview
     ];
   };
 

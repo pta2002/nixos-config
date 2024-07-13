@@ -6,11 +6,17 @@
       treesitter = {
         enable = true;
         nixGrammars = true;
-        ensureInstalled = "all";
+
+        settings = {
+          ensure_installed = ["all"];
+          settings.auto_install = false;
+        };
+
         moduleConfig.autotag = {
           enable = true;
           filetypes = [ "html" "xml" "astro" "javascriptreact" "typescriptreact" "svelte" "vue" ];
         };
+
         nixvimInjections = true;
 
         moduleConfig.highlight = {
@@ -67,7 +73,10 @@
       lsp = {
         enable = true;
         servers = {
-          nixd.enable = true;
+          nixd = {
+            enable = true;
+            settings.formatting.command = ["nixpkgs-fmt"];
+          };
           # TODO: https://github.com/nix-community/nixvim/issues/1702
           # rust-analyzer.enable = true;
           # rust-analyzer.installRustc = true;
@@ -82,10 +91,10 @@
           astro.enable = true;
           gleam.enable = true;
         };
+      };
 
-        onAttach = /* lua */ ''
-          vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
-        '';
+      lsp-format = {
+        enable = true;
       };
 
       lsp-lines = {
@@ -151,6 +160,12 @@
 
       toggleterm.enable = true;
       toggleterm.settings.open_mapping = "[[<c-t>]]";
+
+      luasnip.enable = true;
+      sleuth.enable = true;
+      git-conflict.enable = true;
+
+      parinfer-rust.enable = true;
     };
 
     colorschemes.kanagawa.enable = true;
@@ -197,7 +212,6 @@
 
     extraConfigLua = ''
       require("scope").setup()
-      require('git-conflict').setup()
 
       -- Make LSP shut up
       local notify = vim.notify
@@ -210,19 +224,8 @@
       end
     '';
 
+
     extraPlugins = with pkgs.vimPlugins; [
-      vim-sleuth
-      luasnip
-      (pkgs.vimUtils.buildVimPlugin {
-        pname = "git-conflict.nvim";
-        version = "master";
-        src = pkgs.fetchFromGitHub {
-          owner = "akinsho";
-          repo = "git-conflict.nvim";
-          rev = "3c89812a83ac749b8851a473863958325a1cd57c";
-          hash = "sha256-yQvV8tDpjmMfmnWZrsXHgOEQsTFadHC46N6VdPXoX6o=";
-        };
-      })
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "glowbeam-nvim";
         version = "master";
@@ -254,16 +257,6 @@
         };
 
         buildInputs = with pkgs; [ janet ];
-      })
-      (pkgs.vimUtils.buildVimPlugin rec {
-        pname = "nvim-parinfer";
-        version = "c0d95d9f4c5f921872ba11790b76efbb02cc8af5";
-        src = pkgs.fetchFromGitHub {
-          owner = "gpanders";
-          repo = "nvim-parinfer";
-          rev = version;
-          sha256 = "0sk6nwppvxznr6lc5zh8rj8pgqa2qi18d0d4r97ap00d59krb6f4";
-        };
       })
       (pkgs.vimUtils.buildVimPlugin rec {
         pname = "vim-sxhkdrc";
