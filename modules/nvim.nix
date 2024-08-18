@@ -35,8 +35,8 @@
       nix.enable = true;
       bufferline = {
         enable = true;
-        diagnostics = "nvim_lsp";
-        separatorStyle = "slant";
+        settings.options.diagnostics = "nvim_lsp";
+        settings.options.separator_style = "slant";
       };
       nvim-autopairs.enable = true;
       nvim-tree.enable = true;
@@ -253,7 +253,7 @@
       { key = "j"; action = "gj"; mode = "n"; }
       { key = "k"; action = "gk"; mode = "n"; }
       { key = "<C-S>"; action = "<C-O>:w<CR>"; mode = "i"; }
-      { key ="<leader>g"; action = "<CMD>Neogit cwd=%:p:h<CR> kind=auto"; mode = "n"; }
+      { key = "<leader>g"; action = "<CMD>Neogit cwd=%:p:h<CR> kind=auto"; mode = "n"; }
     ];
 
     autoCmd = [
