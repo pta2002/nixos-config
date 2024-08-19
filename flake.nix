@@ -42,31 +42,27 @@
     android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
     android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
 
-    raspberry-pi-nix.url = "github:tstat/raspberry-pi-nix";
+    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
   };
 
   nixConfig = {
     substituters = [
       "https://cache.nixos.org/"
-      "https://cuda-maintainers.cachix.org"
-      "https://hyprland.cachix.org"
       "https://nix-community.cachix.org"
+      "https://cuda-maintainers.cachix.org"
       "https://nixpkgs-unfree.cachix.org"
       "https://numtide.cachix.org"
-      "https://raspberry-pi-nix.cachix.org"
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
       "nixpkgs-unfree.cachix.org-1:hqvoInulhbV4nJ9yJOEr+4wxhDV4xq2d1DK7S6Nj6rs="
       "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
-      "raspberry-pi-nix.cachix.org-1:WmV2rdSangxW0rZjY/tBvBDSaNFQ3DyEQsVw8EvHn9o="
     ];
   };
 
-  outputs = { self, nixpkgs, home, nixvim, agenix, nixos-wsl, nix-on-droid, my-switches, nix-index-database, raspberry-pi-nix, ... }@inputs:
+  outputs = { nixpkgs, home, nixvim, agenix, nixos-wsl, nix-on-droid, my-switches, raspberry-pi-nix, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [

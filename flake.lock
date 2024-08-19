@@ -1116,13 +1116,13 @@
       "locked": {
         "lastModified": 1723990852,
         "narHash": "sha256-72GMGaEOC0f7ExJMBSJhtMLX7Q3CnaXQHMjMO2NkRQA=",
-        "owner": "tstat",
+        "owner": "nix-community",
         "repo": "raspberry-pi-nix",
         "rev": "a993f0cd595ecc0836ca82640657527b934f9c9e",
         "type": "github"
       },
       "original": {
-        "owner": "tstat",
+        "owner": "nix-community",
         "repo": "raspberry-pi-nix",
         "type": "github"
       }

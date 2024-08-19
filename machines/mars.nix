@@ -67,6 +67,8 @@
     };
   };
 
+  raspberry-pi-nix.board = "bcm2712";
+
   boot.loader.rpi-5.enable = true;
   raspberry-pi-nix.firmware-migration-service.enable = false;
 
