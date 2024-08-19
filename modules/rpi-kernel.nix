@@ -1,17 +1,5 @@
 { pkgs, config, lib, ... }:
 let
-  version = "6.9.1";
-  rpi-kernel = pkgs.linuxManualConfig {
-      src = pkgs.fetchFromGitHub { owner = "raspberrypi";
-        repo = "linux";
-        rev = "4ecd92372867652f9d73bca340c1e3e12559750f";
-        sha256 = "sha256-SpIIvAN87BYlz4la2PPtI91ysEqSbGVH8xjHuPf0qIo=";
-      };
-      inherit version;
-      modDirVersion = "${version}";
-      configfile = ./kernel.config;
-      allowImportFromDerivation = true;
-  };
   cfg = config.boot.loader.rpi-5;
 in
 {

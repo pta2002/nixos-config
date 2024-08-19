@@ -11,7 +11,7 @@
     # ../modules/grafana.nix
     # ../modules/quassel.nix
     # ../modules/jellyfin.nix
-    ../modules/rpi-kernel.nix
+    # ../modules/rpi-kernel.nix
   ];
 
   # TODO: This is another raspberry-pi-nix quirk. It assumes an SD card which
@@ -19,7 +19,7 @@
   # kernel cmdline to be the root partition to boot from.
   sdImage.firmwarePartitionID = "3c7dbdf7";
 
-  boot.supportedFilesystems = [ "btrfs" ];
+  boot.supportedFilesystems = [ "btrfs" "vfat" ];
 
   # fileSystems."/" = lib.mkForce {
   #   device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
@@ -67,12 +67,13 @@
     };
   };
 
-  raspberry-pi-nix.board = "bcm2712";
+  # raspberry-pi-nix.kernel-version = "v6_10_0-rc5";
 
-  boot.loader.rpi-5.enable = true;
-  raspberry-pi-nix.firmware-migration-service.enable = false;
+  # boot.loader.rpi-5.enable = true;
+  # raspberry-pi-nix.firmware-migration-service.enable = false;
 
   raspberry-pi-nix = {
+    board = "bcm2712";
     libcamera-overlay.enable = lib.mkForce false;
     uboot.enable = false;
   };
