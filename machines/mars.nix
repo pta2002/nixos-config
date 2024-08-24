@@ -42,55 +42,17 @@
     fsType = "btrfs";
   };
 
-  # disko.devices = {
-  #   disk.sda = {
-  #     type = "disk";
-  #     device = "/dev/disk/by-id/ata-ST500LT012-1DG142_WBYK8FNL";
-  #     content = {
-  #       type = "gpt";
-  #       partitions.data = {
-  #         size = "100%";
-  #         content = {
-  #           type = "btrfs";
-  #           extraArgs = ["-f"];
-  #           mountpoint = "/mnt/data2";
-  #           mountOptions = [ "compress=zstd" "noatime" ];
-  #         };
-  #       };
-  #     };
-  #   };
-  # };
-
   hardware = {
     raspberry-pi = {
-      config = {};
+      config = { };
     };
   };
-
-  # raspberry-pi-nix.kernel-version = "v6_10_0-rc5";
-
-  # boot.loader.rpi-5.enable = true;
-  # raspberry-pi-nix.firmware-migration-service.enable = false;
 
   raspberry-pi-nix = {
     board = "bcm2712";
     libcamera-overlay.enable = lib.mkForce false;
     uboot.enable = false;
   };
-
-  # For now, mounting multi-device bcachefs on fstab does not work :c
-  # Just use a systemd service :shrug:
-  # systemd.services."data-volume" = {
-  #   description = "Mount BcacheFS storage";
-  #   requires = [ "-.mount" "dev-sda.device" "dev-sdb.device" ];
-  #   after = [ "-.mount" "dev-sda.device" "dev-sdb.device" ];
-  #
-  #   wantedBy = [ "local-fs.target" ];
-  #
-  #   serviceConfig.Type = "oneshot";
-  #   # serviceConfig.ExecStart = "${pkgs.bcachefs-tools}/bin/bcachefs mount -v UUID=ae0fadc6-5110-4a67-ac19-b89c117e36e3 /mnt/data";
-  #   serviceConfig.ExecStart = "${pkgs.bcachefs-tools}/bin/bcachefs mount -v /dev/sda:/dev/sdb /mnt/data";
-  # };
 
   swapDevices = [ ];
 
@@ -99,12 +61,6 @@
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
-  # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
-  # boot.loader.grub.enable = false;
-  # Enables the generation of /boot/extlinux/extlinux.conf
-  # boot.loader.generic-extlinux-compatible.enable = true;
-  # boot.tmp.useTmpfs = true;
-  # boot.kernelParams = [ "8250.nr_uarts=1" "cma=512M" ];
   nix = {
     settings.auto-optimise-store = true;
     gc = {
@@ -139,6 +95,10 @@
   };
 
   users.users.root.openssh.authorizedKeys.keys = import ../ssh-keys.nix;
+
+  security.polkit = {
+    enable = true;
+  };
 
   security.sudo.extraRules = [{
     users = [ "pta2002" ];
