@@ -28,7 +28,7 @@
 
       lualine = {
         enable = true;
-        theme = "kanagawa";
+        settings.options.theme = "kanagawa";
       };
 
       intellitab.enable = true;
@@ -42,7 +42,10 @@
       nvim-tree.enable = true;
 
       undotree.enable = true;
-      surround.enable = true;
+      vim-surround.enable = true;
+
+      # Enabled because of telescope, lspsaga, nvim-tree, trouble and bufferline. Can be replaced by mini.
+      web-devicons.enable = true;
 
       lspkind = {
         enable = true;
@@ -84,8 +87,7 @@
           pyright.enable = true;
           gopls.enable = true;
           elixirls.enable = true;
-          hls.enable = true;
-          tsserver.enable = true;
+          ts_ls.enable = true;
           astro.enable = true;
           gleam.enable = true;
         };
