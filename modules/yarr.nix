@@ -1,7 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
-let
-  yarr = pkgs.callPackage ../overlays/yarr.nix { };
-in
+{ config, pkgs, ... }:
 {
   imports = [
     ./argoweb.nix
@@ -23,7 +20,7 @@ in
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      ExecStart = "${yarr}/bin/yarr -auth-file ${config.age.secrets.yarr.path}";
+      ExecStart = "${pkgs.yarr}/bin/yarr -auth-file ${config.age.secrets.yarr.path}";
       Type = "simple";
       User = "yarr";
       Group = "yarr";

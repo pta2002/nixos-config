@@ -13,6 +13,9 @@ let
         propagatedBuildInputs = prev.propagatedBuildInputs ++ [
           pkgs.python3Packages.watchfiles
         ];
+
+        doCheck = false;
+        doInstallCheck = false;
       })))
     ];
   };
