@@ -20,8 +20,7 @@
     vim-tup.flake = false;
 
     nixvim.url = "github:pta2002/nixvim";
-    # TODO: https://github.com/nix-community/nixvim/issues/1702
-    # nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
@@ -43,6 +42,7 @@
     android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
 
     raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   nixConfig = {
@@ -62,7 +62,7 @@
     ];
   };
 
-  outputs = { nixpkgs, home, nixvim, agenix, nixos-wsl, nix-on-droid, my-switches, raspberry-pi-nix, ... }@inputs:
+  outputs = { nixpkgs, home, nixvim, agenix, nixos-wsl, nix-on-droid, my-switches, raspberry-pi-nix, nixos-hardware, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -227,12 +227,12 @@
           specialArgs = { inherit my-switches; };
           modules = [
             agenix.nixosModules.default
-            raspberry-pi-nix.nixosModules.raspberry-pi
             home.nixosModules.home-manager
+            nixos-hardware.nixosModules.raspberry-pi-5
             ./machines/mars.nix
-            ({ pkgs, ... }@args: {
+            ({ ... }: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-                { home.stateVersion = "23.11"; }
+                { home.stateVersion = "24.11"; }
                 nixvim.homeManagerModules.nixvim
                 ./modules/nvim.nix
                 ./modules/git.nix

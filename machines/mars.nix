@@ -1,57 +1,59 @@
 # Raspberry Pi 5B, 8GB
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
     ../modules/home-assistant.nix
-    ../modules/samba.nix
     ../modules/transmission.nix
-    # ../modules/filespi.nix
+    ../modules/filespi.nix
     ../modules/plex.nix
     ../modules/sonarr.nix
+    # ../modules/samba.nix
     # ../modules/grafana.nix
     # ../modules/quassel.nix
     # ../modules/jellyfin.nix
     # ../modules/rpi-kernel.nix
   ];
 
-  # TODO: This is another raspberry-pi-nix quirk. It assumes an SD card which
-  # would have this kind of partition ID, and therefore this gets set on the
-  # kernel cmdline to be the root partition to boot from.
-  sdImage.firmwarePartitionID = "3c7dbdf7";
-
   boot.supportedFilesystems = [ "btrfs" "vfat" ];
+  boot.loader.efi.canTouchEfiVariables = false;
+  boot.loader.systemd-boot.enable = true;
 
-  # fileSystems."/" = lib.mkForce {
-  #   device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
-  #   fsType = "ext4";
-  # };
-  #
-  # fileSystems."/boot/firmware" = lib.mkForce {
-  #   device = "/dev/disk/by-label/FIRMWARE";
-  #   fsType = "vfat";
-  # };
-
-  fileSystems."/mnt/data" = {
-    device = "/dev/disk/by-id/ata-ST500LT012-1DG142_WBYK8FNL";
-    options = [
-      "compress=zstd"
-      "noatime"
-      "subvol=data"
-      "device=/dev/disk/by-id/ata-WDC_WD10EZEX-75WN4A0_WD-WCC6Y7SY7KJU"
-    ];
-    fsType = "btrfs";
-  };
-
-  hardware = {
-    raspberry-pi = {
-      config = { };
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/NixOS";
+      options = [
+        "compress=zstd"
+        "subvol=root"
+      ];
+      fsType = "btrfs";
     };
-  };
-
-  raspberry-pi-nix = {
-    board = "bcm2712";
-    libcamera-overlay.enable = lib.mkForce false;
-    uboot.enable = false;
+    "/home" = {
+      device = "/dev/disk/by-label/NixOS";
+      options = [
+        "compress=zstd"
+        "subvol=home"
+      ];
+      fsType = "btrfs";
+    };
+    "/nix" = {
+      device = "/dev/disk/by-label/NixOS";
+      options = [
+        "compress=zstd"
+        "subvol=nix"
+        "noatime"
+      ];
+      fsType = "btrfs";
+    };
+    "/mnt/data" = {
+      device = "/dev/disk/by-id/ata-ST500LT012-1DG142_WBYK8FNL";
+      options = [
+        "compress=zstd"
+        "noatime"
+        "subvol=data"
+        "device=/dev/disk/by-id/ata-WDC_WD10EZEX-75WN4A0_WD-WCC6Y7SY7KJU"
+      ];
+      fsType = "btrfs";
+    };
   };
 
   swapDevices = [ ];
@@ -98,6 +100,20 @@
 
   security.polkit = {
     enable = true;
+
+    extraConfig = /* js */ ''
+      // Users in the wheel group have essentially 'nopasswd' set.
+      polkit.addRule(function(action, subject) {
+        if (subject.isInGroup("wheel")) {
+          return polkit.Result.YES;
+        }
+      });
+
+      // Wheel group is used for admin.
+      polkit.addAdminRule(function(action, subject) {
+        return ["unix-group:wheel"];
+      });
+    '';
   };
 
   security.sudo.extraRules = [{
@@ -124,14 +140,13 @@
 
   services.cloudflared = {
     enable = true;
-
     tunnels.mars.credentialsFile = config.age.secrets.marstunnel.path;
     tunnels.mars.default = "http_status:404";
   };
 
   services.tailscale.enable = true;
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.11";
   nixpkgs.config.allowUnfree = true;
 
   # Stuff for argo

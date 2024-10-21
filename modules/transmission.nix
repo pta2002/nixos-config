@@ -26,6 +26,10 @@
     credentialsFile = config.age.secrets.transmission.path;
   };
 
+  systemd.services.transmission = {
+    requires = [ "mnt-data.mount" ];
+  };
+
   users.users.${config.services.transmission.user} = {
     home = config.services.transmission.home;
     createHome = true;

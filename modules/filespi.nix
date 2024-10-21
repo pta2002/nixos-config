@@ -23,10 +23,11 @@ let
 in
 {
   systemd.services.filebrowser = {
+    enable = true;
     description = "filebrowser";
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
-    wantedBy = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
       Restart = "on-failure";
@@ -37,7 +38,7 @@ in
     };
   };
 
-  services.argoWeb = {
+  services.cloudflared.tunnels.mars = {
     ingress."filestash.pta2002.com" = "http://localhost:8334";
   };
 }
