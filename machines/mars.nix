@@ -128,6 +128,7 @@
     git
     htop
     tmux
+    nh
   ];
 
   nix.settings.trusted-users = [ "root" "pta2002" ];
