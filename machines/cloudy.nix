@@ -12,6 +12,8 @@
   environment.systemPackages = with pkgs; [
     git
     docker-compose
+    nh
+    htop
   ];
 
   boot.loader.grub = {
