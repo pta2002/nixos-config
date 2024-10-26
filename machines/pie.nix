@@ -1,47 +1,51 @@
 # Raspberry Pi 4B, 2GB
 { config, pkgs, lib, ... }:
 {
-  imports = [
-    ../modules/home-assistant.nix
-    # ../modules/samba.nix
-    ../modules/transmission.nix
-    ../modules/filespi.nix
-    ../modules/plex.nix
-    # ../modules/sonarr.nix
-    ../modules/argoweb.nix
-    ../modules/grafana.nix
-    # ../modules/quassel.nix
-    # ../modules/jellyfin.nix
-  ];
-
-  services.argoWeb.enable = true;
+  imports = [ ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
-  boot.supportedFilesystems = [ "bcachefs" ];
+  boot.supportedFilesystems = [ ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
     fsType = "ext4";
   };
 
-  # For now, mounting multi-device bcachefs on fstab does not work :c
-  # Just use a systemd service :shrug:
-  systemd.services."data-volume" = {
-    description = "Mount BcacheFS storage";
-    requires = [ "-.mount" "dev-sda.device" "dev-sdb.device" ];
-    after = [ "-.mount" "dev-sda.device" "dev-sdb.device" ];
+  swapDevices = [ ];
 
-    wantedBy = [ "local-fs.target" ];
-
-    serviceConfig.Type = "oneshot";
-    # serviceConfig.ExecStart = "${pkgs.bcachefs-tools}/bin/bcachefs mount -v UUID=ae0fadc6-5110-4a67-ac19-b89c117e36e3 /mnt/data";
-    serviceConfig.ExecStart = "${pkgs.bcachefs-tools}/bin/bcachefs mount -v /dev/sda:/dev/sdb /mnt/data";
+  hardware.raspberry-pi."4" = {
+    fkms-3d.enable = true;
+    apply-overlays-dtmerge.enable = true;
+    touch-ft5406.enable = true;
+    bluetooth.enable = true;
   };
 
-  swapDevices = [ ];
+  # programs.sway.enable = true;
+  # services.greetd = {
+  #   enable = true;
+  #   settings = {
+  #     initial_session = {
+  #       command = "${config.programs.sway.package}/bin/sway";
+  #       user = "pta2002";
+  #     };
+  #     default_session = {
+  #       command = "${pkgs.greetd.tuigreet}/bin/tuigreet --greeting 'Hello!' --asterisks --remember --remember-user-session --time --cmd ${config.programs.sway.package}/bin/sway";
+  #       user = "greeter";
+  #     };
+  #   };
+  # };
+
+  services.xserver.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
 
   nixpkgs.hostPlatform = "aarch64-linux";
   powerManagement.cpuFreqGovernor = "ondemand";
@@ -81,7 +85,7 @@
   programs.fish.enable = true;
   users.users.pta2002 = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "argoweb" "docker" ];
+    extraGroups = [ "wheel" ];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = import ../ssh-keys.nix;
     password = "";
@@ -99,10 +103,9 @@
 
   environment.systemPackages = with pkgs; [
     git
-    cloudflared
     htop
+    firefox-wayland
   ];
-  # virtualisation.docker.enable = true;
 
   nix.settings.trusted-users = [ "root" "pta2002" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -114,20 +117,7 @@
 
   services.tailscale.enable = true;
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "24.11";
   nixpkgs.config.allowUnfree = true;
-
-  # Stuff for argo
-  age.secrets.cloudflared = {
-    file = ../secrets/pietunnel.json.age;
-    owner = "argoweb";
-  };
-
-  age.secrets.cert = {
-    file = ../secrets/cert.pem.age;
-    owner = "argoweb";
-  };
-
-  services.argoWeb.tunnel = "pietunnel";
 }
 

@@ -201,14 +201,13 @@
           specialArgs = { inherit my-switches; };
           modules = [
             home.nixosModules.home-manager
-            ./machines/pie.nix
-            ./modules/argoweb.nix
             agenix.nixosModules.default
-            ({ pkgs, ... }@args: {
+            nixos-hardware.nixosModules.raspberry-pi-4
+            ./machines/pie.nix
+            ({ ... }: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
                 { home.stateVersion = "23.05"; }
                 nixvim.homeManagerModules.nixvim
-                ./modules/nvim.nix
                 ./modules/git.nix
                 ./modules/shell.nix
               ];
