@@ -7,6 +7,7 @@
     ../modules/filespi.nix
     ../modules/plex.nix
     ../modules/sonarr.nix
+    ../modules/matterbridge.nix
     # ../modules/samba.nix
     # ../modules/grafana.nix
     # ../modules/quassel.nix
