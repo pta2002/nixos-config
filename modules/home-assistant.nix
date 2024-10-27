@@ -10,6 +10,76 @@
 
     extraComponents = [ "esphome" "met" ];
 
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+      mushroom
+    ];
+
+    lovelaceConfig = {
+      title = "Home";
+      views = [{
+        title = "Dashboard";
+        cards = [
+          {
+            type = "vertical-stack";
+            title = "Bedroom";
+            cards = [
+              {
+                type = "horizontal-stack";
+                cards = [
+                  {
+                    type = "custom:mushroom-light-card";
+                    entity = "light.ceiling_light";
+                    fill_container = true;
+                    layout = "vertical";
+                    show_brightness_control = true;
+                    name = "Ceiling";
+                  }
+                  {
+                    type = "custom:mushroom-light-card";
+                    entity = "light.bed_light";
+                    fill_container = true;
+                    layout = "vertical";
+                    show_brightness_control = true;
+                    name = "Bed";
+                  }
+                  {
+                    type = "custom:mushroom-light-card";
+                    entity = "light.desk_light";
+                    fill_container = true;
+                    layout = "vertical";
+                    show_brightness_control = true;
+                    name = "Desk";
+                  }
+                ];
+              }
+              {
+                type = "horizontal-stack";
+                cards = [
+                  {
+                    type = "custom:mushroom-light-card";
+                    entity = "light.short_cable_lights_2";
+                    fill_container = true;
+                    layout = "vertical";
+                    show_brightness_control = true;
+                    name = "Desk strip";
+                  }
+                  {
+                    type = "custom:mushroom-light-card";
+                    entity = "light.short_cable_lights";
+                    fill_container = true;
+                    layout = "vertical";
+                    show_brightness_control = true;
+                    name = "Bookshelf strip";
+                  }
+                ];
+              }
+            ];
+          }
+        ];
+      }];
+    };
+    lovelaceConfigWritable = true;
+
     config = {
       default_config = { };
 
