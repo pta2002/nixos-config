@@ -12,6 +12,7 @@
 
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
       mushroom
+      mini-graph-card
     ];
 
     lovelaceConfig = {
@@ -72,6 +73,13 @@
                     name = "Bookshelf strip";
                   }
                 ];
+              }
+              {
+                type = "custom:mini-graph-card";
+                entities = [ "sensor.bedroom_temperature_temperature" ];
+                name = "Temperature";
+                hours_to_show = 12;
+                points_per_hour = 4;
               }
             ];
           }
