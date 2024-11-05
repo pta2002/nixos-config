@@ -1,4 +1,4 @@
-{ pkgs, my-switches, ... }:
+{ pkgs, my-switches, inputs, ... }:
 {
   services.home-assistant = {
     enable = true;
@@ -8,11 +8,23 @@
       gtts
     ];
 
-    extraComponents = [ "esphome" "met" ];
+    extraComponents = [
+      "esphome"
+      "met"
+      "cast"
+      "spotify"
+      "plex"
+      "sonarr"
+      "radarr"
+      "transmission"
+    ];
 
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
       mushroom
       mini-graph-card
+      mini-media-player
+      hourly-weather
+      bubble-card
     ];
 
     lovelaceConfig = {
@@ -58,7 +70,7 @@
                 cards = [
                   {
                     type = "custom:mushroom-light-card";
-                    entity = "light.short_cable_lights_2";
+                    entity = "light.desk_strip";
                     fill_container = true;
                     layout = "vertical";
                     show_brightness_control = true;
@@ -80,6 +92,11 @@
                 name = "Temperature";
                 hours_to_show = 12;
                 points_per_hour = 4;
+              }
+              {
+                type = "custom:mini-media-player";
+                entity = "media_player.spotify";
+                artwork = "material";
               }
             ];
           }

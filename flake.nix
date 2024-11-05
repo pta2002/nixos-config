@@ -41,7 +41,6 @@
     android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
     android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
 
-    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
@@ -62,7 +61,7 @@
     ];
   };
 
-  outputs = { nixpkgs, home, nixvim, agenix, nixos-wsl, nix-on-droid, my-switches, raspberry-pi-nix, nixos-hardware, ... }@inputs:
+  outputs = { nixpkgs, home, nixvim, agenix, nixos-wsl, nix-on-droid, my-switches, nixos-hardware, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -223,7 +222,7 @@
 
         mars = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
-          specialArgs = { inherit my-switches; };
+          specialArgs = { inherit inputs my-switches; };
           modules = [
             agenix.nixosModules.default
             home.nixosModules.home-manager
