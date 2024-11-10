@@ -1,5 +1,8 @@
 # Raspberry Pi 4B, 2GB
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
+let
+  chromium-command = "${pkgs.chromium}/bin/chromium -a --kiosk --noerrdialogs --disable-infobars --no-first-run --ozone-platform=wayland --enable-features=OverlayScrollbar --start-maximized --force-dark-mode http://192.168.1.112:8123";
+in
 {
   imports = [ ];
 
@@ -23,24 +26,29 @@
     bluetooth.enable = true;
   };
 
-  # programs.sway.enable = true;
-  # services.greetd = {
-  #   enable = true;
-  #   settings = {
-  #     initial_session = {
-  #       command = "${config.programs.sway.package}/bin/sway";
-  #       user = "pta2002";
-  #     };
-  #     default_session = {
-  #       command = "${pkgs.greetd.tuigreet}/bin/tuigreet --greeting 'Hello!' --asterisks --remember --remember-user-session --time --cmd ${config.programs.sway.package}/bin/sway";
-  #       user = "greeter";
-  #     };
-  #   };
-  # };
+  systemd.user.services."kiosk" = {
+    enable = true;
+    requires = [ "graphical-session.target" ];
+    wantedBy = [ "graphical-session.target" ];
+    serviceConfig = {
+      ExecStart = chromium-command;
+    };
+  };
 
-  services.xserver.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+  };
+
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.sway}/bin/sway";
+        user = "pta2002";
+      };
+    };
+  };
 
   hardware.bluetooth = {
     enable = true;
@@ -104,8 +112,13 @@
   environment.systemPackages = with pkgs; [
     git
     htop
-    firefox-wayland
+    chromium
+    foot
   ];
+
+  services.udev.extraRules = ''
+    SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", GROUP="wheel"
+  '';
 
   nix.settings.trusted-users = [ "root" "pta2002" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -120,4 +133,3 @@
   system.stateVersion = "24.11";
   nixpkgs.config.allowUnfree = true;
 }
-

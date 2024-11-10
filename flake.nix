@@ -197,26 +197,11 @@
 
         pie = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
-          specialArgs = { inherit my-switches; };
+          specialArgs = { inherit inputs; };
           modules = [
-            home.nixosModules.home-manager
             agenix.nixosModules.default
             nixos-hardware.nixosModules.raspberry-pi-4
             ./machines/pie.nix
-            ({ ... }: {
-              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-                { home.stateVersion = "23.05"; }
-                nixvim.homeManagerModules.nixvim
-                ./modules/git.nix
-                ./modules/shell.nix
-              ];
-
-              home-manager.useGlobalPkgs = true;
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                hostname = "pie";
-              };
-            })
           ];
         };
 
