@@ -17,6 +17,8 @@
       "sonarr"
       "radarr"
       "transmission"
+      "tasmota"
+      "matter"
     ];
 
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
@@ -148,6 +150,10 @@
       mqtt.server = "mqtt://localhost:1883";
       mqtt.base_topic = "zigbee2mqtt";
     };
+  };
+
+  services.matter-server = {
+    enable = true;
   };
 
   services.mosquitto = {
