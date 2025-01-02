@@ -57,7 +57,11 @@
     };
   };
 
-  swapDevices = [ ];
+  swapDevices = [{
+    device = "/swapfile";
+    # 8GiB
+    size = 8 * 1024;
+  }];
 
   nixpkgs.hostPlatform = "aarch64-linux";
   powerManagement.cpuFreqGovernor = "ondemand";
