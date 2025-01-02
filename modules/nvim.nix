@@ -283,16 +283,6 @@
 
     extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin rec {
-        pname = "glowbeam-nvim";
-        version = "12144d6062455425028390095d2932d566cbc851";
-        src = pkgs.fetchFromGitHub {
-          owner = "cooperuser";
-          repo = "glowbeam.nvim";
-          rev = version;
-          hash = "sha256-EiwQYNLE2pRVifVkDw8WN7CkNcm5OOFu7jG3q7TlCyI=";
-        };
-      })
-      (pkgs.vimUtils.buildVimPlugin rec {
         pname = "terminal-nvim";
         version = "764b7c137512bcfba2e45cf3e25c08a9f4d3b733";
         src = pkgs.fetchFromGitHub {
