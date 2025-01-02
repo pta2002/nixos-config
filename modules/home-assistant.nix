@@ -1,4 +1,4 @@
-{ pkgs, my-switches, inputs, ... }:
+{ pkgs, my-switches, ... }:
 {
   services.home-assistant = {
     enable = true;
@@ -117,18 +117,15 @@
         unit_system = "metric";
       };
 
-      mqtt = {
-        # Home assistant decided that they want to make you jump through hoops to set up this kind of thing...:w
-        # Why? I have absolutely no idea. But I hope one of these days I can
-        # move to something that actually respects me...
-
-        # broker = "localhost";
-        # port = 1883;
-        # discovery = true;
-      };
+      mqtt = { };
 
       http = {
         use_x_forwarded_for = true;
+        cors_allowed_origins = [
+          "https://home.pta2002.com"
+          "http://mars:8123"
+          "http://192.168.1.112:8123"
+        ];
         trusted_proxies = [
           "::1"
           "127.0.0.1"
