@@ -6,9 +6,6 @@
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
-    nix-on-droid.url = "github:t184256/nix-on-droid";
-    nix-on-droid.inputs.nixpkgs.follows = "nixpkgs";
-    nix-on-droid.inputs.home-manager.follows = "home";
 
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
@@ -61,7 +58,7 @@
     ];
   };
 
-  outputs = { nixpkgs, home, nixvim, agenix, nixos-wsl, nix-on-droid, my-switches, nixos-hardware, ... }@inputs:
+  outputs = { nixpkgs, home, nixvim, agenix, nixos-wsl, my-switches, nixos-hardware, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -100,27 +97,6 @@
       };
     in
     rec {
-      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-        modules = [
-          ./machines/droid.nix
-          #home.nixosModules.home-manager
-          ({ pkgs, ... }@args: {
-            home-manager.config = nixpkgs.lib.mkMerge [
-              { home.stateVersion = "23.05"; }
-              nixvim.homeManagerModules.nixvim
-              (import ./modules/nvim.nix inputs)
-              {
-                programs.nixvim.enable = true;
-              }
-              ./modules/git.nix
-              ./modules/shell.nix
-            ];
-            home-manager.useGlobalPkgs = true;
-          })
-        ];
-        #specialArgs = { inherit inputs nixvim nixos-wsl; };
-      };
-
       homeManagerConfig = {
         pkgs = nixpkgs.legacyPackages."x86_64-linux";
         extraSpecialArgs = { inherit inputs nixvim nixos-wsl; };
@@ -147,36 +123,13 @@
         hydrogen = mkMachine "hydrogen" "x86_64-linux";
         mercury = mkMachine "mercury" "x86_64-linux";
 
-        wsl2 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./machines/wsl2.nix
-            home.nixosModules.home-manager
-            ({ pkgs, ... }@args: {
-              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-                { home.stateVersion = "23.05"; }
-                nixvim.homeManagerModules.nixvim
-                ./modules/nvim.nix
-                ./modules/git.nix
-                ./modules/shell.nix
-              ];
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                hostname = "wsl2";
-              };
-              home-manager.useGlobalPkgs = true;
-            })
-          ];
-          specialArgs = { inherit inputs nixvim nixos-wsl; };
-        };
-
         cloudy = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           modules = [
             home.nixosModules.home-manager
             ./machines/cloudy.nix
             agenix.nixosModules.default
-            ({ pkgs, ... }@args: {
+            ({ ... }: {
               home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
                 { home.stateVersion = "22.11"; }
                 nixvim.homeManagerModules.nixvim
