@@ -197,7 +197,7 @@
 
       endwise.enable = true;
 
-      nvim-colorizer.enable = true;
+      colorizer.enable = true;
 
       toggleterm.enable = true;
       toggleterm.settings.open_mapping = "[[<c-t>]]";
