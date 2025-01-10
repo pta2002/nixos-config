@@ -20,8 +20,6 @@
 
   services.jackett = {
     enable = true;
-    user = "transmission";
-    group = "transmission";
   };
 
   services.cloudflared.tunnels.mars = {
