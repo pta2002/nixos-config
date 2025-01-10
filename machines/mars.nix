@@ -142,6 +142,7 @@
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
+    settings.Tunnel = true;
   };
 
   services.cloudflared = {
