@@ -118,6 +118,8 @@
     # nixgl.nixVulkanIntel
     # nixgl.auto.nixGLDefault
     # nixgl.auto.nixGLNvidiaBumblebee
+
+    jj
   ];
 
   home.sessionVariables = {
