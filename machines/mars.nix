@@ -66,8 +66,6 @@
   nixpkgs.hostPlatform = "aarch64-linux";
   powerManagement.cpuFreqGovernor = "ondemand";
 
-  systemd.services.NetworkManager-wait-online.enable = false;
-
   nix = {
     settings.auto-optimise-store = true;
     gc = {
@@ -142,7 +140,6 @@
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
-    # settings.Tunnel = true;
   };
 
   services.cloudflared = {
