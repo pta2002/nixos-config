@@ -27,7 +27,10 @@
     ingress."radarr.pta2002.com" = "http://localhost:7878";
     ingress."readarr.pta2002.com" = "http://localhost:8787";
     ingress."jackett.pta2002.com" = "http://localhost:9117";
+    ingress."overseerr.pta2002.com" = "http://localhost:5055";
   };
+
+  services.jellyseerr.enable = true;
 
   # Remove when https://github.com/NixOS/nixpkgs/issues/360592 is done
   nixpkgs.config.permittedInsecurePackages = [
