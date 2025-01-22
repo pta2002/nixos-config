@@ -1,5 +1,5 @@
 # Raspberry Pi 5B, 8GB
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   imports = [
     ../modules/home-assistant.nix
@@ -18,6 +18,13 @@
   boot.supportedFilesystems = [ "btrfs" "vfat" ];
   boot.loader.efi.canTouchEfiVariables = false;
   boot.loader.systemd-boot.enable = true;
+
+  # The only difference between the rpi4 and the rpi5 kernels is the page size
+  # (4K vs 16K). However, the rpi5 kernel isn't built by Hydra so it means a 2+
+  # hour compile time whenever there's an update. The performance difference
+  # isn't that great, so honestly it's best to just use the kernel for the pi
+  # 4.
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_rpi4;
 
   fileSystems = {
     "/" = {
