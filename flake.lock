@@ -877,6 +877,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-jellyseerr": {
+      "locked": {
+        "lastModified": 1737457004,
+        "narHash": "sha256-o+8nuuH0/iHE2CuyXXtfzCfdR7HDKmCNTF4ad9PXkyo=",
+        "owner": "pta2002",
+        "repo": "nixpkgs",
+        "rev": "81186b50bf3d159398b0a37d12774e7681d9754c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pta2002",
+        "ref": "push-vouqznrmpotl",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-regression": {
       "locked": {
         "lastModified": 1643052045,
@@ -1158,6 +1174,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_4",
+        "nixpkgs-jellyseerr": "nixpkgs-jellyseerr",
         "nixvim": "nixvim",
         "picom": "picom",
         "vim-tup": "vim-tup"

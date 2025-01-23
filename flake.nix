@@ -3,6 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Temp override to have jellyseerr 2.3.0.
+    # Remove once https://github.com/NixOS/nixpkgs/pull/375492 is merged.
+    nixpkgs-jellyseerr.url = "github:pta2002/nixpkgs/push-vouqznrmpotl";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
@@ -162,6 +165,13 @@
           system = "aarch64-linux";
           specialArgs = { inherit inputs my-switches; };
           modules = [
+            ({ config, ... }: {
+              nixpkgs.overlays = [
+                (final: prev: {
+                  jellyseerr = inputs.nixpkgs-jellyseerr.legacyPackages.${config.nixpkgs.system}.jellyseerr;
+                })
+              ];
+            })
             agenix.nixosModules.default
             home.nixosModules.home-manager
             nixos-hardware.nixosModules.raspberry-pi-5

@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ ... }:
 {
   services.sonarr = {
     enable = true;
