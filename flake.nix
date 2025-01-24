@@ -167,6 +167,7 @@
           modules = [
             ({ config, ... }: {
               nixpkgs.overlays = [
+                (import ./overlays/qbittorrent-cli.nix)
                 (final: prev: {
                   jellyseerr = inputs.nixpkgs-jellyseerr.legacyPackages.${config.nixpkgs.system}.jellyseerr;
                 })
