@@ -6,6 +6,9 @@
     # Temp override to have jellyseerr 2.3.0.
     # Remove once https://github.com/NixOS/nixpkgs/pull/375492 is merged.
     nixpkgs-jellyseerr.url = "github:pta2002/nixpkgs/push-vouqznrmpotl";
+    # Temp override to have qbt-cli.3.0.
+    # Remove once https://github.com/NixOS/nixpkgs/pull/376403 is merged.
+    nixpkgs-qbt.url = "github:pta2002/nixpkgs/push-yztzypqxmlpz";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
@@ -167,9 +170,9 @@
           modules = [
             ({ config, ... }: {
               nixpkgs.overlays = [
-                (import ./overlays/qbittorrent-cli.nix)
                 (final: prev: {
                   jellyseerr = inputs.nixpkgs-jellyseerr.legacyPackages.${config.nixpkgs.system}.jellyseerr;
+                  qbittorrent-cli = inputs.nixpkgs-qbt.legacyPackages.${config.nixpkgs.system}.qbittorrent-cli;
                 })
               ];
             })
