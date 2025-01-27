@@ -3,21 +3,18 @@
 {
   imports = [
     ../modules/home-assistant.nix
-    ../modules/transmission.nix
-    ../modules/qbittorrent.nix
+    ../modules/deluge.nix
     ../modules/filespi.nix
     ../modules/plex.nix
     ../modules/sonarr.nix
     ../modules/matterbridge.nix
+    # ../modules/qbittorrent.nix
     # ../modules/samba.nix
     # ../modules/grafana.nix
     # ../modules/quassel.nix
     # ../modules/jellyfin.nix
     # ../modules/rpi-kernel.nix
   ];
-
-  services.qbittorrent.enable = true;
-  services.qbittorrent.webui-port = 8844;
 
   boot.supportedFilesystems = [ "btrfs" "vfat" ];
   boot.loader.efi.canTouchEfiVariables = false;

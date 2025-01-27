@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.services.qbittorrent;
+  rootDir = "/run/qbittorrent";
 in
 {
   options.services.qbittorrent = {
@@ -11,10 +12,15 @@ in
       example = "qbittorrent-enhanced";
     };
 
-    webui-port = lib.mkOption {
+    webuiPort = lib.mkOption {
       type = lib.types.int;
       default = 8080;
       description = "Port under which the web UI runs.";
+    };
+
+    downloadDir = lib.mkOption {
+      type = lib.types.path;
+      default = "/var/lib/qbittorrent/Downloads";
     };
 
     home = lib.mkOption {
@@ -35,36 +41,56 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.qbittorrent-cli ];
+  config = lib.mkIf cfg.enable (
+    let
+      toINI = lib.generators.toINI { };
+    in
+    {
+      environment.systemPackages = [ pkgs.qbittorrent-cli ];
 
-    systemd.services.qbittorrent = {
-      description = "qBittorrent BitTorrent Service";
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
+      systemd.services.qbittorrent = {
+        description = "qBittorrent BitTorrent Service";
+        after = [ "network.target" ];
+        wantedBy = [ "multi-user.target" ];
 
-      serviceConfig = {
-        ExecStart = "${cfg.package}/bin/qbittorrent-nox --webui-port=${toString cfg.webui-port}";
-        User = cfg.user;
-        Group = cfg.group;
+        serviceConfig = {
+          ExecStart = "${cfg.package}/bin/${cfg.package.meta.mainProgram} --webui-port=${toString cfg.webuiPort}";
+          User = cfg.user;
+          Group = cfg.group;
+
+          RuntimeDirectory = [ (baseNameOf rootDir) ];
+          RuntimeDirectoryMode = "755";
+
+          UMask = "0066";
+
+          RootDirectory = rootDir;
+          RootDirectoryStartOnly = true;
+
+          BindPaths = [
+            "${cfg.home}"
+            cfg.downloadDir
+            "/run"
+          ];
+
+          BindReadOnlyPaths = [
+            builtins.storeDir
+          ];
+        };
       };
-    };
 
-    users.users = lib.optionalAttrs (cfg.user == "qbittorrent") {
-      qbittorrent = {
-        group = cfg.group;
-        # uid = config.ids.uids.qbittorrent;
-        description = "qBittorrent user";
-        home = cfg.home;
-        isSystemUser = true;
-        createHome = true;
+      users.users = lib.optionalAttrs (cfg.user == "qbittorrent") {
+        qbittorrent = {
+          group = cfg.group;
+          description = "qBittorrent user";
+          home = cfg.home;
+          isSystemUser = true;
+          createHome = true;
+        };
       };
-    };
 
-    users.groups = lib.optionalAttrs (cfg.group == "qbittorrent") {
-      qbittorrent = {
-        # gid = config.ids.gids.qbittorrent;
+      users.groups = lib.optionalAttrs (cfg.group == "qbittorrent") {
+        qbittorrent = { };
       };
-    };
-  };
+    }
+  );
 }
