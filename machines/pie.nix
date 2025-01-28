@@ -1,7 +1,7 @@
 # Raspberry Pi 4B, 2GB
 { pkgs, ... }:
 let
-  chromium-command = "${pkgs.chromium}/bin/chromium -a --kiosk --noerrdialogs --disable-infobars --no-first-run --ozone-platform=wayland --enable-features=OverlayScrollbar --start-maximized --force-dark-mode http://192.168.1.112:8123";
+  chromium-command = "${pkgs.chromium}/bin/chromium -a --kiosk --noerrdialogs --disable-infobars --no-first-run --ozone-platform=wayland --enable-features=OverlayScrollbar --start-maximized --force-dark-mode http://192.168.1.100:8123";
 in
 {
   imports = [ ];
