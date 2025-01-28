@@ -8,13 +8,22 @@
     ../modules/plex.nix
     ../modules/sonarr.nix
     ../modules/matterbridge.nix
-    # ../modules/qbittorrent.nix
+    ../modules/qbittorrent.nix
     # ../modules/samba.nix
     # ../modules/grafana.nix
     # ../modules/quassel.nix
     # ../modules/jellyfin.nix
     # ../modules/rpi-kernel.nix
   ];
+
+  services.qbittorrent.enable = true;
+  services.qbittorrent.user = config.services.deluge.user;
+  services.qbittorrent.group = config.services.deluge.group;
+  services.qbittorrent.home = "/var/lib/deluge";
+  services.qbittorrent.downloadDir = "/mnt/data/torrents/";
+  services.qbittorrent.webuiPort = 8844;
+
+  virtualisation.docker.enable = true;
 
   boot.supportedFilesystems = [ "btrfs" "vfat" ];
   boot.loader.efi.canTouchEfiVariables = false;

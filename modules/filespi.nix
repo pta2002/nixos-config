@@ -31,9 +31,9 @@ in
 
     serviceConfig = {
       Restart = "on-failure";
-      User = "transmission";
-      Group = "transmission";
-      ExecStart = "${filebrowser}/bin/filebrowser -p 8334 -d /var/lib/transmission/filebrowser.db";
+      User = config.services.deluge.user;
+      Group = config.services.deluge.group;
+      ExecStart = "${filebrowser}/bin/filebrowser -p 8334 -d /var/lib/deluge/filebrowser.db";
       WorkingDirectory = "/mnt/data";
     };
   };

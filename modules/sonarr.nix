@@ -1,21 +1,37 @@
-{ ... }:
+{ config, pkgs, ... }:
+let
+  user = config.services.deluge.user;
+  group = config.services.deluge.group;
+in
 {
+  environment.systemPackages = [ pkgs.cross-seed ];
+
+  systemd.services.cross-seed = {
+    description = "cross-seed";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.cross-seed}/bin/cross-seed daemon";
+      User = user;
+      Group = group;
+    };
+  };
+
+  services.autobrr = {
+    enable = true;
+    secretFile = "/var/lib/autobrr/secret";
+    settings.host = "0.0.0.0";
+  };
+
   services.sonarr = {
     enable = true;
-    user = "transmission";
-    group = "transmission";
+    inherit user group;
   };
 
   services.radarr = {
     enable = true;
-    user = "transmission";
-    group = "transmission";
-  };
-
-  services.readarr = {
-    enable = true;
-    user = "transmission";
-    group = "transmission";
+    inherit user group;
   };
 
   services.jackett = {
@@ -25,7 +41,6 @@
   services.cloudflared.tunnels.mars = {
     ingress."sonarr.pta2002.com" = "http://localhost:8989";
     ingress."radarr.pta2002.com" = "http://localhost:7878";
-    ingress."readarr.pta2002.com" = "http://localhost:8787";
     ingress."jackett.pta2002.com" = "http://localhost:9117";
     ingress."overseerr.pta2002.com" = "http://localhost:5055";
   };

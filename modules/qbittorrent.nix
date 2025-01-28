@@ -48,6 +48,9 @@ in
     {
       environment.systemPackages = [ pkgs.qbittorrent-cli ];
 
+      networking.firewall.allowedTCPPorts = [ 42044 ];
+      networking.firewall.allowedUDPPorts = [ 42044 ];
+
       systemd.services.qbittorrent = {
         description = "qBittorrent BitTorrent Service";
         after = [ "network.target" ];
@@ -58,23 +61,23 @@ in
           User = cfg.user;
           Group = cfg.group;
 
-          RuntimeDirectory = [ (baseNameOf rootDir) ];
-          RuntimeDirectoryMode = "755";
-
-          UMask = "0066";
-
-          RootDirectory = rootDir;
-          RootDirectoryStartOnly = true;
-
-          BindPaths = [
-            "${cfg.home}"
-            cfg.downloadDir
-            "/run"
-          ];
-
-          BindReadOnlyPaths = [
-            builtins.storeDir
-          ];
+          # RuntimeDirectory = [ (baseNameOf rootDir) ];
+          # RuntimeDirectoryMode = "755";
+          #
+          # UMask = "0066";
+          #
+          # RootDirectory = rootDir;
+          # RootDirectoryStartOnly = true;
+          #
+          # BindPaths = [
+          #   "${cfg.home}"
+          #   cfg.downloadDir
+          #   "/run"
+          # ];
+          #
+          # BindReadOnlyPaths = [
+          #   builtins.storeDir
+          # ];
         };
       };
 
