@@ -9,6 +9,8 @@
     ../modules/sonarr.nix
     ../modules/matterbridge.nix
     ../modules/qbittorrent.nix
+    ../modules/audiobookshelf.nix
+    ../modules/coredns.nix
     # ../modules/samba.nix
     # ../modules/grafana.nix
     # ../modules/quassel.nix
