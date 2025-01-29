@@ -27,9 +27,9 @@
     owner = config.services.deluge.user;
   };
 
-  services.cloudflared.tunnels."mars".ingress = {
-    "deluge.pta2002.com" = "http://localhost:${builtins.toString config.services.deluge.web.port}";
-    "flood.pta2002.com" = "http://localhost:${builtins.toString config.services.flood.port}";
+  proxy.services = {
+    deluge = "localhost:${builtins.toString config.services.deluge.web.port}";
+    flood = "localhost:${builtins.toString config.services.flood.port}";
   };
 
   systemd.services.deluged = {

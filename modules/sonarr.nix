@@ -21,7 +21,10 @@ in
   services.autobrr = {
     enable = true;
     secretFile = "/var/lib/autobrr/secret";
-    settings.host = "0.0.0.0";
+    settings = {
+      host = "127.0.0.1";
+      port = "7474";
+    };
   };
 
   services.sonarr = {
@@ -38,14 +41,18 @@ in
     enable = true;
   };
 
-  services.cloudflared.tunnels.mars = {
-    ingress."sonarr.pta2002.com" = "http://localhost:8989";
-    ingress."radarr.pta2002.com" = "http://localhost:7878";
-    ingress."jackett.pta2002.com" = "http://localhost:9117";
-    ingress."overseerr.pta2002.com" = "http://localhost:5055";
-  };
-
   services.jellyseerr.enable = true;
+
+  # Overseerr is fine to be accessed externally.
+  services.cloudflared.tunnels.mars.ingress."overseerr.pta2002.com" = "http://localhost:${toString config.services.jellyseerr.port}";
+
+  proxy.services = {
+    sonarr = "localhost:8989";
+    radarr = "localhost:7878";
+    jackett = "localhost:${toString config.services.jackett.port}";
+    overseerr = "localhost:${toString config.services.jellyseerr.port}";
+    autobrr = "localhost:${toString config.services.autobrr.settings.port}";
+  };
 
   # Remove when https://github.com/NixOS/nixpkgs/issues/360592 is done
   nixpkgs.config.permittedInsecurePackages = [

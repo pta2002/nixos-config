@@ -123,6 +123,7 @@
         use_x_forwarded_for = true;
         cors_allowed_origins = [
           "https://home.pta2002.com"
+          "https://home.m.pta2002.com"
           "http://mars:8123"
           "http://192.168.1.112:8123"
         ];
@@ -162,6 +163,11 @@
     ingress."home.pta2002.com" = "http://localhost:8123";
   };
 
+  proxy.services = {
+    home = "localhost:8123";
+    zigbee2mqtt = "localhost:8080";
+  };
+
   systemd.services.switches = {
     description = "switches";
     after = [ "network-online.target" ];
@@ -187,7 +193,6 @@
   networking.firewall.allowedTCPPorts = [
     80
     8123
-    8080
     1883
     9001
   ];

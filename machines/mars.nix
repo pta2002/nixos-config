@@ -11,12 +11,22 @@
     ../modules/qbittorrent.nix
     ../modules/audiobookshelf.nix
     ../modules/coredns.nix
+    ../modules/proxy.nix
     # ../modules/samba.nix
     # ../modules/grafana.nix
     # ../modules/quassel.nix
     # ../modules/jellyfin.nix
     # ../modules/rpi-kernel.nix
   ];
+
+  proxy.enable = true;
+  proxy.domain = "m.pta2002.com";
+  proxy.environmentFile = config.age.secrets.caddy-mars.path;
+
+  age.secrets.caddy-mars = {
+    file = ../secrets/caddy-mars.age;
+    owner = config.services.caddy.user;
+  };
 
   services.qbittorrent.enable = true;
   services.qbittorrent.user = config.services.deluge.user;

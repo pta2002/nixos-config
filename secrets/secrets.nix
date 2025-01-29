@@ -10,4 +10,5 @@ in
   "nginx.age".publicKeys = keys;
   "pietunnel.json.age".publicKeys = keys;
   "marstunnel.json.age".publicKeys = keys;
+  "caddy-mars.age".publicKeys = keys;
 }

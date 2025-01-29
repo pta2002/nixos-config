@@ -51,9 +51,12 @@ in
       networking.firewall.allowedTCPPorts = [ 42044 ];
       networking.firewall.allowedUDPPorts = [ 42044 ];
 
+      proxy.services.qbittorrent = "localhost:${toString cfg.webuiPort}";
+
       systemd.services.qbittorrent = {
         description = "qBittorrent BitTorrent Service";
         after = [ "network.target" ];
+
         wantedBy = [ "multi-user.target" ];
 
         serviceConfig = {
