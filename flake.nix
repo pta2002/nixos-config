@@ -4,10 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # Temp override to have jellyseerr 2.3.0.
-    # Remove once https://github.com/NixOS/nixpkgs/pull/375492 is merged.
+    # Remove once https://nixpkgs-tracker.ocfox.me/?pr=375492 is integrated.
     nixpkgs-jellyseerr.url = "github:pta2002/nixpkgs/push-vouqznrmpotl";
     # Temp override to have qbt-cli.3.0.
-    # Remove once https://github.com/NixOS/nixpkgs/pull/376403 is merged.
+    # Remove once https://nixpkgs-tracker.oxfox.me/?pr=376403 is integrated.
     nixpkgs-qbt.url = "github:pta2002/nixpkgs/push-yztzypqxmlpz";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";

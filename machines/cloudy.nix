@@ -1,4 +1,4 @@
-{ pkgs, modulesPath, inputs, ... }: {
+{ pkgs, modulesPath, config, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ../modules/argoweb.nix
@@ -6,8 +6,23 @@
     ../modules/files.nix
     ../modules/fava.nix
     ../modules/vaultwarden.nix
-    ../modules/jellyfin.nix
+    ../modules/proxy.nix
   ];
+
+  proxy = {
+    enable = true;
+    domain = "c.pta2002.com";
+    listenAddresses = [
+      "100.86.136.44"
+      "fd7a:115c:a1e0:ab12:4843:cd96:6256:882c"
+    ];
+    environmentFile = config.age.secrets.caddy-mars.path;
+  };
+
+  age.secrets.caddy-mars = {
+    file = ../secrets/caddy-mars.age;
+    owner = config.services.caddy.user;
+  };
 
   environment.systemPackages = with pkgs; [
     git

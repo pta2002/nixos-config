@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.services.qbittorrent;
-  rootDir = "/run/qbittorrent";
 in
 {
   options.services.qbittorrent = {
@@ -41,10 +40,7 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable (
-    let
-      toINI = lib.generators.toINI { };
-    in
+  config = lib.mkIf cfg.enable
     {
       environment.systemPackages = [ pkgs.qbittorrent-cli ];
 
@@ -60,7 +56,7 @@ in
         wantedBy = [ "multi-user.target" ];
 
         serviceConfig = {
-          ExecStart = "${cfg.package}/bin/${cfg.package.meta.mainProgram} --webui-port=${toString cfg.webuiPort}";
+          ExecStart = "${lib.getExe cfg.package.meta.mainProgram} --webui-port=${toString cfg.webuiPort}";
           User = cfg.user;
           Group = cfg.group;
 
@@ -98,5 +94,5 @@ in
         qbittorrent = { };
       };
     }
-  );
+  ;
 }

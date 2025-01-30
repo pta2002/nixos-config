@@ -30,23 +30,23 @@ in
     ingress."fava.pta2002.com" = "http://localhost:80";
   };
 
-  age.secrets.nginx = {
-    file = ../secrets/nginx.age;
-    owner = "nginx";
-  };
+  # age.secrets.nginx = {
+  #   file = ../secrets/nginx.age;
+  #   owner = "nginx";
+  # };
 
-  services.nginx = {
-    enable = true;
-    virtualHosts."fava.pta2002.com" = {
-      forceSSL = false;
-      enableACME = false;
-
-      locations."/".proxyPass = "http://localhost:5000";
-      locations."/".basicAuthFile = config.age.secrets.nginx.path;
-      locations."/static/manifest.json".proxyPass = "http://localhost:5000";
-      locations."/static/manifest.json".basicAuthFile = null;
-    };
-  };
+  # services.nginx = {
+  #   enable = true;
+  #   virtualHosts."fava.pta2002.com" = {
+  #     forceSSL = false;
+  #     enableACME = false;
+  #
+  #     locations."/".proxyPass = "http://localhost:5000";
+  #     locations."/".basicAuthFile = config.age.secrets.nginx.path;
+  #     locations."/static/manifest.json".proxyPass = "http://localhost:5000";
+  #     locations."/static/manifest.json".basicAuthFile = null;
+  #   };
+  # };
 
   systemd.services.fava = {
     description = "fava";
@@ -69,6 +69,8 @@ in
       ReadWriteDirectories = "/var/lib/fava";
     };
   };
+
+  proxy.services.fava = "localhost:5000";
 
   systemd.services.fava-update = {
     script = ''
