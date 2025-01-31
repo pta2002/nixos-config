@@ -9,10 +9,7 @@
     owner = "yarr";
   };
 
-  services.argoWeb = {
-    enable = true;
-    ingress."yarr.pta2002.com" = "http://localhost:7070";
-  };
+  proxy.services.yarr = "localhost:7070";
 
   systemd.services.yarr = {
     description = "yarr";

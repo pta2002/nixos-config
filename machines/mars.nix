@@ -10,7 +10,6 @@
     ../modules/matterbridge.nix
     ../modules/qbittorrent.nix
     ../modules/audiobookshelf.nix
-    ../modules/coredns.nix
     ../modules/proxy.nix
     # ../modules/samba.nix
     # ../modules/grafana.nix

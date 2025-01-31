@@ -12,10 +12,8 @@
   proxy = {
     enable = true;
     domain = "c.pta2002.com";
-    listenAddresses = [
-      "100.86.136.44"
-      "fd7a:115c:a1e0:ab12:4843:cd96:6256:882c"
-    ];
+    ipv4 = "100.86.136.44";
+    ipv6 = "fd7a:115c:a1e0:ab12:4843:cd96:6256:882c";
     environmentFile = config.age.secrets.caddy-mars.path;
   };
 
