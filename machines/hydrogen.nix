@@ -2,7 +2,6 @@
 {
   imports = [
     ../modules/desktop.nix
-    ../modules/musnix.nix
   ];
 
   networking.hostId = "fa73900d";

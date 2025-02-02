@@ -283,38 +283,6 @@
 
     extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin rec {
-        pname = "terminal-nvim";
-        version = "764b7c137512bcfba2e45cf3e25c08a9f4d3b733";
-        src = pkgs.fetchFromGitHub {
-          owner = "rebelot";
-          repo = "terminal.nvim";
-          rev = version;
-          sha256 = "1z8b16hp6gvy85wvrac5f7gsgl127src7z3s2zmkbrqksscxm0wf";
-        };
-      })
-      (pkgs.vimUtils.buildVimPlugin rec {
-        pname = "janet-vim";
-        version = "61eca1138bd149a86edbde39dc20a3130f0d9b39";
-        src = pkgs.fetchFromGitHub {
-          owner = "janet-lang";
-          repo = "janet.vim";
-          rev = version;
-          sha256 = "1m9nyylwvb9ypgiqahjg6w6qzl8536p2s5vciais1slpjhrx9iqg";
-        };
-
-        buildInputs = [ pkgs.janet ];
-      })
-      (pkgs.vimUtils.buildVimPlugin rec {
-        pname = "vim-sxhkdrc";
-        version = "7b8abc305ba346c3af7d57da0ebec2b2f2d3f5b0";
-        src = pkgs.fetchFromGitHub {
-          owner = "baskerville";
-          repo = "vim-sxhkdrc";
-          rev = version;
-          sha256 = "0x82zpm9zwhaadwp5rp8gsw4ldc0arvra0pdmkjb327qvpd0ns6j";
-        };
-      })
-      (pkgs.vimUtils.buildVimPlugin rec {
         pname = "yuck-vim";
         version = "6dc3da77c53820c32648cf67cbdbdfb6994f4e08";
         src = pkgs.fetchFromGitHub {
@@ -324,21 +292,8 @@
           sha256 = "0890cyxnnvbbhv1irm0nxl5x7a49h1327cmhl1gmayigd4jym7ln";
         };
       })
-      (pkgs.vimUtils.buildVimPlugin {
-        pname = "vim-tup";
-        version = "eede19c";
-        src = inputs.vim-tup;
-      })
-      (pkgs.vimUtils.buildVimPlugin rec {
-        pname = "scope-nvim";
-        version = "2db6d31de8e3a98d2b41c0f0d1f5dc299ee76875";
-        src = pkgs.fetchFromGitHub {
-          owner = "tiagovla";
-          repo = "scope.nvim";
-          rev = version;
-          sha256 = "10l7avsjcgzh0s29az4zzskqcp9jw5xpvdiih02rf7c1j85zxm85";
-        };
-      })
+      pkgs.terminal-nvim
+      pkgs.vimPlugins.scope-nvim
       pkgs.vimPlugins.vim-terraform
       pkgs.vimPlugins.gleam-vim
       pkgs.vimPlugins.nvim-unception

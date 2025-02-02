@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    # Temp override to have vimPlugins.terminal-nvim.
+    # Remove once https://nixpkgs-tracker.ocfox.me/?pr=378883 is integrated.
+    nixpkgs-terminal-nvim.url = "github:pta2002/nixpkgs/push-owskvmmxnuvl";
+
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -13,14 +17,8 @@
     picom.url = "github:Arian8j2/picom-jonaburg-fix";
     picom.flake = false;
 
-    vim-tup.url = "github:dunedain289/vim-tup";
-    vim-tup.flake = false;
-
     nixvim.url = "github:pta2002/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
-
-    musnix.url = "github:musnix/musnix";
-    musnix.inputs.nixpkgs.follows = "nixpkgs";
 
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
@@ -28,9 +26,6 @@
 
     my-switches.url = "github:pta2002/home-automation";
     my-switches.inputs.nixpkgs.follows = "nixpkgs";
-
-    devenv.url = "github:cachix/devenv/latest";
-    # devenv.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
@@ -162,6 +157,13 @@
           system = "aarch64-linux";
           specialArgs = { inherit inputs my-switches; };
           modules = [
+            ({ config, ... }: {
+              nixpkgs.overlays = [
+                (final: prev: {
+                  inherit (inputs.nixpkgs-terminal-nvim.legacyPackages.${config.nixpkgs.system}.vimPlugins) terminal-nvim;
+                })
+              ];
+            })
             agenix.nixosModules.default
             home.nixosModules.home-manager
             nixos-hardware.nixosModules.raspberry-pi-5
