@@ -56,7 +56,7 @@ in
         wantedBy = [ "multi-user.target" ];
 
         serviceConfig = {
-          ExecStart = "${lib.getExe cfg.package.meta.mainProgram} --webui-port=${toString cfg.webuiPort}";
+          ExecStart = "${lib.getExe cfg.package} --webui-port=${toString cfg.webuiPort}";
           User = cfg.user;
           Group = cfg.group;
 

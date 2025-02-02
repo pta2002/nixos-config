@@ -3,12 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Temp override to have jellyseerr 2.3.0.
-    # Remove once https://nixpkgs-tracker.ocfox.me/?pr=375492 is integrated.
-    nixpkgs-jellyseerr.url = "github:pta2002/nixpkgs/push-vouqznrmpotl";
-    # Temp override to have qbt-cli.3.0.
-    # Remove once https://nixpkgs-tracker.oxfox.me/?pr=376403 is integrated.
-    nixpkgs-qbt.url = "github:pta2002/nixpkgs/push-yztzypqxmlpz";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
@@ -168,14 +162,6 @@
           system = "aarch64-linux";
           specialArgs = { inherit inputs my-switches; };
           modules = [
-            ({ config, ... }: {
-              nixpkgs.overlays = [
-                (final: prev: {
-                  jellyseerr = inputs.nixpkgs-jellyseerr.legacyPackages.${config.nixpkgs.system}.jellyseerr;
-                  qbittorrent-cli = inputs.nixpkgs-qbt.legacyPackages.${config.nixpkgs.system}.qbittorrent-cli;
-                })
-              ];
-            })
             agenix.nixosModules.default
             home.nixosModules.home-manager
             nixos-hardware.nixosModules.raspberry-pi-5

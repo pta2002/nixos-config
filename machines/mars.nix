@@ -21,6 +21,8 @@
   proxy.enable = true;
   proxy.domain = "m.pta2002.com";
   proxy.environmentFile = config.age.secrets.caddy-mars.path;
+  proxy.ipv4 = "100.126.178.45";
+  proxy.ipv6 = "fd7a:115c:a1e0::2501:b22d";
 
   age.secrets.caddy-mars = {
     file = ../secrets/caddy-mars.age;
