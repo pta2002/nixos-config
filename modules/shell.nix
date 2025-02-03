@@ -57,21 +57,11 @@
       }
       {
         name = "colored-man-pages";
-        src = pkgs.fetchFromGitHub {
-          owner = "PatrickF1";
-          repo = "colored_man_pages.fish";
-          rev = "f885c2507128b70d6c41b043070a8f399988bc7a";
-          sha256 = "0ifqdbaw09hd1ai0ykhxl8735fcsm0x2fwfzsk7my2z52ds60bwa";
-        };
+        src = colored-man-pages.src;
       }
       {
         name = "autopair-fish";
-        src = pkgs.fetchFromGitHub {
-          owner = "jorgebucaran";
-          repo = "autopair.fish";
-          rev = "1222311994a0730e53d8e922a759eeda815fcb62";
-          sha256 = "0lxfy17r087q1lhaz5rivnklb74ky448llniagkz8fy393d8k9cp";
-        };
+        src = autopair.src;
       }
       {
         name = "nvm.fish";
