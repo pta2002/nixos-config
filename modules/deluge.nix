@@ -19,6 +19,7 @@
     config.max_active_limit = -1;
     config.max_active_downloading = -1;
     config.random_port = false;
+    config.listen_ports = [ 40901 40911 ];
   };
 
   users.users.deluge.extraGroups = [ "data" ];
