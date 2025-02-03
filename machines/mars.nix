@@ -11,7 +11,7 @@
     ../modules/qbittorrent.nix
     ../modules/audiobookshelf.nix
     ../modules/proxy.nix
-    # ../modules/samba.nix
+    ../modules/samba.nix
   ];
 
   proxy.enable = true;
@@ -119,13 +119,15 @@
   programs.fish.enable = true;
   users.users.pta2002 = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "argoweb" "docker" ];
+    extraGroups = [ "wheel" "argoweb" "docker" "data" ];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = import ../ssh-keys.nix;
     password = "";
   };
 
   users.users.root.openssh.authorizedKeys.keys = import ../ssh-keys.nix;
+
+  users.groups.data = { };
 
   security.polkit = {
     enable = true;

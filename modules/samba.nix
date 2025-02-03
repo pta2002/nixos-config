@@ -1,33 +1,34 @@
-{ ... }:
+{ pkgs, ... }:
 {
   services.samba-wsdd.enable = true;
-  networking.firewall.allowedTCPPorts = [ 5357 ];
-  networking.firewall.allowedUDPPorts = [ 3702 ];
+  services.samba-wsdd.openFirewall = true;
+
 
   services.samba = {
     enable = true;
+    package = pkgs.sambaFull;
+
+    settings.data = {
+      path = "/mnt/data";
+      writable = "true";
+      "force create mode" = "0660";
+      "force directory mode" = "2770";
+      "directory mask" = "0775";
+      "force group" = "data";
+      "guest ok" = "no";
+      "read only" = "no";
+    };
 
     settings.global = {
-      workgroup = "WORKGROUP";
-      "server string" = "Mars";
+      workgroup = "mars";
       "netbios name" = "mars";
-      "security" = "user";
-      "hosts allow" = [ "100.0.0.0/8" "127.0.0.1" "192.168.0.0/16" "localhost" ];
+      security = "user";
+      "hosts allow" = [ "100.0.0.0/8" "fd7a:115c:a1e0::/48" "127.0.0.1" "localhost" ];
       "hosts deny" = [ "0.0.0.0/0" ];
       "guest account" = "nobody";
       "map to guest" = "bad user";
-      "acl allow execute always" = "True";
-    };
-
-    settings.torrents = {
-      path = "/mnt/data/torrents";
-      browseable = "yes";
-      "read only" = "no";
-      "guest ok" = "no";
-      "create mask" = "0644";
-      "directory mask" = "0755";
-      "force user" = "transmission";
-      "force group" = "transmission";
+      "unix password sync" = "yes";
+      "server role" = "standalone server";
     };
 
     openFirewall = true;

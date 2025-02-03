@@ -46,6 +46,19 @@ in
   # Overseerr is fine to be accessed externally.
   services.cloudflared.tunnels.mars.ingress."overseerr.pta2002.com" = "http://localhost:${toString config.services.jellyseerr.port}";
 
+  systemd.tmpfiles.settings."10-media" = {
+    "/mnt/data/movies".d = {
+      group = "data";
+      user = config.services.radarr.user;
+      mode = "0775";
+    };
+    "/mnt/data/tv".d = {
+      group = "data";
+      user = config.services.sonarr.user;
+      mode = "0775";
+    };
+  };
+
   proxy.services = {
     sonarr = "localhost:8989";
     radarr = "localhost:7878";
