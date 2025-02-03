@@ -37,10 +37,7 @@ in
     inherit user group;
   };
 
-  services.jackett = {
-    enable = true;
-  };
-
+  services.prowlarr.enable = true;
   services.jellyseerr.enable = true;
 
   # Overseerr is fine to be accessed externally.
@@ -62,7 +59,7 @@ in
   proxy.services = {
     sonarr = "localhost:8989";
     radarr = "localhost:7878";
-    jackett = "localhost:${toString config.services.jackett.port}";
+    prowlarr = "localhost:9696";
     overseerr = "localhost:${toString config.services.jellyseerr.port}";
     autobrr = "localhost:${toString config.services.autobrr.settings.port}";
   };

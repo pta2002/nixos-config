@@ -6,7 +6,7 @@
     ../modules/deluge.nix
     ../modules/filespi.nix
     ../modules/plex.nix
-    ../modules/sonarr.nix
+    ../modules/arrs.nix
     ../modules/matterbridge.nix
     ../modules/qbittorrent.nix
     ../modules/audiobookshelf.nix
