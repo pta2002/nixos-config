@@ -6,7 +6,7 @@
 
     # Temp override to have vimPlugins.terminal-nvim.
     # Remove once https://nixpkgs-tracker.ocfox.me/?pr=378883 is integrated.
-    nixpkgs-terminal-nvim.url = "github:pta2002/nixpkgs/push-owskvmmxnuvl";
+    # nixpkgs-terminal-nvim.url = "github:pta2002/nixpkgs/push-owskvmmxnuvl";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
@@ -160,7 +160,7 @@
             ({ config, ... }: {
               nixpkgs.overlays = [
                 (final: prev: {
-                  inherit (inputs.nixpkgs-terminal-nvim.legacyPackages.${config.nixpkgs.system}.vimPlugins) terminal-nvim;
+                  inherit (inputs.nixpkgs.legacyPackages.${config.nixpkgs.system}.vimPlugins) terminal-nvim;
                 })
               ];
             })

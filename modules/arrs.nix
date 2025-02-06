@@ -37,6 +37,21 @@ in
     inherit user group;
   };
 
+  services.lidarr = {
+    enable = true;
+    inherit user group;
+  };
+
+  services.readarr = {
+    enable = true;
+    inherit user group;
+  };
+
+  services.bazarr = {
+    enable = true;
+    inherit user group;
+  };
+
   services.prowlarr.enable = true;
   services.jellyseerr.enable = true;
 
@@ -54,12 +69,25 @@ in
       user = config.services.sonarr.user;
       mode = "0775";
     };
+    "/mnt/data/music".d = {
+      group = "data";
+      user = config.services.lidarr.user;
+      mode = "0775";
+    };
+    "/mnt/data/books".d = {
+      group = "data";
+      user = config.services.readarr.user;
+      mode = "0775";
+    };
   };
 
   proxy.services = {
     sonarr = "localhost:8989";
     radarr = "localhost:7878";
+    lidarr = "localhost:8686";
+    readarr = "localhost:8787";
     prowlarr = "localhost:9696";
+    bazarr = "localhost:${toString config.services.bazarr.listenPort}";
     overseerr = "localhost:${toString config.services.jellyseerr.port}";
     autobrr = "localhost:${toString config.services.autobrr.settings.port}";
   };
