@@ -4,10 +4,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    # Temp override to have vimPlugins.terminal-nvim.
-    # Remove once https://nixpkgs-tracker.ocfox.me/?pr=378883 is integrated.
-    # nixpkgs-terminal-nvim.url = "github:pta2002/nixpkgs/push-owskvmmxnuvl";
-
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -157,13 +153,6 @@
           system = "aarch64-linux";
           specialArgs = { inherit inputs my-switches; };
           modules = [
-            ({ config, ... }: {
-              nixpkgs.overlays = [
-                (final: prev: {
-                  inherit (inputs.nixpkgs.legacyPackages.${config.nixpkgs.system}.vimPlugins) terminal-nvim;
-                })
-              ];
-            })
             agenix.nixosModules.default
             home.nixosModules.home-manager
             nixos-hardware.nixosModules.raspberry-pi-5

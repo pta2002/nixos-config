@@ -292,7 +292,7 @@
           sha256 = "0890cyxnnvbbhv1irm0nxl5x7a49h1327cmhl1gmayigd4jym7ln";
         };
       })
-      pkgs.terminal-nvim
+      pkgs.vimPlugins.terminal-nvim
       pkgs.vimPlugins.scope-nvim
       pkgs.vimPlugins.vim-terraform
       pkgs.vimPlugins.gleam-vim
