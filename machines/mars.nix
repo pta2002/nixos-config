@@ -12,6 +12,7 @@
     ../modules/audiobookshelf.nix
     ../modules/proxy.nix
     ../modules/samba.nix
+    ../modules/thelounge.nix
   ];
 
   proxy.enable = true;
