@@ -30,6 +30,8 @@
     android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    disko.url = "github:nix-community/disko";
   };
 
   nixConfig = {
@@ -49,7 +51,7 @@
     ];
   };
 
-  outputs = { nixpkgs, home, nixvim, agenix, nixos-wsl, my-switches, nixos-hardware, ... }@inputs:
+  outputs = { nixpkgs, home, nixvim, agenix, nixos-wsl, my-switches, nixos-hardware, disko, ... }@inputs:
     let
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
@@ -172,6 +174,32 @@
                 hostname = "mars";
               };
             })
+          ];
+        };
+
+        panda = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            # agenix.nixosModules.default
+            disko.nixosModules.disko
+            # home.nixosModules.home-manager
+            ./machines/panda.nix
+            ./hardware.nix
+            # ({ ... }: {
+            #   home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+            #     { home.stateVersion = "24.11"; }
+            #     nixvim.homeManagerModules.nixvim
+            #     ./modules/nvim.nix
+            #     ./modules/git.nix
+            #     ./modules/shell.nix
+            #   ];
+            #
+            #   home-manager.useGlobalPkgs = true;
+            #   home-manager.extraSpecialArgs = {
+            #     inherit inputs;
+            #     hostname = "mars";
+            #   };
+            # })
           ];
         };
       };
