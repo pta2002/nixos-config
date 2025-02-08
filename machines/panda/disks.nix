@@ -1,9 +1,7 @@
-# Example to create a bios compatible gpt partition
-{ lib, ... }:
 {
   disko.devices = {
     disk.disk1 = {
-      device = lib.mkDefault "/dev/disk/by-id/mmc-CUTA42_0x8210ba01";
+      device = "/dev/disk/by-id/mmc-CUTA42_0x8210ba01";
       type = "disk";
       content = {
         type = "gpt";

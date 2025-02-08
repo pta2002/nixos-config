@@ -11,4 +11,6 @@ in
   "pietunnel.json.age".publicKeys = keys;
   "marstunnel.json.age".publicKeys = keys;
   "caddy-mars.age".publicKeys = keys;
+
+  "tailscale-panda.age".publicKeys = keys;
 }

@@ -32,6 +32,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     disko.url = "github:nix-community/disko";
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
 
   nixConfig = {
@@ -51,8 +52,10 @@
     ];
   };
 
-  outputs = { nixpkgs, home, nixvim, agenix, nixos-wsl, my-switches, nixos-hardware, disko, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, agenix, nixos-wsl, my-switches, nixos-hardware, disko, deploy-rs, ... }@inputs:
     let
+      lib = nixpkgs.lib;
+
       overlays = ({ pkgs, ... }: {
         nixpkgs.overlays = [
           (import ./overlays/visual-paradigm.nix pkgs)
@@ -88,8 +91,7 @@
           hostname = name;
         };
       };
-    in
-    rec {
+
       homeManagerConfig = {
         pkgs = nixpkgs.legacyPackages."x86_64-linux";
         extraSpecialArgs = { inherit inputs nixvim nixos-wsl; };
@@ -108,6 +110,9 @@
         ];
       };
 
+      fs = lib.fileset;
+    in
+    {
       homeConfigurations = {
         pta2002 = home.lib.homeManagerConfiguration homeManagerConfig;
       };
@@ -180,11 +185,10 @@
         panda = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
-            # agenix.nixosModules.default
+            agenix.nixosModules.default
             disko.nixosModules.disko
+
             # home.nixosModules.home-manager
-            ./machines/panda.nix
-            ./hardware.nix
             # ({ ... }: {
             #   home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
             #     { home.stateVersion = "24.11"; }
@@ -200,7 +204,15 @@
             #     hostname = "mars";
             #   };
             # })
-          ];
+          ] ++ fs.toList (fs.fileFilter (file: file.hasExt "nix") ./machines/panda);
+        };
+      };
+
+      deploy.nodes.panda = {
+        hostname = "panda";
+        profiles.system = {
+          user = "root";
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;
         };
       };
     };

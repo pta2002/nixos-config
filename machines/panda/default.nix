@@ -1,10 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, config }:
 {
-  imports = [
-    ../disk-config.nix
-  ];
-
   networking.hostName = "panda";
+  networking.networkmanager.enable = true;
+
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     font = "Lat2-Terminus16";
@@ -17,11 +15,25 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     shell = pkgs.fish;
-    openssh.authorizedKeys.keys = import ../ssh-keys.nix;
+    openssh.authorizedKeys.keys = import ../../ssh-keys.nix;
     password = "";
   };
 
-  users.users.root.openssh.authorizedKeys.keys = import ../ssh-keys.nix;
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = false;
+  };
+
+  age.secrets.tailscale = {
+    file = ../../secrets/tailscale-panda.age;
+  };
+
+  services.tailscale = {
+    enable = true;
+    authKeyFile = config.age.secrets.tailscale.path;
+  };
+
+  users.users.root.openssh.authorizedKeys.keys = import ../../ssh-keys.nix;
   security.polkit = {
     enable = true;
 
@@ -55,15 +67,21 @@
     nh
   ];
 
-  nix.settings.trusted-users = [ "root" "pta2002" ];
-
-  boot.supportedFilesystems = [ "btrfs" "bcachefs" "vfat" ];
-  boot.loader.systemd-boot.enable = true;
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  nix = {
+    settings.auto-optimise-store = true;
+    settings.trusted-users = [ "root" "pta2002" ];
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+    extraOptions = ''
+      min-free = ${toString (100 * 1024 * 1024)}
+      max-free = ${toString (1024 * 1024 * 1024)}
+    '';
+  };
 
   nixpkgs.hostPlatform = "x86_64-linux";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  services.openssh.enable = true;
+  system.stateVersion = "25.05";
 }

@@ -11,9 +11,9 @@
     efiSysMountPoint = "/boot/efi";
   };
 
-  boot.loader.refind.extraConfig = ''
-    resolution 3440 1440
-  '';
+  # boot.loader.refind.extraConfig = ''
+  #   resolution 3440 1440
+  # '';
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "vfio-pci" ];
   boot.initrd.kernelModules = [ ];
@@ -66,7 +66,6 @@
   networking.hostName = "hydrogen";
   networking.interfaces.enp3s0.useDHCP = true;
 
-  musnix.enable = true;
   security.rtkit.enable = true;
   # environment.etc = {
   #   "pipewire/pipewire.conf.d/92-low-latency.conf".text = ''

@@ -13,13 +13,15 @@ in
     ../modules/desktop.nix
   ];
 
-  boot.loader.refind.extraConfig = ''
-    resolution 1920 1080
-    menuentry "Windows 11" {
-      icon \\EFI\\refind\\themes\\rEFInd-minimal-dark\\icons_dark\\os_win11.png
-      loader \\EFI\\Microsoft\\Boot\\bootmgfw.efi
-    }
-  '';
+  # boot.loader.refind.extraConfig = ''
+  #   resolution 1920 1080
+  #   menuentry "Windows 11" {
+  #     icon \\EFI\\refind\\themes\\rEFInd-minimal-dark\\icons_dark\\os_win11.png
+  #     loader \\EFI\\Microsoft\\Boot\\bootmgfw.efi
+  #   }
+  # '';
+
+  boot.loader.systemd-boot.enable = true;
 
   networking.hostName = "mercury";
   networking.hostId = "a3aa8a8f";
