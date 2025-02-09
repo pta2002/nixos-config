@@ -109,34 +109,48 @@
 
       fs = lib.fileset;
 
-      mkSwarmMachine = { system, name, modules ? [ ], stateVersion, specialArgs ? { } }: nixpkgs.lib.nixosSystem {
-        inherit system specialArgs;
-        modules = [
-          agenix.nixosModules.default
-          home.nixosModules.home-manager
-          disko.nixosModules.disko
+      mkSwarmMachine = { system, name, modules ? [ ], stateVersion, specialArgs ? { }, roles ? [ ] }:
+        let
+          nixFilesIn = dir: fs.toList (fs.fileFilter (file: file.hasExt "nix") dir);
+          machineModules = nixFilesIn ./machines/${name};
+          commonModules = nixFilesIn ./common;
+          roleModules = map (role: nixFilesIn ./roles/${role}) roles;
+          roleDefinitions = {
+            config.common.role = lib.listToAttrs (map (role: { name = role; value = true; }) roles);
+          };
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit system specialArgs;
+          modules = lib.concatLists ([
+            [
+              agenix.nixosModules.default
+              home.nixosModules.home-manager
+              disko.nixosModules.disko
 
-          ./modules/common.nix
+              ./modules/common.nix
+              roleDefinitions
 
-          ({ ... }: {
-            home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-              { home.stateVersion = stateVersion; }
-              nixvim.homeManagerModules.nixvim
-              ./modules/nvim.nix
-              ./modules/git.nix
-              ./modules/shell.nix
-            ];
+              ({ ... }: {
+                home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+                  { home.stateVersion = stateVersion; }
+                  nixvim.homeManagerModules.nixvim
+                  ./modules/nvim.nix
+                  ./modules/git.nix
+                  ./modules/shell.nix
+                ];
 
-            home-manager.useGlobalPkgs = true;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              hostname = name;
-            };
-          })
-        ] ++ fs.toList (fs.fileFilter (file: file.hasExt "nix") ./machines/${name})
-        ++ fs.toList (fs.fileFilter (file: file.hasExt "nix") ./machines/common)
-        ++ modules;
-      };
+                home-manager.useGlobalPkgs = true;
+                home-manager.extraSpecialArgs = {
+                  inherit inputs;
+                  hostname = name;
+                };
+              })
+            ]
+            machineModules
+            commonModules
+            modules
+          ] ++ roleModules);
+        };
     in
     {
       homeConfigurations = {
@@ -190,6 +204,8 @@
           modules = [
             nixos-hardware.nixosModules.raspberry-pi-5
           ];
+
+          roles = [ "media" ];
         };
 
         panda = mkSwarmMachine {

@@ -29,7 +29,7 @@
   networking.firewall.allowedUDPPorts = [ 58846 ];
 
   age.secrets.deluge = {
-    file = ../secrets/deluge.age;
+    file = ../../secrets/deluge.age;
     owner = config.services.deluge.user;
   };
 

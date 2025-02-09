@@ -99,4 +99,16 @@ in
     "dotnet-sdk-6.0.428"
     "dotnet-sdk-wrapped-6.0.428"
   ];
+
+  common.backups.paths = [
+    "/var/lib/lidarr"
+    "/var/lib/readarr"
+    "/var/lib/radarr"
+    "/var/lib/sonarr"
+    "/var/lib/bazarr"
+    "/var/lib/prowlarr"
+    "/var/lib/jellyseerr"
+    "/var/lib/private/prowlarr"
+    "/var/lib/private/jellyseerr"
+  ];
 }

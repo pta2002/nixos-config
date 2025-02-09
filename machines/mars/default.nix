@@ -3,16 +3,11 @@
 {
   imports = [
     ../../modules/home-assistant.nix
-    ../../modules/deluge.nix
     ../../modules/filespi.nix
-    ../../modules/plex.nix
-    ../../modules/arrs.nix
     ../../modules/matterbridge.nix
-    ../../modules/qbittorrent.nix
-    ../../modules/audiobookshelf.nix
     ../../modules/proxy.nix
-    ../../modules/samba.nix
     ../../modules/thelounge.nix
+    ../../modules/samba.nix
   ];
 
   proxy.enable = true;
@@ -25,13 +20,6 @@
     file = ../../secrets/caddy-mars.age;
     owner = config.services.caddy.user;
   };
-
-  services.qbittorrent.enable = true;
-  services.qbittorrent.user = config.services.deluge.user;
-  services.qbittorrent.group = config.services.deluge.group;
-  services.qbittorrent.home = "/var/lib/deluge";
-  services.qbittorrent.downloadDir = "/mnt/data/torrents/";
-  services.qbittorrent.webuiPort = 8844;
 
   virtualisation.docker.enable = true;
 
@@ -93,19 +81,6 @@
   nixpkgs.hostPlatform = "aarch64-linux";
   powerManagement.cpuFreqGovernor = "ondemand";
 
-  nix = {
-    settings.auto-optimise-store = true;
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
-    extraOptions = ''
-      min-free = ${toString (100 * 1024 * 1024)}
-      max-free = ${toString (1024 * 1024 * 1024)}
-    '';
-  };
-
   networking.hostName = "mars";
   networking.networkmanager.enable = true;
 
@@ -116,45 +91,7 @@
     keyMap = "pt-latin1";
   };
 
-  environment.shells = with pkgs; [ bash fish ];
-  programs.fish.enable = true;
-  users.users.pta2002 = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "argoweb" "docker" "data" ];
-    shell = pkgs.fish;
-    openssh.authorizedKeys.keys = import ../../ssh-keys.nix;
-    password = "";
-  };
-
-  users.users.root.openssh.authorizedKeys.keys = import ../../ssh-keys.nix;
-
-  users.groups.data = { };
-
-  security.polkit = {
-    enable = true;
-
-    extraConfig = /* js */ ''
-      // Users in the wheel group have essentially 'nopasswd' set.
-      polkit.addRule(function(action, subject) {
-        if (subject.isInGroup("wheel")) {
-          return polkit.Result.YES;
-        }
-      });
-
-      // Wheel group is used for admin.
-      polkit.addAdminRule(function(action, subject) {
-        return ["unix-group:wheel"];
-      });
-    '';
-  };
-
-  security.sudo.extraRules = [{
-    users = [ "pta2002" ];
-    commands = [{
-      command = "ALL";
-      options = [ "NOPASSWD" ];
-    }];
-  }];
+  users.users.pta2002.extraGroups = [ "argoweb" "docker" ];
 
   environment.systemPackages = with pkgs; [
     git
@@ -162,14 +99,6 @@
     tmux
     nh
   ];
-
-  nix.settings.trusted-users = [ "root" "pta2002" ];
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = false;
-  };
 
   services.cloudflared = {
     enable = true;
@@ -180,7 +109,6 @@
   services.tailscale.enable = true;
 
   system.stateVersion = "24.11";
-  nixpkgs.config.allowUnfree = true;
 
   # Stuff for argo
   age.secrets.marstunnel = {

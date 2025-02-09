@@ -196,4 +196,6 @@
     1883
     9001
   ];
+
+  common.backups.paths = [ "/var/lib/hass" ];
 }

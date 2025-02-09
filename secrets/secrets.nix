@@ -13,4 +13,7 @@ in
   "caddy-mars.age".publicKeys = keys;
 
   "tailscale-panda.age".publicKeys = keys;
+
+  "rclone-config.age".publicKeys = keys;
+  "restic-password.age".publicKeys = keys;
 }
