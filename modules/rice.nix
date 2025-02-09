@@ -22,7 +22,8 @@
     hyprpaper
 
     jetbrains-mono
-    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
 
     (pkgs.rofi.override {
       plugins = with pkgs; [ rofi-emoji rofi-calc ];

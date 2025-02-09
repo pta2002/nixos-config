@@ -83,9 +83,7 @@
   };
 
   # Audio
-  # sound.enable = true;
   security.rtkit.enable = true;
-  hardware.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -113,8 +111,8 @@
     dedicatedServer.openFirewall = true;
   };
 
-  i18n.inputMethod = {
-    enabled = "ibus";
+  i18n.inputMethod= {
+    type = "ibus";
     ibus.engines = with pkgs.ibus-engines; [
       uniemoji
       table

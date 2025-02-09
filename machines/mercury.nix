@@ -27,11 +27,11 @@ in
   networking.hostId = "a3aa8a8f";
   networking.interfaces.wlo1.useDHCP = true;
 
-  services.xserver.videoDrivers = [ "intel" "nvidia" ];
+  services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
   nixpkgs.config.packageOverrides = pkgs: {
     # vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
       intel-media-driver

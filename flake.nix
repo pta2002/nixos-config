@@ -4,9 +4,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    nixos-wsl.url = "github:nix-community/NixOS-WSL";
-    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
-
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -52,7 +49,7 @@
     ];
   };
 
-  outputs = { self, nixpkgs, home, nixvim, agenix, nixos-wsl, my-switches, nixos-hardware, disko, deploy-rs, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, agenix, my-switches, nixos-hardware, disko, deploy-rs, ... }@inputs:
     let
       lib = nixpkgs.lib;
 
@@ -94,7 +91,7 @@
 
       homeManagerConfig = {
         pkgs = nixpkgs.legacyPackages."x86_64-linux";
-        extraSpecialArgs = { inherit inputs nixvim nixos-wsl; };
+        extraSpecialArgs = { inherit inputs nixvim; };
         modules = [
           nixvim.homeManagerModules.nixvim
           ./modules/nvim.nix
@@ -208,11 +205,31 @@
         };
       };
 
-      deploy.nodes.panda = {
-        hostname = "panda";
-        profiles.system = {
-          user = "root";
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;
+      deploy.nodes = {
+        panda = {
+          hostname = "panda";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;
+          };
+        };
+
+        cloudy = {
+          hostname = "cloudy";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.cloudy;
+          };
+        };
+
+        mars = {
+          hostname = "mars";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mars;
+          };
         };
       };
     };

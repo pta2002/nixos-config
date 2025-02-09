@@ -81,7 +81,6 @@
     # krita
     virt-manager
     qbittorrent
-    xournal
     element-desktop
     plex-media-player
     # todoist-electron
