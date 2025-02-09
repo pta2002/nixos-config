@@ -1,8 +1,5 @@
 { pkgs, config, ... }:
 {
-  networking.hostName = "panda";
-  networking.networkmanager.enable = true;
-
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     font = "Lat2-Terminus16";
@@ -19,21 +16,14 @@
     password = "";
   };
 
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = false;
-  };
+  security.sudo.extraRules = [{
+    users = [ "pta2002" ];
+    commands = [{
+      command = "ALL";
+      options = [ "NOPASSWD" ];
+    }];
+  }];
 
-  age.secrets.tailscale = {
-    file = ../../secrets/tailscale-panda.age;
-  };
-
-  services.tailscale = {
-    enable = true;
-    authKeyFile = config.age.secrets.tailscale.path;
-  };
-
-  users.users.root.openssh.authorizedKeys.keys = import ../../ssh-keys.nix;
   security.polkit = {
     enable = true;
 
@@ -51,14 +41,6 @@
       });
     '';
   };
-
-  security.sudo.extraRules = [{
-    users = [ "pta2002" ];
-    commands = [{
-      command = "ALL";
-      options = [ "NOPASSWD" ];
-    }];
-  }];
 
   environment.systemPackages = with pkgs; [
     git
