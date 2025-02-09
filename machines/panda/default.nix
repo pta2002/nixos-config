@@ -1,4 +1,4 @@
-{ pkgs, config }:
+{ pkgs, config, ... }:
 {
   networking.hostName = "panda";
   networking.networkmanager.enable = true;

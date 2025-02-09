@@ -1,4 +1,4 @@
-{ pkgs }: {
+{ pkgs, ... }: {
   boot.supportedFilesystems = [ "btrfs" "bcachefs" "vfat" ];
   boot.loader.systemd-boot.enable = true;
 

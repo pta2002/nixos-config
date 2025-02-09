@@ -187,23 +187,23 @@
           modules = [
             agenix.nixosModules.default
             disko.nixosModules.disko
+            home.nixosModules.home-manager
 
-            # home.nixosModules.home-manager
-            # ({ ... }: {
-            #   home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-            #     { home.stateVersion = "24.11"; }
-            #     nixvim.homeManagerModules.nixvim
-            #     ./modules/nvim.nix
-            #     ./modules/git.nix
-            #     ./modules/shell.nix
-            #   ];
-            #
-            #   home-manager.useGlobalPkgs = true;
-            #   home-manager.extraSpecialArgs = {
-            #     inherit inputs;
-            #     hostname = "mars";
-            #   };
-            # })
+            ({ ... }: {
+              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+                { home.stateVersion = "25.05"; }
+                nixvim.homeManagerModules.nixvim
+                ./modules/nvim.nix
+                ./modules/git.nix
+                ./modules/shell.nix
+              ];
+
+              home-manager.useGlobalPkgs = true;
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                hostname = "panda";
+              };
+            })
           ] ++ fs.toList (fs.fileFilter (file: file.hasExt "nix") ./machines/panda);
         };
       };
