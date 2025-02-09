@@ -108,6 +108,35 @@
       };
 
       fs = lib.fileset;
+
+      mkSwarmMachine = { system, name, modules ? [ ], stateVersion, specialArgs ? { } }: nixpkgs.lib.nixosSystem {
+        inherit system specialArgs;
+        modules = [
+          agenix.nixosModules.default
+          home.nixosModules.home-manager
+          disko.nixosModules.disko
+
+          ./modules/common.nix
+
+          ({ ... }: {
+            home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+              { home.stateVersion = stateVersion; }
+              nixvim.homeManagerModules.nixvim
+              ./modules/nvim.nix
+              ./modules/git.nix
+              ./modules/shell.nix
+            ];
+
+            home-manager.useGlobalPkgs = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              hostname = name;
+            };
+          })
+        ] ++ fs.toList (fs.fileFilter (file: file.hasExt "nix") ./machines/${name})
+        ++ fs.toList (fs.fileFilter (file: file.hasExt "nix") ./machines/common)
+        ++ modules;
+      };
     in
     {
       homeConfigurations = {
@@ -153,55 +182,20 @@
           ];
         };
 
-        mars = nixpkgs.lib.nixosSystem {
+        mars = mkSwarmMachine {
           system = "aarch64-linux";
+          name = "mars";
+          stateVersion = "24.11";
           specialArgs = { inherit inputs my-switches; };
           modules = [
-            agenix.nixosModules.default
-            home.nixosModules.home-manager
             nixos-hardware.nixosModules.raspberry-pi-5
-            ./machines/mars.nix
-            ({ ... }: {
-              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-                { home.stateVersion = "24.11"; }
-                nixvim.homeManagerModules.nixvim
-                ./modules/nvim.nix
-                ./modules/git.nix
-                ./modules/shell.nix
-              ];
-
-              home-manager.useGlobalPkgs = true;
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                hostname = "mars";
-              };
-            })
           ];
         };
 
-        panda = nixpkgs.lib.nixosSystem {
+        panda = mkSwarmMachine {
           system = "x86_64-linux";
-          modules = [
-            agenix.nixosModules.default
-            disko.nixosModules.disko
-            home.nixosModules.home-manager
-
-            ({ ... }: {
-              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-                { home.stateVersion = "25.05"; }
-                nixvim.homeManagerModules.nixvim
-                ./modules/nvim.nix
-                ./modules/git.nix
-                ./modules/shell.nix
-              ];
-
-              home-manager.useGlobalPkgs = true;
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                hostname = "panda";
-              };
-            })
-          ] ++ fs.toList (fs.fileFilter (file: file.hasExt "nix") ./machines/panda);
+          name = "panda";
+          stateVersion = "25.05";
         };
       };
 

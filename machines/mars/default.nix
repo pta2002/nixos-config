@@ -2,17 +2,17 @@
 { config, pkgs, lib, ... }:
 {
   imports = [
-    ../modules/home-assistant.nix
-    ../modules/deluge.nix
-    ../modules/filespi.nix
-    ../modules/plex.nix
-    ../modules/arrs.nix
-    ../modules/matterbridge.nix
-    ../modules/qbittorrent.nix
-    ../modules/audiobookshelf.nix
-    ../modules/proxy.nix
-    ../modules/samba.nix
-    ../modules/thelounge.nix
+    ../../modules/home-assistant.nix
+    ../../modules/deluge.nix
+    ../../modules/filespi.nix
+    ../../modules/plex.nix
+    ../../modules/arrs.nix
+    ../../modules/matterbridge.nix
+    ../../modules/qbittorrent.nix
+    ../../modules/audiobookshelf.nix
+    ../../modules/proxy.nix
+    ../../modules/samba.nix
+    ../../modules/thelounge.nix
   ];
 
   proxy.enable = true;
@@ -22,7 +22,7 @@
   proxy.ipv6 = "fd7a:115c:a1e0::2501:b22d";
 
   age.secrets.caddy-mars = {
-    file = ../secrets/caddy-mars.age;
+    file = ../../secrets/caddy-mars.age;
     owner = config.services.caddy.user;
   };
 
@@ -122,11 +122,11 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "argoweb" "docker" "data" ];
     shell = pkgs.fish;
-    openssh.authorizedKeys.keys = import ../ssh-keys.nix;
+    openssh.authorizedKeys.keys = import ../../ssh-keys.nix;
     password = "";
   };
 
-  users.users.root.openssh.authorizedKeys.keys = import ../ssh-keys.nix;
+  users.users.root.openssh.authorizedKeys.keys = import ../../ssh-keys.nix;
 
   users.groups.data = { };
 
@@ -184,7 +184,7 @@
 
   # Stuff for argo
   age.secrets.marstunnel = {
-    file = ../secrets/marstunnel.json.age;
+    file = ../../secrets/marstunnel.json.age;
     owner = config.services.cloudflared.user;
   };
 }
