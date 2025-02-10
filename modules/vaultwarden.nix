@@ -13,4 +13,6 @@
       ROCKET_LOG = "critical";
     };
   };
+
+  common.backups.paths = [ "/var/lib/bitwarden_rs" ];
 }

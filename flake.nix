@@ -161,31 +161,6 @@
         hydrogen = mkMachine "hydrogen" "x86_64-linux";
         mercury = mkMachine "mercury" "x86_64-linux";
 
-        cloudy = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          modules = [
-            home.nixosModules.home-manager
-            ./machines/cloudy.nix
-            agenix.nixosModules.default
-            ({ ... }: {
-              home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-                { home.stateVersion = "22.11"; }
-                nixvim.homeManagerModules.nixvim
-                ./modules/nvim.nix
-                ./modules/git.nix
-                ./modules/shell.nix
-              ];
-
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                hostname = "cloudy";
-              };
-              home-manager.useGlobalPkgs = true;
-            })
-          ];
-          specialArgs = { inherit inputs nixvim; };
-        };
-
         pie = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = { inherit inputs; };
@@ -206,6 +181,13 @@
           ];
 
           roles = [ "media" ];
+        };
+
+        cloudy = mkSwarmMachine {
+          system = "aarch64-linux";
+          stateVersion = "22.11";
+          name = "cloudy";
+          specialArgs = { inherit inputs nixvim; };
         };
 
         panda = mkSwarmMachine {
