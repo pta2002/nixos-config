@@ -36,5 +36,5 @@
     }];
   }];
 
-  nix.settings.trusted-users = [ "root" "pta2002" ];
+  nix.settings.trusted-users = [ "pta2002" ];
 }

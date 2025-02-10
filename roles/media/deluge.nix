@@ -39,7 +39,7 @@
   };
 
   systemd.services.deluged = {
-    requires = [ "mnt-data.mount" ];
+    requires = [ "mnt.mount" ];
   };
 
   systemd.tmpfiles.settings."10-torrents" = {

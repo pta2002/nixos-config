@@ -63,7 +63,7 @@ in {
           . {
             cache 30s
             # Forward to cloudflare
-            forward . tls://260:4700::1111 tls://2606:4700::1001 tls://1.1.1.1 tls://1.0.0.1 {
+            forward . tls://2606:4700::1111 tls://2606:4700::1001 tls://1.1.1.1 tls://1.0.0.1 {
               tls_servername cloudflare-dns.com
               health_check 5s
             }

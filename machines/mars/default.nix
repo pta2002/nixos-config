@@ -1,5 +1,5 @@
 # Raspberry Pi 5B, 8GB
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
   imports = [
     ../../modules/home-assistant.nix
@@ -23,16 +23,26 @@
 
   virtualisation.docker.enable = true;
 
-  boot.supportedFilesystems = [ "btrfs" "vfat" ];
-  boot.loader.efi.canTouchEfiVariables = false;
-  boot.loader.systemd-boot.enable = true;
+  boot.supportedFilesystems = [ "btrfs" "vfat" "bcachefs" ];
 
-  # The only difference between the rpi4 and the rpi5 kernels is the page size
-  # (4K vs 16K). However, the rpi5 kernel isn't built by Hydra so it means a 2+
-  # hour compile time whenever there's an update. The performance difference
-  # isn't that great, so honestly it's best to just use the kernel for the pi
-  # 4.
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_rpi4;
+  raspberry-pi-nix = {
+    board = "bcm2712";
+    # Needed for bcachefs
+    kernel-version = "v6_12_11";
+    # We're not using a camera, no point
+    libcamera-overlay.enable = false;
+    firmware-partition-label = "BOOT";
+  };
+
+  networking.firewall.extraCommands = ''
+    # Huawei AP keeps spamming requests to dmesg, stop logging them.
+    iptables \
+      --insert nixos-fw-log-refuse 1 \
+      --source 192.168.1.65 \
+      --protocol tcp \
+      --dport 40000 \
+      --jump nixos-fw-refuse
+  '';
 
   fileSystems = {
     "/" = {
@@ -60,15 +70,13 @@
       ];
       fsType = "btrfs";
     };
-    "/mnt/data" = {
-      device = "/dev/disk/by-id/ata-ST500LT012-1DG142_WBYK8FNL";
+    "/mnt" = {
+      device = "/dev/disk/by-uuid/219c1fb6-beeb-450a-a3c2-59ab6fb43b84";
       options = [
-        "compress=zstd"
         "noatime"
-        "subvol=data"
-        "device=/dev/disk/by-id/ata-WDC_WD10EZEX-75WN4A0_WD-WCC6Y7SY7KJU"
+        "nofail"
       ];
-      fsType = "btrfs";
+      fsType = "bcachefs";
     };
   };
 

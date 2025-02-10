@@ -30,6 +30,8 @@
 
     disko.url = "github:nix-community/disko";
     deploy-rs.url = "github:serokell/deploy-rs";
+    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
+    raspberry-pi-nix.inputs.rpi-firmware-src.url = "github:raspberrypi/firmware/next";
   };
 
   nixConfig = {
@@ -49,7 +51,7 @@
     ];
   };
 
-  outputs = { self, nixpkgs, home, nixvim, agenix, my-switches, nixos-hardware, disko, deploy-rs, ... }@inputs:
+  outputs = { self, nixpkgs, home, nixvim, agenix, my-switches, nixos-hardware, disko, deploy-rs, raspberry-pi-nix, ... }@inputs:
     let
       lib = nixpkgs.lib;
 
@@ -109,14 +111,21 @@
 
       fs = lib.fileset;
 
-      mkSwarmMachine = { system, name, modules ? [ ], stateVersion, specialArgs ? { }, roles ? [ ] }:
+      mkSwarmMachine = { system, name, modules ? [ ], stateVersion, specialArgs ? { }, roles ? [ ] }: hostForRoles:
         let
           nixFilesIn = dir: fs.toList (fs.fileFilter (file: file.hasExt "nix") dir);
           machineModules = nixFilesIn ./machines/${name};
           commonModules = nixFilesIn ./common;
           roleModules = map (role: nixFilesIn ./roles/${role}) roles;
           roleDefinitions = {
-            config.common.role = lib.listToAttrs (map (role: { name = role; value = true; }) roles);
+            config.common.role = lib.listToAttrs (map
+              (role: {
+                name = role;
+                value = {
+                  enabled = true;
+                };
+              })
+              roles);
           };
         in
         nixpkgs.lib.nixosSystem {
@@ -129,6 +138,7 @@
 
               ./modules/common.nix
               roleDefinitions
+              hostForRoles
 
               ({ ... }: {
                 home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
@@ -151,6 +161,21 @@
             modules
           ] ++ roleModules);
         };
+
+      # TODO!
+      mkSwarm = machines:
+        let
+          rolesPerHost = lib.mapAttrs (k: v: v.roles) machines;
+          hostForRoles =
+            let
+              flattened = lib.flatten (lib.mapAttrsToList
+                (host: map
+                  (role: { ${role}.name = host; }))
+                rolesPerHost);
+            in
+            { config.common.role = lib.mergeAttrsList flattened; };
+        in
+        lib.mapAttrs (k: v: mkSwarmMachine v hostForRoles) machines;
     in
     {
       homeConfigurations = {
@@ -170,32 +195,34 @@
             ./machines/pie.nix
           ];
         };
-
-        mars = mkSwarmMachine {
+      } // (mkSwarm {
+        mars = {
           system = "aarch64-linux";
           name = "mars";
           stateVersion = "24.11";
           specialArgs = { inherit inputs my-switches; };
           modules = [
-            nixos-hardware.nixosModules.raspberry-pi-5
+            raspberry-pi-nix.nixosModules.raspberry-pi
           ];
 
-          roles = [ "media" ];
+          roles = [ "media" "data-host" ];
         };
 
-        cloudy = mkSwarmMachine {
+        cloudy = {
           system = "aarch64-linux";
           stateVersion = "22.11";
           name = "cloudy";
           specialArgs = { inherit inputs nixvim; };
+          roles = [ "dns" ];
         };
 
-        panda = mkSwarmMachine {
+        panda = {
           system = "x86_64-linux";
           name = "panda";
           stateVersion = "25.05";
+          roles = [ ];
         };
-      };
+      });
 
       deploy.nodes = {
         panda = {

@@ -2,6 +2,7 @@
   nix = {
     settings.auto-optimise-store = true;
     settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.trusted-users = [ "root" "@wheel" ];
     gc = {
       automatic = true;
       dates = "weekly";

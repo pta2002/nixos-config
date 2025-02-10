@@ -9,7 +9,4 @@
   services.qbittorrent.home = "/var/lib/deluge";
   services.qbittorrent.downloadDir = "/mnt/data/torrents/";
   services.qbittorrent.webuiPort = 8844;
-
-  users.groups.data = { };
-  users.users.pta2002.extraGroups = [ "data" ];
 }
