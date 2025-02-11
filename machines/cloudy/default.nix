@@ -1,9 +1,10 @@
 { pkgs, config, ... }: {
   imports = [
-    ../../modules/argoweb.nix
+    # ../../modules/argoweb.nix
     ../../modules/yarr.nix
     ../../modules/files.nix
-    ../../modules/fava.nix
+    # Disabled for now, fava is incompatible with beancount3
+    # ../../modules/fava.nix
     ../../modules/vaultwarden.nix
     ../../modules/proxy.nix
   ];
@@ -38,15 +39,15 @@
   services.tailscale.enable = true;
 
   # Stuff for argo
-  age.secrets.cloudflared = {
-    file = ../../secrets/cloudflared.json.age;
-    owner = "argoweb";
-  };
-
-  age.secrets.cert = {
-    file = ../../secrets/cert.pem.age;
-    owner = "argoweb";
-  };
+  # age.secrets.cloudflared = {
+  #   file = ../../secrets/cloudflared.json.age;
+  #   owner = "argoweb";
+  # };
+  #
+  # age.secrets.cert = {
+  #   file = ../../secrets/cert.pem.age;
+  #   owner = "argoweb";
+  # };
 
   security.acme = {
     acceptTerms = true;

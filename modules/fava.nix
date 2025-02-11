@@ -5,11 +5,10 @@ let
     extraLibs = [
       (pkgs.python3Packages.toPythonModule (pkgs.callPackage ../configs/beancount_importers { }))
       (pkgs.python3Packages.toPythonModule (pkgs.fava.overrideAttrs (prev: {
-        src = pkgs.fetchurl {
-          url = "https://github.com/pta2002/fava/releases/download/v1.27.3-pwa/fava-1.27.4.dev4+g7313467f.tar.gz";
-          sha256 = "0w4dlxq180m466dnwl0jlfmc7qlnx9yailgpzrg3ixibn1vday5a";
-        };
-
+        # src = pkgs.fetchurl {
+        #   url = "https://github.com/pta2002/fava/releases/download/v1.27.3-pwa/fava-1.27.4.dev4+g7313467f.tar.gz";
+        #   sha256 = "0w4dlxq180m466dnwl0jlfmc7qlnx9yailgpzrg3ixibn1vday5a";
+        # };
         propagatedBuildInputs = prev.propagatedBuildInputs ++ [
           pkgs.python3Packages.watchfiles
         ];

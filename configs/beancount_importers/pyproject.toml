@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-beancount = "^2.3.6"
+beancount = "^3.0.0"
 pypdf = "^5.0.0"
 
 
