@@ -1,23 +1,9 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 let
   user = config.services.deluge.user;
   group = config.services.deluge.group;
 in
 {
-  environment.systemPackages = [ pkgs.cross-seed ];
-
-  systemd.services.cross-seed = {
-    description = "cross-seed";
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.cross-seed}/bin/cross-seed daemon";
-      User = user;
-      Group = group;
-    };
-  };
-
   services.autobrr = {
     enable = true;
     secretFile = "/var/lib/autobrr/secret";
@@ -111,4 +97,36 @@ in
     "/var/lib/private/prowlarr"
     "/var/lib/private/jellyseerr"
   ];
+
+  imports = [
+    ../../modules/cross-seed.nix
+  ];
+
+  services.cross-seed = {
+    enable = true;
+    inherit user group;
+    settings = {
+      dataDirs = [ "/mnt/data/tv" "/mnt/data/movies" ];
+      linkDirs = [ "/mnt/data/torrents/links" ];
+      torrentDir = "/var/lib/deluge/.config/deluge/state";
+      outputDir = "/var/lib/deluge/output";
+      linkType = "hardlink";
+      matchMode = "partial";
+      skipRecheck = true;
+      maxDataDepth = 3;
+      includeSingleEpisodes = true;
+      seasonFromEpisodes = 0.5;
+      fuzzySizeThreshold = 0.02;
+      action = "inject";
+      duplicateCategories = true;
+    };
+
+    settingsFile = config.age.secrets.cross-seed.path;
+  };
+
+  age.secrets.cross-seed = {
+    file = ../../secrets/cross-seed.json.age;
+    owner = config.services.cross-seed.user;
+    group = config.services.cross-seed.group;
+  };
 }

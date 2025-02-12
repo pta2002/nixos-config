@@ -16,4 +16,6 @@ in
 
   "rclone-config.age".publicKeys = keys;
   "restic-password.age".publicKeys = keys;
+
+  "cross-seed.json.age".publicKeys = keys;
 }
