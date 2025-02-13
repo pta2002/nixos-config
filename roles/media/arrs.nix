@@ -106,8 +106,8 @@ in
     enable = true;
     inherit user group;
     settings = {
-      dataDirs = [ "/mnt/data/tv" "/mnt/data/movies" ];
-      linkDirs = [ "/mnt/data/torrents/links" ];
+      dataDirs = [ "/srv/media/tv" "/srv/media/movies" ];
+      linkDirs = [ "/srv/media/torrents/links" ];
       torrentDir = "/var/lib/deluge/.config/deluge/state";
       outputDir = "/var/lib/deluge/output";
       linkType = "hardlink";

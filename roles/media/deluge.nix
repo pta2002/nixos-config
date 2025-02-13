@@ -10,7 +10,7 @@
     user = "deluge";
     group = "data";
 
-    config.download_location = "/mnt/data/torrents";
+    config.download_location = "/srv/media/torrents";
     config.enabled_plugins = [ "Label" ];
     config.copy_torrent_file = true;
     config.allow_remote = true;
@@ -43,7 +43,7 @@
   };
 
   systemd.tmpfiles.settings."10-torrents" = {
-    "/mnt/data/torrents".d = {
+    "/srv/media/torrents".d = {
       group = "data";
       user = config.services.deluge.user;
       mode = "0775";
