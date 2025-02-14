@@ -220,7 +220,7 @@
           system = "x86_64-linux";
           name = "panda";
           stateVersion = "25.05";
-          roles = [ ];
+          roles = [ "snatcher" ];
         };
       });
 

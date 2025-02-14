@@ -18,4 +18,5 @@ in
   "restic-password.age".publicKeys = keys;
 
   "cross-seed.json.age".publicKeys = keys;
+  "autobrr.age".publicKeys = keys;
 }

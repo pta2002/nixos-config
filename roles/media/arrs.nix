@@ -96,6 +96,7 @@ in
     "/var/lib/jellyseerr"
     "/var/lib/private/prowlarr"
     "/var/lib/private/jellyseerr"
+    "/var/lib/private/autobrr"
   ];
 
   imports = [

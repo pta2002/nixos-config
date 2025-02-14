@@ -19,7 +19,7 @@
 
   # Proxy
   proxy = {
-    # enable = true;
+    enable = true;
     domain = "p.pta2002.com";
     environmentFile = config.age.secrets.caddy.path;
     ipv4 = "100.81.36.57";

@@ -4,9 +4,8 @@ let
     "dns"
     "media"
     "data-host"
+    "snatcher"
   ];
-
-  cfg = config.common;
 in
 {
   options.common = {
