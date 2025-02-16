@@ -19,4 +19,10 @@ in
 
   "cross-seed.json.age".publicKeys = keys;
   "autobrr.age".publicKeys = keys;
+
+  "arrs/prowlarrKey.age".publicKeys = keys;
+  "arrs/sonarrKey.age".publicKeys = keys;
+  "arrs/radarrKey.age".publicKeys = keys;
+  "arrs/lidarrKey.age".publicKeys = keys;
+  "arrs/readarrKey.age".publicKeys = keys;
 }
