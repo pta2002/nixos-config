@@ -1,8 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.services.cross-seed;
 
-  inherit (lib) mkEnableOption mkPackageOption mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkPackageOption
+    mkOption
+    types
+    ;
   settingsFormat = pkgs.formats.json { };
 in
 {
@@ -65,19 +75,23 @@ in
   config =
     let
       jsonSettingsFile = settingsFormat.generate "settings.json" cfg.settings;
-      secretSettingsSegment = lib.optionalString (cfg.settingsFile != null) /* js */ ''
-        const path = require("node:path");
-        const secret_settings_json = path.join(process.env.CREDENTIALS_DIRECTORY, "secretSettingsFile");
-        Object.assign(loaded_settings, JSON.parse(fs.readFileSync(secret_settings_json, "utf8")));
-      '';
-      javascriptConfig = pkgs.writeText "config.js" /* js */ ''
-        "use strict";
-        const fs = require("fs");
-        const settings_json = "${jsonSettingsFile}";
-        let loaded_settings = JSON.parse(fs.readFileSync(settings_json, "utf8"));
-        ${secretSettingsSegment}
-        module.exports = loaded_settings;
-      '';
+      secretSettingsSegment =
+        lib.optionalString (cfg.settingsFile != null) # js
+          ''
+            const path = require("node:path");
+            const secret_settings_json = path.join(process.env.CREDENTIALS_DIRECTORY, "secretSettingsFile");
+            Object.assign(loaded_settings, JSON.parse(fs.readFileSync(secret_settings_json, "utf8")));
+          '';
+      javascriptConfig =
+        pkgs.writeText "config.js" # js
+          ''
+            "use strict";
+            const fs = require("fs");
+            const settings_json = "${jsonSettingsFile}";
+            let loaded_settings = JSON.parse(fs.readFileSync(settings_json, "utf8"));
+            ${secretSettingsSegment}
+            module.exports = loaded_settings;
+          '';
     in
     lib.mkIf (cfg.enable) {
       system.activationScripts.cross-seed = ''
@@ -90,27 +104,25 @@ in
         wants = [ "network-online.target" ];
         wantedBy = [ "multi-user.target" ];
         environment.CONFIG_DIR = cfg.configDir;
+        unitConfig = {
+          # Unfortunately, we can not protect these if we are to hardlink between them, as they need to be on the same volume for hardlinks to work.
+          RequiresMountsFor = lib.flatten [
+            cfg.settings.dataDirs
+            cfg.settings.linkDirs
+          ];
+        };
         serviceConfig = {
           ExecStartPre = [
-            (pkgs.writeShellScript
-              "cross-seed-prestart"
-              ''
-                set -eux
-                install -D -m 600 -o '${cfg.user}' -g '${cfg.group}' '${javascriptConfig}' '${cfg.configDir}/config.js'
-              ''
-            )
+            (pkgs.writeShellScript "cross-seed-prestart" ''
+              set -eux
+              install -D -m 600 -o '${cfg.user}' -g '${cfg.group}' '${javascriptConfig}' '${cfg.configDir}/config.js'
+            '')
           ];
           ExecStart = "${lib.getExe cfg.package} daemon";
           User = cfg.user;
           Group = cfg.group;
 
           LoadCredential = lib.mkIf (cfg.settingsFile != null) "secretSettingsFile:${cfg.settingsFile}";
-
-          # Unfortunately, we can not protect these if we are to hardlink between them, as they need to be on the same volume for hardlinks to work.
-          RequiresMountsFor = lib.flatten [
-            cfg.settings.dataDirs
-            cfg.settings.linkDirs
-          ];
 
           StateDirectory = "cross-seed";
 
