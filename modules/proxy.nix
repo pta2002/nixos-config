@@ -71,17 +71,19 @@ in {
         '';
     };
 
+    systemd.services.caddy.after = [ "tailscaled.service" ];
+
     services.caddy = {
       enable = true;
       environmentFile = cfg.environmentFile;
       package = pkgs.caddy.withPlugins {
         plugins = [ "github.com/caddy-dns/cloudflare@v0.0.0-20240703190432-89f16b99c18e" ];
-        hash = "sha256-jCcSzenewQiW897GFHF9WAcVkGaS/oUu63crJu7AyyQ=";
+        hash = "sha256-JVkUkDKdat4aALJHQCq1zorJivVCdyBT+7UhqTvaFLw=";
       };
 
       virtualHosts = {
         "*.${cfg.domain}" = {
-          listenAddresses = [ cfg.ipv4 cfg.ipv6 ];
+          # listenAddresses = [ cfg.ipv4 cfg.ipv6 ];
 
           extraConfig = /* caddyfile */ ''
             tls {
@@ -105,7 +107,7 @@ in {
         (name: _host: {
           name = "http://${name}";
           value = {
-            listenAddresses = [ cfg.ipv4 cfg.ipv6 ];
+            # listenAddresses = [ cfg.ipv4 cfg.ipv6 ];
 
             extraConfig = ''
               redir https://${name}.${cfg.domain}{uri}

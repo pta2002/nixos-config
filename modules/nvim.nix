@@ -76,7 +76,7 @@
         servers = {
           nixd = {
             enable = true;
-            settings.formatting.command = [ "nixpkgs-fmt" ];
+            settings.formatting.command = [ "nixfmt" ];
           };
           # TODO: https://github.com/nix-community/nixvim/issues/1702
           # rust-analyzer.enable = true;
@@ -299,7 +299,11 @@
       pkgs.vimPlugins.nvim-unception
     ];
 
-    extraPackages = [ pkgs.xclip pkgs.glslls ];
+    extraPackages = with pkgs; [
+      xclip
+      glslls
+      nixfmt-rfc-style
+    ];
 
     highlight = {
       PmenuSel = { bg = "#504945"; fg = "NONE"; };
