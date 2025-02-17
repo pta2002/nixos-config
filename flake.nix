@@ -56,45 +56,63 @@
     ];
   };
 
-  outputs = { self, nixpkgs, home, nixvim, agenix, my-switches, nixos-hardware, disko, deploy-rs, raspberry-pi-nix, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home,
+      nixvim,
+      agenix,
+      my-switches,
+      nixos-hardware,
+      disko,
+      deploy-rs,
+      raspberry-pi-nix,
+      ...
+    }@inputs:
     let
       lib = nixpkgs.lib;
 
-      overlays = ({ pkgs, ... }: {
-        nixpkgs.overlays = [
-          (import ./overlays/visual-paradigm.nix pkgs)
-          (import ./overlays/lua pkgs)
-          (import ./overlays/my-scripts pkgs)
-          inputs.android-nixpkgs.overlays.default
-        ];
-      });
+      overlays = (
+        { pkgs, ... }:
+        {
+          nixpkgs.overlays = [
+            (import ./overlays/visual-paradigm.nix pkgs)
+            (import ./overlays/lua pkgs)
+            (import ./overlays/my-scripts pkgs)
+            inputs.android-nixpkgs.overlays.default
+          ];
+        }
+      );
 
-      mkMachine = name: system: nixpkgs.lib.nixosSystem {
-        inherit system;
+      mkMachine =
+        name: system:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
 
-        modules = [
-          overlays
-          ./configuration.nix
-          ./machines/${name}.nix
+          modules = [
+            overlays
+            ./configuration.nix
+            ./machines/${name}.nix
 
-          home.nixosModules.home-manager
-          {
-            home-manager.users.pta2002 = ./home.nix;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              hostname = name;
-            };
-            home-manager.sharedModules = [ overlays ];
-            home-manager.useGlobalPkgs = true;
-            # home-manager.backupFileExtension = ".hm-bak";
-          }
-        ];
+            home.nixosModules.home-manager
+            {
+              home-manager.users.pta2002 = ./home.nix;
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                hostname = name;
+              };
+              home-manager.sharedModules = [ overlays ];
+              home-manager.useGlobalPkgs = true;
+              # home-manager.backupFileExtension = ".hm-bak";
+            }
+          ];
 
-        specialArgs = {
-          inherit inputs;
-          hostname = name;
+          specialArgs = {
+            inherit inputs;
+            hostname = name;
+          };
         };
-      };
 
       homeManagerConfig = {
         pkgs = nixpkgs.legacyPackages."x86_64-linux";
@@ -116,130 +134,168 @@
 
       fs = lib.fileset;
 
-      mkSwarmMachine = { system, name, modules ? [ ], stateVersion, specialArgs ? { }, roles ? [ ] }: hostForRoles:
+      mkSwarmMachine =
+        {
+          system,
+          name,
+          modules ? [ ],
+          stateVersion,
+          specialArgs ? { },
+          roles ? [ ],
+        }:
+        hostForRoles:
         let
           nixFilesIn = dir: fs.toList (fs.fileFilter (file: file.hasExt "nix") dir);
           machineModules = nixFilesIn ./machines/${name};
           commonModules = nixFilesIn ./common;
           roleModules = map (role: nixFilesIn ./roles/${role}) roles;
           roleDefinitions = {
-            config.common.role = lib.listToAttrs (map
-              (role: {
+            config.common.role = lib.listToAttrs (
+              map (role: {
                 name = role;
                 value = {
                   enabled = true;
                 };
-              })
-              roles);
+              }) roles
+            );
           };
         in
         nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
-          modules = lib.concatLists ([
+          modules = lib.concatLists (
             [
-              ({ config, ... }: {
-                nixpkgs.overlays = [
-                  (final: prev: {
-                    inherit (inputs.nixpkgs-master.legacyPackages.${config.nixpkgs.system}) jellyseerr;
-                  })
-                ];
-              })
+              [
+                (
+                  { config, ... }:
+                  {
+                    nixpkgs.overlays = [
+                      (final: prev: {
+                        inherit (inputs.nixpkgs-master.legacyPackages.${config.nixpkgs.system}) jellyseerr;
+                      })
+                    ];
+                  }
+                )
 
-              agenix.nixosModules.default
-              home.nixosModules.home-manager
-              disko.nixosModules.disko
+                agenix.nixosModules.default
+                home.nixosModules.home-manager
+                disko.nixosModules.disko
 
-              ./modules/common.nix
-              roleDefinitions
-              hostForRoles
+                ./modules/common.nix
+                roleDefinitions
+                hostForRoles
 
-              ({ ... }: {
-                home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-                  { home.stateVersion = stateVersion; }
-                  nixvim.homeManagerModules.nixvim
-                  ./modules/nvim.nix
-                  ./modules/git.nix
-                  ./modules/shell.nix
-                ];
+                (
+                  { ... }:
+                  {
+                    home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+                      { home.stateVersion = stateVersion; }
+                      nixvim.homeManagerModules.nixvim
+                      ./modules/nvim.nix
+                      ./modules/git.nix
+                      ./modules/shell.nix
+                    ];
 
-                home-manager.useGlobalPkgs = true;
-                home-manager.extraSpecialArgs = {
-                  inherit inputs;
-                  hostname = name;
-                };
-              })
+                    home-manager.useGlobalPkgs = true;
+                    home-manager.extraSpecialArgs = {
+                      inherit inputs;
+                      hostname = name;
+                    };
+                  }
+                )
+              ]
+              machineModules
+              commonModules
+              modules
             ]
-            machineModules
-            commonModules
-            modules
-          ] ++ roleModules);
+            ++ roleModules
+          );
         };
 
       # TODO!
-      mkSwarm = machines:
+      mkSwarm =
+        machines:
         let
           rolesPerHost = lib.mapAttrs (k: v: v.roles) machines;
           hostForRoles =
             let
-              flattened = lib.flatten (lib.mapAttrsToList
-                (host: map
-                  (role: { ${role}.name = host; }))
-                rolesPerHost);
+              flattened = lib.flatten (
+                lib.mapAttrsToList (
+                  host:
+                  map (role: {
+                    ${role}.name = host;
+                  })
+                ) rolesPerHost
+              );
             in
-            { config.common.role = lib.mergeAttrsList flattened; };
+            {
+              config.common.role = lib.mergeAttrsList flattened;
+            };
         in
         lib.mapAttrs (k: v: mkSwarmMachine v hostForRoles) machines;
     in
     {
-      lib.overrideHomeConfiguration = config: home.lib.homeManagerConfiguration (homeManagerConfig // {
-        modules = homeManagerConfig.modules ++ [ config ];
-      });
+      lib.overrideHomeConfiguration =
+        config:
+        home.lib.homeManagerConfiguration (
+          homeManagerConfig
+          // {
+            modules = homeManagerConfig.modules ++ [ config ];
+          }
+        );
 
       homeConfigurations = {
         pta2002 = home.lib.homeManagerConfiguration homeManagerConfig;
       };
 
-      nixosConfigurations = {
-        hydrogen = mkMachine "hydrogen" "x86_64-linux";
-        mercury = mkMachine "mercury" "x86_64-linux";
+      nixosConfigurations =
+        {
+          hydrogen = mkMachine "hydrogen" "x86_64-linux";
+          mercury = mkMachine "mercury" "x86_64-linux";
 
-        pie = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          specialArgs = { inherit inputs; };
-          modules = [
-            agenix.nixosModules.default
-            nixos-hardware.nixosModules.raspberry-pi-4
-            ./machines/pie.nix
-          ];
-        };
-      } // (mkSwarm {
-        mars = {
-          system = "aarch64-linux";
-          name = "mars";
-          stateVersion = "24.11";
-          specialArgs = { inherit inputs my-switches; };
-          modules = [
-            raspberry-pi-nix.nixosModules.raspberry-pi
-          ];
+          pie = nixpkgs.lib.nixosSystem {
+            system = "aarch64-linux";
+            specialArgs = { inherit inputs; };
+            modules = [
+              agenix.nixosModules.default
+              nixos-hardware.nixosModules.raspberry-pi-4
+              ./machines/pie.nix
+            ];
+          };
+        }
+        // (mkSwarm {
+          mars = {
+            system = "aarch64-linux";
+            name = "mars";
+            stateVersion = "24.11";
+            specialArgs = { inherit inputs my-switches; };
+            modules = [
+              raspberry-pi-nix.nixosModules.raspberry-pi
+            ];
 
-          roles = [ "media" "data-host" ];
-        };
+            roles = [
+              "media"
+              "data-host"
+            ];
+          };
 
-        cloudy = {
-          system = "aarch64-linux";
-          stateVersion = "22.11";
-          name = "cloudy";
-          specialArgs = { inherit inputs nixvim; };
-          roles = [ "dns" ];
-        };
+          cloudy = {
+            system = "aarch64-linux";
+            stateVersion = "22.11";
+            name = "cloudy";
+            specialArgs = { inherit inputs nixvim; };
+            roles = [ "dns" ];
+          };
 
-        panda = {
-          system = "x86_64-linux";
-          name = "panda";
-          stateVersion = "25.05";
-          roles = [ "snatcher" ];
-        };
-      });
+          panda = {
+            system = "x86_64-linux";
+            name = "panda";
+            stateVersion = "25.05";
+            roles = [
+              "snatcher"
+              "auth"
+            ];
+          };
+        });
 
       deploy.nodes = {
         panda = {
