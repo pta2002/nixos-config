@@ -25,4 +25,10 @@ in
   "arrs/radarrKey.age".publicKeys = keys;
   "arrs/lidarrKey.age".publicKeys = keys;
   "arrs/readarrKey.age".publicKeys = keys;
+
+  "autheliaJwt.age".publicKeys = keys;
+  "autheliaEncryptionKey.age".publicKeys = keys;
+  "autheliaUsers.yaml.age".publicKeys = keys;
+  "autheliaRsa.pem.age".publicKeys = keys;
+  "autheliaHmac.age".publicKeys = keys;
 }

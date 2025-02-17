@@ -1,6 +1,13 @@
-{ config, lib, pkgs, ... }:
-let cfg = config.proxy;
-in {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.proxy;
+in
+{
   options.proxy = {
     enable = lib.mkEnableOption "Proxy for easily exposing services via Tailscale.";
 
@@ -25,7 +32,9 @@ in {
     services = lib.mkOption {
       type = with lib.types; attrsOf str;
       default = { };
-      example = { autobrr = "http://localhost:7474"; };
+      example = {
+        autobrr = "http://localhost:7474";
+      };
     };
 
     environmentFile = lib.mkOption {
@@ -38,23 +47,26 @@ in {
       enable = true;
       config =
         let
-          dbfile = pkgs.writeText "db.${cfg.domain}" (''
-            $ORIGIN ${cfg.domain}.
-            @   IN A    ${cfg.ipv4}
-                IN AAAA ${cfg.ipv6}
+          dbfile = pkgs.writeText "db.${cfg.domain}" (
+            ''
+              $ORIGIN ${cfg.domain}.
+              @   IN A    ${cfg.ipv4}
+                  IN AAAA ${cfg.ipv6}
 
-                IN SOA ${cfg.domain}. hostmaster.pta2002.com. (
-                          2001062501 ; serial                     
-                          21600      ; refresh after 6 hours                     
-                          3600       ; retry after 1 hour                     
-                          604800     ; expire after 1 week                     
-                          86400 )    ; minimum TTL of 1 day 
+                  IN SOA ${cfg.domain}. hostmaster.pta2002.com. (
+                            2001062501 ; serial                     
+                            21600      ; refresh after 6 hours                     
+                            3600       ; retry after 1 hour                     
+                            604800     ; expire after 1 week                     
+                            86400 )    ; minimum TTL of 1 day 
 
-          '' + (lib.concatStringsSep "\n" (lib.mapAttrsToList
-            (name: _: "${name}   IN CNAME @")
-            cfg.services)) + "\n");
+            ''
+            + (lib.concatStringsSep "\n" (lib.mapAttrsToList (name: _: "${name}   IN CNAME @") cfg.services))
+            + "\n"
+          );
         in
-          /* Corefile */ ''
+        # Corefile
+        ''
           ${cfg.domain} {
             cache 30s
             file ${dbfile}
@@ -81,30 +93,35 @@ in {
         hash = "sha256-JVkUkDKdat4aALJHQCq1zorJivVCdyBT+7UhqTvaFLw=";
       };
 
-      virtualHosts = {
-        "*.${cfg.domain}" = {
-          # listenAddresses = [ cfg.ipv4 cfg.ipv6 ];
+      # extraConfig = ''
+      #   trusted_proxies 100.0.0.0/8 192.168.0.0/16 fd7a:115c:a1e0::/48 127.0.0.1/32
+      # '';
 
-          extraConfig = /* caddyfile */ ''
-            tls {
-              dns cloudflare {env.CF_API_KEY}
-              resolvers 1.1.1.1
-            }
-          '' + (lib.concatMapStringsSep "\n"
-            (service: ''
-              @${service.name} host ${service.name}.${cfg.domain}
-              handle @${service.name} {
-                reverse_proxy ${service.value}
-              }
+      virtualHosts =
+        {
+          "*.${cfg.domain}" = {
+            # listenAddresses = [ cfg.ipv4 cfg.ipv6 ];
 
-              handle {
-                respond "???"
-              }
-            '')
-            (lib.attrsToList cfg.services));
-        };
-      } // (lib.mapAttrs'
-        (name: _host: {
+            extraConfig = # caddyfile
+              ''
+                tls {
+                  dns cloudflare {env.CF_API_KEY}
+                  resolvers 1.1.1.1
+                }
+              ''
+              + (lib.concatMapStringsSep "\n" (service: ''
+                @${service.name} host ${service.name}.${cfg.domain}
+                handle @${service.name} {
+                  reverse_proxy ${service.value}
+                }
+
+                handle {
+                  respond "???"
+                }
+              '') (lib.attrsToList cfg.services));
+          };
+        }
+        // (lib.mapAttrs' (name: _host: {
           name = "http://${name}";
           value = {
             # listenAddresses = [ cfg.ipv4 cfg.ipv6 ];
@@ -113,8 +130,7 @@ in {
               redir https://${name}.${cfg.domain}{uri}
             '';
           };
-        })
-        cfg.services);
+        }) cfg.services);
     };
   };
 }
