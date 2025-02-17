@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
   group = "data";
 in
@@ -92,14 +92,30 @@ in
     };
   };
 
-  proxy.services = {
-    sonarr = "localhost:8989";
-    radarr = "localhost:7878";
-    lidarr = "localhost:8686";
-    readarr = "localhost:8787";
-    prowlarr = "localhost:9696";
-    bazarr = "localhost:${toString config.services.bazarr.listenPort}";
-  };
+  proxy.services =
+    (lib.mapAttrs
+      (name: addr: {
+        inherit addr;
+        auth = {
+          enable = true;
+          excluded = [ "/api/*" ];
+        };
+      })
+      {
+        sonarr = "localhost:8989";
+        radarr = "localhost:7878";
+        lidarr = "localhost:8686";
+        readarr = "localhost:8787";
+        prowlarr = "localhost:9696";
+      }
+    )
+    // {
+      # No exclusions for bazarr
+      bazarr = {
+        addr = "localhost:${toString config.services.bazarr.listenPort}";
+        auth.enable = true;
+      };
+    };
 
   common.backups.paths = [
     "/var/lib/lidarr"

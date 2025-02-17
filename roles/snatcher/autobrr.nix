@@ -12,6 +12,7 @@ in
   };
 
   proxy.services.autobrr = "localhost:${toString config.services.autobrr.settings.port}";
+
   common.backups.paths = [ "/var/lib/private/autobrr" ];
 
   services.autobrr = {
