@@ -1,8 +1,7 @@
 { config, ... }:
 let
-  oidcClientId = "i7LrvADs1bXE3p8yTjeAMI.uVHXjtUajWZUaAbvMw0u3M8F3oracI4rwSZTRHibI4_FGraD~";
-  oidcClientSecret = "G215rfVxHV~LRnaigiq.gus~tC3o5n4HeN1KKaDUIDnIqi0g~qjVG7c4MIEsARfXJ5DKhO0T";
-  oidcClientSecretDigest = "$pbkdf2-sha512$310000$SOPZxRX5SyOhoTTgY4Lo5Q$LTcLgpQzlw2KTueaWACegdit4z6YjMu/J/HLfDToxfIvtXdBS48vcss4KqxeFkJl9EHpzalYQ.33MskQ82bncQ";
+  # TODO: This should NOT!! be here!
+  secret = "2zDA8JK7yaLLeMpe9q6YdKgEeweR6ufJ971F1eFhBzqjjt5R";
 in
 {
   age.secrets.autobrr = {
@@ -25,29 +24,26 @@ in
 
       # https://github.com/autobrr/autobrr/issues/1970
       oidc_enabled = true;
-      oidc_issuer = "https://auth.p.pta2002.com";
-      oidc_client_id = oidcClientId;
-      oidc_client_secret = oidcClientSecret;
+      oidc_issuer = "https://auth.pta2002.com/oauth2/openid/autobrr";
+      oidc_client_id = "autobrr";
+      oidc_client_secret = secret;
       oidc_redirect_url = "https://autobrr.${config.proxy.domain}/api/auth/oidc/callback";
       disable_built_in_login = true;
     };
   };
 
-  services.authelia.instances.main.settings.identity_providers.oidc.clients = [
-    {
-      client_id = oidcClientId;
-      client_name = "autobrr";
-      client_secret = oidcClientSecretDigest;
-      public = false;
-      authorization_policy = "one_factor";
-      redirect_uris = config.services.autobrr.settings.oidc_redirect_url;
-      scopes = [
-        "openid"
-        "profile"
-        "email"
-      ];
-      userinfo_signed_response_alg = "none";
-      token_endpoint_auth_method = "client_secret_basic";
-    }
-  ];
+  systemd.services.autobrr.after = [ "kanidm.service" ];
+
+  services.kanidm.provision.systems.oauth2.autobrr = {
+    originUrl = "${config.services.autobrr.settings.oidc_redirect_url}";
+    originLanding = "https://autobrr.${config.proxy.domain}";
+    displayName = "autobrr";
+    scopeMaps.autobrr_users = [
+      "openid"
+      "email"
+      "profile"
+    ];
+    allowInsecureClientDisablePkce = true;
+    preferShortUsername = true;
+  };
 }
