@@ -3,6 +3,9 @@ let
 in
 {
   "cloudflared.json.age".publicKeys = keys;
+  "cloudflared-panda-tunnel.json.age".publicKeys = keys;
+  "cert-panda.pem.age".publicKeys = keys;
+
   "cert.pem.age".publicKeys = keys;
   "yarr.age".publicKeys = keys;
   "nextcloud.age".publicKeys = keys;
@@ -31,4 +34,7 @@ in
   "autheliaUsers.yaml.age".publicKeys = keys;
   "autheliaRsa.pem.age".publicKeys = keys;
   "autheliaHmac.age".publicKeys = keys;
+
+  "kanidm/admin".publicKeys = keys;
+  "kanidm/idm_admin".publicKeys = keys;
 }

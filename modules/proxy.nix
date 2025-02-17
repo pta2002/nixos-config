@@ -160,9 +160,15 @@ in
             }
           '';
       };
+      #
+      # services.oauth2-proxy = {
+      #   enable = true;
+      #   provider = "oidc";
+      #
+      #   oidcIssuerUrl = "https://auth.pta2002.com/oauth2/openid/proxy";
+      # };
 
       systemd.services.caddy.after = [ "tailscaled.service" ];
-
       services.caddy = {
         enable = true;
         environmentFile = cfg.environmentFile;
@@ -184,7 +190,7 @@ in
                 [
                   ''
                     tls {
-                      dns cloudflare {env.CF_API_KEY}
+                      dns cloudflare {env.CF_DNS_API_TOKEN}
                       resolvers 1.1.1.1
                     }
                   ''

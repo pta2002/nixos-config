@@ -1,4 +1,7 @@
-{ config, ... }:
+{ config, lib, ... }:
+let
+  inherit (lib) mkIf;
+in
 {
   age.secrets = {
     autheliaJwt = {
@@ -39,8 +42,9 @@
 
     secrets.jwtSecretFile = config.age.secrets.autheliaJwt.path;
     secrets.storageEncryptionKeyFile = config.age.secrets.autheliaEncryptionKey.path;
-    secrets.oidcHmacSecretFile = config.age.secrets.autheliaHmac.path;
-    secrets.oidcIssuerPrivateKeyFile = config.age.secrets.autheliaRsa.path;
+
+    # secrets.oidcHmacSecretFile = mkIf (config.services.authelia.instances.main.settings.identity_providers.oidc.clients != []) config.age.secrets.autheliaHmac.path;
+    # secrets.oidcIssuerPrivateKeyFile = mkIf (config.services.authelia.instances.main.settings.identity_providers.oidc.clients != []) config.age.secrets.autheliaRsa.path;
 
     settings = {
       storage.local.path = "/var/lib/authelia-main/db.sqlite3";
@@ -71,6 +75,8 @@
       };
 
       server.endpoints.authz.forward-auth.implementation = "ForwardAuth";
+
+      # identity_providers.oidc.clients = [ ];
 
       authentication_backend.file = {
         path = config.age.secrets.autheliaUsers.path;
