@@ -1,5 +1,11 @@
 # Raspberry Pi 5B, 8GB
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 {
   imports = [
     ../../modules/home-assistant.nix
@@ -18,12 +24,15 @@
 
   age.secrets.caddy-mars = {
     file = ../../secrets/caddy-mars.age;
-    owner = config.services.caddy.user;
   };
 
   virtualisation.docker.enable = true;
 
-  boot.supportedFilesystems = [ "btrfs" "vfat" "bcachefs" ];
+  boot.supportedFilesystems = [
+    "btrfs"
+    "vfat"
+    "bcachefs"
+  ];
 
   raspberry-pi-nix = {
     board = "bcm2712";
@@ -80,11 +89,13 @@
     };
   };
 
-  swapDevices = [{
-    device = "/swapfile";
-    # 8GiB
-    size = 8 * 1024;
-  }];
+  swapDevices = [
+    {
+      device = "/swapfile";
+      # 8GiB
+      size = 8 * 1024;
+    }
+  ];
 
   nixpkgs.hostPlatform = "aarch64-linux";
   powerManagement.cpuFreqGovernor = "ondemand";
@@ -99,7 +110,10 @@
     keyMap = "pt-latin1";
   };
 
-  users.users.pta2002.extraGroups = [ "argoweb" "docker" ];
+  users.users.pta2002.extraGroups = [
+    "argoweb"
+    "docker"
+  ];
 
   environment.systemPackages = with pkgs; [
     git
@@ -124,4 +138,3 @@
     owner = config.services.cloudflared.user;
   };
 }
-

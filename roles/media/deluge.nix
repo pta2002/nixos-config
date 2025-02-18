@@ -38,7 +38,10 @@
 
   proxy.services = {
     deluge = "localhost:${builtins.toString config.services.deluge.web.port}";
-    flood = "localhost:${builtins.toString config.services.flood.port}";
+    flood = {
+      addr = "localhost:${builtins.toString config.services.flood.port}";
+      auth.enable = true;
+    };
   };
 
   systemd.services.deluged = {

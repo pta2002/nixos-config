@@ -9,7 +9,8 @@ let
 
   serviceOpts =
     let
-      auth_endpoint = "${config.common.role.auth.name}:9091";
+      # TODO: This should not depend on the port.
+      authEndpint = "http://${config.common.role.auth.name}:9090/validate";
     in
     { name, config, ... }:
     {
@@ -33,37 +34,75 @@ let
           };
         };
 
-        generatedConfig = lib.mkOption {
-          type = lib.types.str;
+        generatedNginxConfig = lib.mkOption {
+          type = lib.types.anything;
           readOnly = true;
         };
       };
 
-      config.generatedConfig = ''
-        @${name} host ${name}.${cfg.domain}
-        handle @${name} {
-          ${lib.optionalString config.auth.enable (
-            lib.concatMapStringsSep "\n" (endpoint: ''
-              handle ${endpoint} {
-                reverse_proxy ${config.addr}
-              }
-            '') config.auth.excluded
-          )}
-          handle {
-            ${lib.optionalString config.auth.enable ''
-              forward_auth ${auth_endpoint} {
-                 uri /api/authz/forward-auth
-                 copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
-               }
-            ''}
+      config = {
+        generatedNginxConfig."${name}.${cfg.domain}" = lib.mkMerge (
+          [
+            {
+              # Use the wildcard certificate
+              useACMEHost = cfg.domain;
+              forceSSL = true;
 
-            reverse_proxy ${config.addr}
-          }
-        }
-      '';
+              locations."/" = {
+                recommendedProxySettings = true;
+                proxyPass = "http://${config.addr}";
+              };
+            }
+            (lib.mkIf config.auth.enable {
+              locations."= /validate" = {
+                proxyPass = authEndpint;
+                extraConfig = # nginx
+                  ''
+                    # Tell nginx that it should use the vouch.pta2002.com domain for the SSL validation
+                    # proxy_ssl_server_name on;
+                    proxy_set_header Host $host;
+                    proxy_pass_request_body off;
+                    proxy_set_header Content-Length "";
+                    auth_request_set $auth_resp_x_vouch_user $upstream_http_x_vouch_user;
+                    auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
+                    auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
+                    auth_request_set $auth_resp_failcount $upstream_http_x_vouch_failcount;
+                  '';
+              };
+
+              locations."/".extraConfig = # nginx
+                ''
+                  auth_request /validate;
+
+                  proxy_set_header X-Vouch-User $auth_resp_x_vouch_user;
+
+                  # if validate returns `401 not authorized` then forward the request to the error401 block
+                  error_page 401 = @error401;
+                '';
+
+              locations."@error401" = {
+                extraConfig = # nginx
+                  ''
+                    return 302 https://vouch.pta2002.com/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err;
+                  '';
+              };
+            })
+          ]
+          ++ (builtins.map (endpoint: {
+            locations.${endpoint} = {
+              recommendedProxySettings = true;
+              proxyPass = "http://${config.addr}";
+            };
+          }) config.auth.excluded)
+        );
+      };
     };
 in
 {
+  imports = [
+    ./vouch-proxy.nix
+  ];
+
   options.proxy = {
     enable = lib.mkEnableOption "Proxy for easily exposing services via Tailscale.";
 
@@ -160,62 +199,31 @@ in
             }
           '';
       };
-      #
-      # services.oauth2-proxy = {
-      #   enable = true;
-      #   provider = "oidc";
-      #
-      #   oidcIssuerUrl = "https://auth.pta2002.com/oauth2/openid/proxy";
-      # };
 
-      systemd.services.caddy.after = [ "tailscaled.service" ];
-      services.caddy = {
-        enable = true;
+      security.acme.certs."${cfg.domain}" = {
+        domain = cfg.domain;
+        extraDomainNames = [ "*.${cfg.domain}" ];
+        # Use cloudflare's DNS resolver, because we are running coredns locally.
+        dnsResolver = "1.1.1.1:53";
+        dnsProvider = "cloudflare";
         environmentFile = cfg.environmentFile;
-        package = pkgs.caddy.withPlugins {
-          plugins = [ "github.com/caddy-dns/cloudflare@v0.0.0-20240703190432-89f16b99c18e" ];
-          hash = "sha256-JVkUkDKdat4aALJHQCq1zorJivVCdyBT+7UhqTvaFLw=";
-        };
+        group = config.services.nginx.group;
+      };
 
-        # extraConfig = ''
-        #   trusted_proxies 100.0.0.0/8 192.168.0.0/16 fd7a:115c:a1e0::/48 127.0.0.1/32
-        # '';
-
-        virtualHosts =
-          {
-            "*.${cfg.domain}" = {
-              # listenAddresses = [ cfg.ipv4 cfg.ipv6 ];
-
-              extraConfig = lib.mkMerge (
-                [
-                  ''
-                    tls {
-                      dns cloudflare {env.CF_DNS_API_TOKEN}
-                      resolvers 1.1.1.1
-                    }
-                  ''
-                ]
-                ++ (lib.mapAttrsToList (_: service: service.generatedConfig) services)
-                ++ [
-                  ''
-                    handle {
-                      respond "???"
-                    }
-                  ''
-                ]
-              );
-            };
-          }
-          // (lib.mapAttrs' (name: _host: {
-            name = "http://${name}";
-            value = {
-              # listenAddresses = [ cfg.ipv4 cfg.ipv6 ];
-
-              extraConfig = ''
-                redir https://${name}.${cfg.domain}{uri}
-              '';
-            };
-          }) cfg.services);
+      systemd.services.nginx.after = [ "tailscaled.service" ];
+      services.nginx = {
+        enable = true;
+        virtualHosts = lib.mkMerge (
+          [
+            {
+              "*.${cfg.domain}" = {
+                forceSSL = true;
+                useACMEHost = cfg.domain;
+              };
+            }
+          ]
+          ++ lib.mapAttrsToList (_: service: service.generatedNginxConfig) services
+        );
       };
     };
 }
