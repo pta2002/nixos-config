@@ -104,7 +104,7 @@ in
 
         # Wait to ensure it is available. There's DEFINITELY a better way to do this, using e.g. systemd-socket-proxyd
         ExecStartPost = pkgs.writeShellScript "wait-for-prowlarr" ''
-          timeout 30 '${lib.getExe pkgs.bash}' -c 'while ! ${lib.getExe pkgs.curl} --fail http://localhost:9696 > /dev/null; do sleep 1; done'
+          timeout 30 '${lib.getExe pkgs.bash}' -c 'while ! ${lib.getExe pkgs.curl} --fail http://localhost:9696 -L --silent > /dev/null; do sleep 1; done'
         '';
       };
 

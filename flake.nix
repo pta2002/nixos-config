@@ -4,11 +4,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    # Waiting for PRs:
-    # - https://github.com/NixOS/nixpkgs/pull/381759 nixos/autobrr: use systemd credentials
-    # - https://github.com/NixOS/nixpkgs/pull/380532 jellyseerr: fix noBrokenSymlinks
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
-
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -165,17 +160,6 @@
           modules = lib.concatLists (
             [
               [
-                (
-                  { config, ... }:
-                  {
-                    nixpkgs.overlays = [
-                      (final: prev: {
-                        inherit (inputs.nixpkgs-master.legacyPackages.${config.nixpkgs.system}) jellyseerr;
-                      })
-                    ];
-                  }
-                )
-
                 agenix.nixosModules.default
                 home.nixosModules.home-manager
                 disko.nixosModules.disko

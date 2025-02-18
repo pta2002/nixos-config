@@ -98,7 +98,7 @@ in
         inherit addr;
         auth = {
           enable = true;
-          excluded = [ "/api/*" ];
+          excluded = [ "/api" ];
         };
       })
       {

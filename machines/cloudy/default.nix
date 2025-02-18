@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
   imports = [
     # ../../modules/argoweb.nix
     ../../modules/yarr.nix
@@ -17,10 +18,7 @@
     environmentFile = config.age.secrets.caddy-mars.path;
   };
 
-  age.secrets.caddy-mars = {
-    file = ../../secrets/caddy-mars.age;
-    owner = config.services.caddy.user;
-  };
+  age.secrets.caddy-mars.file = ../../secrets/caddy-mars.age;
 
   environment.systemPackages = with pkgs; [
     git
@@ -33,7 +31,10 @@
 
   virtualisation.docker.enable = true;
 
-  users.users.pta2002.extraGroups = [ "argoweb" "docker" ];
+  users.users.pta2002.extraGroups = [
+    "argoweb"
+    "docker"
+  ];
 
   system.stateVersion = "22.11";
   services.tailscale.enable = true;
@@ -54,4 +55,3 @@
     defaults.email = "pta2002@pta2002.com";
   };
 }
-

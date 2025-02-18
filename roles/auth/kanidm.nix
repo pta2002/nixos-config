@@ -26,23 +26,10 @@ in
         legalName = "Pedro Alves";
         displayName = "Pedro Alves";
         groups = [ "autobrr_users" ];
+        mailAddresses = [ "pta2002@pta2002.com" ];
       };
 
       groups.autobrr_users.members = [ "pta2002" ];
-      groups.proxy_users.members = [ "pta2002" ];
-
-      # For oauth2-proxy. Still TODO
-      # systems.oauth2.proxy-panda = {
-      #   originUrl = "https://auth.p.pta2002.com/";
-      #   displayName = "Proxy (Panda)";
-      #   scopeMaps.proxy_users = [
-      #     "openid"
-      #     "email"
-      #     "profile"
-      #   ];
-      #   allowInsecureClientDisablePkce = true;
-      #   preferShortUsername = true;
-      # };
     };
   };
 

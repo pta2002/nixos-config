@@ -53,7 +53,7 @@ class DeleteApplication(UpdateAction):
     name: str
 
     def execute(self, session: requests.Session):
-        r = session.delete(f"{BASE_URL}/api/v1/applications/{self.id}")
+        r = session.delete(f"{LOCAL_URL}/api/v1/applications/{self.id}")
         r.raise_for_status()
 
     def print(self):
@@ -66,7 +66,7 @@ class AddApplication(UpdateAction):
 
     def execute(self, session: requests.Session):
         r = session.post(
-            f"{BASE_URL}/api/v1/applications", json=self.application.as_dict()
+            f"{LOCAL_URL}/api/v1/applications", json=self.application.as_dict()
         )
         try:
             r.raise_for_status()
@@ -93,6 +93,7 @@ class Nothing(UpdateAction):
 # Apply a config for prowlarr
 if __name__ == "__main__":
     json_config = json.load(open(sys.argv[1], "r"))
+    LOCAL_URL = "http://localhost:9696"
     BASE_URL = json_config["url"]
     API_KEY = json_config["apiKey"]
     actions = {}
@@ -116,7 +117,7 @@ if __name__ == "__main__":
         )
 
     # get applications
-    r = session.get(f"{BASE_URL}/api/v1/applications")
+    r = session.get(f"{LOCAL_URL}/api/v1/applications")
     r.raise_for_status()
     for app in r.json():
         if app["name"] in applications:
