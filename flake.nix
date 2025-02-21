@@ -2,13 +2,10 @@
   description = "My NixOS system!";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
-
-    picom.url = "github:Arian8j2/picom-jonaburg-fix";
-    picom.flake = false;
 
     nixvim.url = "github:pta2002/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
@@ -23,13 +20,12 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
-    android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
-
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
     deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
     raspberry-pi-nix.inputs.rpi-firmware-src.url = "github:raspberrypi/firmware/next";
   };
@@ -75,7 +71,6 @@
             (import ./overlays/visual-paradigm.nix pkgs)
             (import ./overlays/lua pkgs)
             (import ./overlays/my-scripts pkgs)
-            inputs.android-nixpkgs.overlays.default
           ];
         }
       );
