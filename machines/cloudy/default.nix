@@ -1,11 +1,8 @@
 { pkgs, config, ... }:
 {
   imports = [
-    # ../../modules/argoweb.nix
     ../../modules/yarr.nix
-    ../../modules/files.nix
-    # Disabled for now, fava is incompatible with beancount3
-    # ../../modules/fava.nix
+    ../../modules/fava.nix
     ../../modules/vaultwarden.nix
     ../../modules/proxy.nix
   ];
@@ -32,23 +29,11 @@
   virtualisation.docker.enable = true;
 
   users.users.pta2002.extraGroups = [
-    "argoweb"
     "docker"
   ];
 
   system.stateVersion = "22.11";
   services.tailscale.enable = true;
-
-  # Stuff for argo
-  # age.secrets.cloudflared = {
-  #   file = ../../secrets/cloudflared.json.age;
-  #   owner = "argoweb";
-  # };
-  #
-  # age.secrets.cert = {
-  #   file = ../../secrets/cert.pem.age;
-  #   owner = "argoweb";
-  # };
 
   security.acme = {
     acceptTerms = true;

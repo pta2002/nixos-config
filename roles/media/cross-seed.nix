@@ -4,10 +4,6 @@ let
   group = "data";
 in
 {
-  imports = [
-    ../../modules/cross-seed.nix
-  ];
-
   services.cross-seed = {
     enable = true;
     inherit user group;

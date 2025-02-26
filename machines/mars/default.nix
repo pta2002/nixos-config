@@ -111,7 +111,6 @@
   };
 
   users.users.pta2002.extraGroups = [
-    "argoweb"
     "docker"
   ];
 
@@ -132,7 +131,7 @@
 
   system.stateVersion = "24.11";
 
-  # Stuff for argo
+  # Stuff for cloudflared
   age.secrets.marstunnel = {
     file = ../../secrets/marstunnel.json.age;
     owner = config.services.cloudflared.user;
