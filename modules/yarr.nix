@@ -1,9 +1,5 @@
 { config, pkgs, ... }:
 {
-  imports = [
-    ./argoweb.nix
-  ];
-
   age.secrets.yarr = {
     file = ../secrets/yarr.age;
     owner = "yarr";
