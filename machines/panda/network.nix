@@ -2,6 +2,7 @@
 {
   imports = [
     ../../modules/proxy.nix
+    ../../modules/cloudflared.nix
   ];
 
   # Hostname + networkd
@@ -32,27 +33,28 @@
     caddy.file = ../../secrets/caddy-mars.age;
     cloudflared = {
       file = ../../secrets/cloudflared-panda-tunnel.json.age;
-      owner = "cloudflared";
-      group = "cloudflared";
+      # owner = "cloudflared";
+      # group = "cloudflared";
       mode = "400";
     };
     cf-cert = {
       file = ../../secrets/cert-panda.pem.age;
-      owner = "cloudflared";
-      group = "cloudflared";
+      # owner = "cloudflared";
+      # group = "cloudflared";
       mode = "400";
     };
   };
 
   # Give it the cert.pem otherwise it won't be able to set things up
-  systemd.services.cloudflared-tunnel-panda-tunnel = {
-    environment.TUNNEL_ORIGIN_CERT = config.age.secrets.cf-cert.path;
-  };
+  # systemd.services.cloudflared-tunnel-panda-tunnel = {
+  #   environment.TUNNEL_ORIGIN_CERT = config.age.secrets.cf-cert.path;
+  # };
 
-  services.cloudflared = {
+  mine.services.cloudflared = {
     enable = true;
     tunnels.panda-tunnel = {
       credentialsFile = config.age.secrets.cloudflared.path;
+      certificateFile = config.age.secrets.cf-cert.path;
       default = "http_status:404";
     };
   };
