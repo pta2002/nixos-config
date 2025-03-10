@@ -106,10 +106,11 @@ in
         radarr = "localhost:7878";
         lidarr = "localhost:8686";
         readarr = "localhost:8787";
-        prowlarr = "localhost:9696";
       }
     )
     // {
+      # No auth for prowlarr
+      prowlarr.addr = "localhost:9696";
       # No exclusions for bazarr
       bazarr = {
         addr = "localhost:${toString config.services.bazarr.listenPort}";

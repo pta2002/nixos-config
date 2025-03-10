@@ -2,8 +2,6 @@
 {
   config,
   pkgs,
-  lib,
-  inputs,
   ...
 }:
 {
@@ -37,7 +35,7 @@
   raspberry-pi-nix = {
     board = "bcm2712";
     # Needed for bcachefs
-    kernel-version = "v6_12_11";
+    kernel-version = "v6_12_17";
     # We're not using a camera, no point
     libcamera-overlay.enable = false;
     firmware-partition-label = "BOOT";
