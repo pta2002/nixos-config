@@ -10,6 +10,7 @@ in
   "yarr.age".publicKeys = keys;
   "nextcloud.age".publicKeys = keys;
   "deluge.age".publicKeys = keys;
+  "flood-env.age".publicKeys = keys;
   "nginx.age".publicKeys = keys;
   "pietunnel.json.age".publicKeys = keys;
   "marstunnel.json.age".publicKeys = keys;

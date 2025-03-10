@@ -58,7 +58,22 @@
     };
   };
 
-  # Mediainfo is nice to have available for flood.
-  services.flood.enable = true;
-  environment.systemPackages = [ pkgs.mediainfo ];
+  services.flood = {
+    enable = true;
+    extraArgs = [
+      "--auth=none"
+      "--dehost=127.0.0.1"
+      "--deport=58846"
+      "--deuser=localclient"
+    ];
+  };
+
+  systemd.services.flood.serviceConfig = {
+    EnvironmentFile = config.age.secrets.flood-env.path;
+  };
+
+  age.secrets.flood-env.file = ../../secrets/flood-env.age;
+
+  # Mediainfo is nice to have available for flood, but idk how to make it available to the service...
+  # environment.systemPackages = [ pkgs.mediainfo ];
 }
