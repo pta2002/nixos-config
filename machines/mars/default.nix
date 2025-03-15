@@ -121,6 +121,7 @@
 
   services.cloudflared = {
     enable = true;
+    certificateFile = config.age.secrets.cf-cert.path;
     tunnels.mars.credentialsFile = config.age.secrets.marstunnel.path;
     tunnels.mars.default = "http_status:404";
   };
@@ -130,8 +131,14 @@
   system.stateVersion = "24.11";
 
   # Stuff for cloudflared
-  age.secrets.marstunnel = {
-    file = ../../secrets/marstunnel.json.age;
-    owner = config.services.cloudflared.user;
+  age.secrets = {
+    marstunnel = {
+      file = ../../secrets/marstunnel.json.age;
+      mode = "400";
+    };
+    cf-cert = {
+      file = ../../secrets/cert-panda.pem.age;
+      mode = "400";
+    };
   };
 }

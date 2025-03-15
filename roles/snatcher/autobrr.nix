@@ -23,19 +23,19 @@ in
       logLevel = "DEBUG";
 
       # https://github.com/autobrr/autobrr/issues/1970
-      oidc_enabled = true;
-      oidc_issuer = "https://auth.pta2002.com/oauth2/openid/autobrr";
-      oidc_client_id = "autobrr";
-      oidc_client_secret = secret;
-      oidc_redirect_url = "https://autobrr.${config.proxy.domain}/api/auth/oidc/callback";
-      disable_built_in_login = true;
+      oidcEnabled = true;
+      oidcIssuer = "https://auth.pta2002.com/oauth2/openid/autobrr";
+      oidcClientId = "autobrr";
+      oidcClientSecret = secret;
+      oidcRedirectUrl = "https://autobrr.${config.proxy.domain}/api/auth/oidc/callback";
+      disableBuiltInLogin = true;
     };
   };
 
   systemd.services.autobrr.after = [ "kanidm.service" ];
 
   services.kanidm.provision.systems.oauth2.autobrr = {
-    originUrl = "${config.services.autobrr.settings.oidc_redirect_url}";
+    originUrl = "${config.services.autobrr.settings.oidcRedirectUrl}";
     originLanding = "https://autobrr.${config.proxy.domain}";
     displayName = "autobrr";
     scopeMaps.autobrr_users = [
