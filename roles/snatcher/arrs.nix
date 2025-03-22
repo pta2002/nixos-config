@@ -1,6 +1,29 @@
 { config, lib, ... }:
 let
   group = "data";
+
+  arrSecrets = name: {
+    "${name}Key".rekeyFile = ../../secrets/arrs/${name}Key.age;
+    "${name}Env" = {
+      generator = {
+        dependencies = [ config.age.secrets."${name}Key" ];
+        tags = [ "arrs" ];
+        script =
+          {
+            lib,
+            decrypt,
+            deps,
+            ...
+          }:
+          let
+            dep = lib.head deps;
+          in
+          ''
+            echo "${lib.strings.toUpper name}__AUTH__APIKEY=$(${decrypt} ${lib.escapeShellArg dep.file})"
+          '';
+      };
+    };
+  };
 in
 {
   imports = [
@@ -10,21 +33,29 @@ in
   services.sonarr = {
     enable = true;
     inherit group;
+    environmentFiles = [ config.age.secrets.sonarrEnv.path ];
+    settings.auth.method = "External";
   };
 
   services.radarr = {
     enable = true;
     inherit group;
+    environmentFiles = [ config.age.secrets.radarrEnv.path ];
+    settings.auth.method = "External";
   };
 
   services.lidarr = {
     enable = true;
     inherit group;
+    environmentFiles = [ config.age.secrets.lidarrEnv.path ];
+    settings.auth.method = "External";
   };
 
   services.readarr = {
     enable = true;
     inherit group;
+    environmentFiles = [ config.age.secrets.readarrEnv.path ];
+    settings.auth.method = "External";
   };
 
   services.bazarr = {
@@ -32,11 +63,13 @@ in
     inherit group;
   };
 
-  age.secrets.prowlarrKey.rekeyFile = ../../secrets/arrs/prowlarrKey.age;
-  age.secrets.sonarrKey.rekeyFile = ../../secrets/arrs/sonarrKey.age;
-  age.secrets.radarrKey.rekeyFile = ../../secrets/arrs/radarrKey.age;
-  age.secrets.lidarrKey.rekeyFile = ../../secrets/arrs/lidarrKey.age;
-  age.secrets.readarrKey.rekeyFile = ../../secrets/arrs/readarrKey.age;
+  age.secrets = lib.mkMerge [
+    (arrSecrets "prowlarr")
+    (arrSecrets "sonarr")
+    (arrSecrets "radarr")
+    (arrSecrets "lidarr")
+    (arrSecrets "readarr")
+  ];
 
   services.prowlarr = {
     enable = true;

@@ -14,5 +14,6 @@
 
     storageMode = "local";
     localStorageDir = ../. + "/secrets/rekeyed/${config.networking.hostName}";
+    generatedSecretsDir = ../. + "/secrets/generated";
   };
 }
