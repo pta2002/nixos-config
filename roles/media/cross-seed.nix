@@ -30,7 +30,7 @@ in
   };
 
   age.secrets.cross-seed = {
-    file = ../../secrets/cross-seed.json.age;
+    rekeyFile = ../../secrets/cross-seed.json.age;
     owner = config.services.cross-seed.user;
     group = config.services.cross-seed.group;
   };

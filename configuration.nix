@@ -1,5 +1,10 @@
 # Common file for _all_ systems.
-{ config, pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  lib,
+  ...
+}:
 {
   # Networking
   networking.networkmanager.enable = true;
@@ -16,7 +21,10 @@
 
   # Shells
   programs.fish.enable = true;
-  environment.shells = with pkgs; [ bash fish ];
+  environment.shells = with pkgs; [
+    bash
+    fish
+  ];
 
   # Misc.
   documentation.dev.enable = true;
@@ -25,8 +33,17 @@
   users.users.pta2002 = {
     isNormalUser = true;
     shell = pkgs.fish;
-    extraGroups = [ "wheel" "docker" "audio" "video" "networkmanager" "wireshark" "adbusers" "libvirtd" ];
-    openssh.authorizedKeys.keys = import ./ssh-keys.nix;
+    extraGroups = [
+      "wheel"
+      "docker"
+      "audio"
+      "video"
+      "networkmanager"
+      "wireshark"
+      "adbusers"
+      "libvirtd"
+    ];
+    openssh.authorizedKeys.keys = import ./ssh-keys.nix lib;
   };
 
   # Security
@@ -61,7 +78,10 @@
         "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
       ];
 
-      trusted-users = [ "root" "pta2002" ];
+      trusted-users = [
+        "root"
+        "pta2002"
+      ];
     };
     extraOptions = ''
       experimental-features = nix-command flakes

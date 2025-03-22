@@ -40,14 +40,14 @@ in
     owner = "kanidm";
     group = "kanidm";
     mode = "400";
-    file = ../../secrets/kanidm/idm_admin;
+    rekeyFile = ../../secrets/kanidm/idm_admin;
   };
 
   age.secrets.kanidmAdmin = {
     owner = "kanidm";
     group = "kanidm";
     mode = "400";
-    file = ../../secrets/kanidm/admin;
+    rekeyFile = ../../secrets/kanidm/admin;
   };
 
   security.acme.certs."${domain}" = {

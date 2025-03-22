@@ -4,11 +4,7 @@ let
   secret = "2zDA8JK7yaLLeMpe9q6YdKgEeweR6ufJ971F1eFhBzqjjt5R";
 in
 {
-  age.secrets.autobrr = {
-    file = ../../secrets/autobrr.age;
-    # TODO: This should not be needed; the systemd service should use LoadCredential instead.
-    mode = "0444";
-  };
+  age.secrets.autobrr.rekeyFile = ../../secrets/autobrr.age;
 
   proxy.services.autobrr = "localhost:${toString config.services.autobrr.settings.port}";
 
@@ -22,7 +18,6 @@ in
       port = "7474";
       logLevel = "DEBUG";
 
-      # https://github.com/autobrr/autobrr/issues/1970
       oidcEnabled = true;
       oidcIssuer = "https://auth.pta2002.com/oauth2/openid/autobrr";
       oidcClientId = "autobrr";

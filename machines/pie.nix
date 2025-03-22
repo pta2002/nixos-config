@@ -1,12 +1,15 @@
 # Raspberry Pi 4B, 2GB
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   chromium-command = "${pkgs.chromium}/bin/chromium -a --kiosk --noerrdialogs --disable-infobars --no-first-run --ozone-platform=wayland --enable-features=OverlayScrollbar --start-maximized --force-dark-mode http://192.168.1.100:8123";
 in
 {
   imports = [ ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "usbhid"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
@@ -65,7 +68,10 @@ in
   # Enables the generation of /boot/extlinux/extlinux.conf
   boot.loader.generic-extlinux-compatible.enable = true;
   boot.tmp.useTmpfs = true;
-  boot.kernelParams = [ "8250.nr_uarts=1" "cma=512M" ];
+  boot.kernelParams = [
+    "8250.nr_uarts=1"
+    "cma=512M"
+  ];
   nix = {
     settings.auto-optimise-store = true;
     gc = {
@@ -89,25 +95,32 @@ in
     keyMap = "pt-latin1";
   };
 
-  environment.shells = with pkgs; [ bash fish ];
+  environment.shells = with pkgs; [
+    bash
+    fish
+  ];
   programs.fish.enable = true;
   users.users.pta2002 = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     shell = pkgs.fish;
-    openssh.authorizedKeys.keys = import ../ssh-keys.nix;
+    openssh.authorizedKeys.keys = import ../ssh-keys.nix lib;
     password = "";
   };
 
-  users.users.root.openssh.authorizedKeys.keys = import ../ssh-keys.nix;
+  users.users.root.openssh.authorizedKeys.keys = import ../ssh-keys.nix lib;
 
-  security.sudo.extraRules = [{
-    users = [ "pta2002" ];
-    commands = [{
-      command = "ALL";
-      options = [ "NOPASSWD" ];
-    }];
-  }];
+  security.sudo.extraRules = [
+    {
+      users = [ "pta2002" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
   environment.systemPackages = with pkgs; [
     git
@@ -120,8 +133,14 @@ in
     SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", GROUP="wheel"
   '';
 
-  nix.settings.trusted-users = [ "root" "pta2002" ];
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.trusted-users = [
+    "root"
+    "pta2002"
+  ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   services.openssh = {
     enable = true;

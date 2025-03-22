@@ -15,7 +15,7 @@
     environmentFile = config.age.secrets.caddy-mars.path;
   };
 
-  age.secrets.caddy-mars.file = ../../secrets/caddy-mars.age;
+  age.secrets.caddy-mars.rekeyFile = ../../secrets/caddy-mars.age;
 
   environment.systemPackages = with pkgs; [
     git

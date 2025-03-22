@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   age.secrets.yarr = {
-    file = ../secrets/yarr.age;
+    rekeyFile = ../secrets/yarr.age;
     owner = "yarr";
   };
 

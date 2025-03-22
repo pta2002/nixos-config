@@ -28,14 +28,14 @@
 
   # Secrets:
   age.secrets = {
-    tailscale.file = ../../secrets/tailscale-panda.age;
-    caddy.file = ../../secrets/caddy-mars.age;
+    tailscale.rekeyFile = ../../secrets/tailscale-panda.age;
+    caddy.rekeyFile = ../../secrets/caddy-mars.age;
     cloudflared = {
-      file = ../../secrets/cloudflared-panda-tunnel.json.age;
+      rekeyFile = ../../secrets/cloudflared-panda-tunnel.json.age;
       mode = "400";
     };
     cf-cert = {
-      file = ../../secrets/cert-panda.pem.age;
+      rekeyFile = ../../secrets/cert-panda.pem.age;
       mode = "400";
     };
   };

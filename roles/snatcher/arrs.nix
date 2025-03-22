@@ -32,11 +32,11 @@ in
     inherit group;
   };
 
-  age.secrets.prowlarrKey.file = ../../secrets/arrs/prowlarrKey.age;
-  age.secrets.sonarrKey.file = ../../secrets/arrs/sonarrKey.age;
-  age.secrets.radarrKey.file = ../../secrets/arrs/radarrKey.age;
-  age.secrets.lidarrKey.file = ../../secrets/arrs/lidarrKey.age;
-  age.secrets.readarrKey.file = ../../secrets/arrs/readarrKey.age;
+  age.secrets.prowlarrKey.rekeyFile = ../../secrets/arrs/prowlarrKey.age;
+  age.secrets.sonarrKey.rekeyFile = ../../secrets/arrs/sonarrKey.age;
+  age.secrets.radarrKey.rekeyFile = ../../secrets/arrs/radarrKey.age;
+  age.secrets.lidarrKey.rekeyFile = ../../secrets/arrs/lidarrKey.age;
+  age.secrets.readarrKey.rekeyFile = ../../secrets/arrs/readarrKey.age;
 
   services.prowlarr = {
     enable = true;

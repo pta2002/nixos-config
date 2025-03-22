@@ -8,8 +8,8 @@
   };
 
   config = {
-    age.secrets.restic-password.file = ../secrets/restic-password.age;
-    age.secrets.rclone-config.file = ../secrets/rclone-config.age;
+    age.secrets.restic-password.rekeyFile = ../secrets/restic-password.age;
+    age.secrets.rclone-config.rekeyFile = ../secrets/rclone-config.age;
 
     services.restic.backups = {
       b2 = {

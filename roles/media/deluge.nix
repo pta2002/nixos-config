@@ -32,7 +32,7 @@
   networking.firewall.allowedUDPPorts = [ 58846 ];
 
   age.secrets.deluge = {
-    file = ../../secrets/deluge.age;
+    rekeyFile = ../../secrets/deluge.age;
     owner = config.services.deluge.user;
   };
 
@@ -72,7 +72,7 @@
     EnvironmentFile = config.age.secrets.flood-env.path;
   };
 
-  age.secrets.flood-env.file = ../../secrets/flood-env.age;
+  age.secrets.flood-env.rekeyFile = ../../secrets/flood-env.age;
 
   # Mediainfo is nice to have available for flood, but idk how to make it available to the service...
   # environment.systemPackages = [ pkgs.mediainfo ];

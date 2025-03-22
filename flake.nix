@@ -28,6 +28,10 @@
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
     raspberry-pi-nix.inputs.rpi-firmware-src.url = "github:raspberrypi/firmware/next";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    agenix-rekey.url = "github:oddlama/agenix-rekey";
+    agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {
@@ -59,250 +63,286 @@
       disko,
       deploy-rs,
       raspberry-pi-nix,
+      flake-parts,
       ...
     }@inputs:
-    let
-      lib = nixpkgs.lib;
+    flake-parts.lib.mkFlake { inherit inputs; } (_: {
+      imports = [
+        # inputs.home.flakeModules.home-manager
+        inputs.agenix-rekey.flakeModule
+      ];
 
-      overlays = (
-        { pkgs, ... }:
-        {
-          nixpkgs.overlays = [
-            (import ./overlays/visual-paradigm.nix pkgs)
-            (import ./overlays/lua pkgs)
-            (import ./overlays/my-scripts pkgs)
-          ];
-        }
-      );
+      flake =
+        let
+          lib = nixpkgs.lib;
 
-      mkMachine =
-        name: system:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-
-          modules = [
-            overlays
-            ./configuration.nix
-            ./machines/${name}.nix
-
-            home.nixosModules.home-manager
+          overlays = (
+            { pkgs, ... }:
             {
-              home-manager.users.pta2002 = ./home.nix;
-              home-manager.extraSpecialArgs = {
+              nixpkgs.overlays = [
+                (import ./overlays/lua pkgs)
+                (import ./overlays/my-scripts pkgs)
+              ];
+            }
+          );
+
+          mkMachine =
+            name: system:
+            nixpkgs.lib.nixosSystem {
+              inherit system;
+
+              modules = [
+                overlays
+                ./configuration.nix
+                ./machines/${name}.nix
+
+                home.nixosModules.home-manager
+                {
+                  home-manager.users.pta2002 = ./home.nix;
+                  home-manager.extraSpecialArgs = {
+                    inherit inputs;
+                    hostname = name;
+                  };
+                  home-manager.sharedModules = [ overlays ];
+                  home-manager.useGlobalPkgs = true;
+                  # home-manager.backupFileExtension = ".hm-bak";
+                }
+              ];
+
+              specialArgs = {
                 inherit inputs;
                 hostname = name;
               };
-              home-manager.sharedModules = [ overlays ];
-              home-manager.useGlobalPkgs = true;
-              # home-manager.backupFileExtension = ".hm-bak";
-            }
-          ];
-
-          specialArgs = {
-            inherit inputs;
-            hostname = name;
-          };
-        };
-
-      homeManagerConfig = {
-        pkgs = nixpkgs.legacyPackages."x86_64-linux";
-        extraSpecialArgs = { inherit inputs nixvim; };
-        modules = [
-          nixvim.homeManagerModules.nixvim
-          ./modules/nvim.nix
-          ./modules/git.nix
-          ./modules/gpg.nix
-          ./modules/shell.nix
-          {
-            home.stateVersion = "24.05";
-            home.username = "pta2002";
-            home.homeDirectory = "/home/pta2002";
-            programs.home-manager.enable = true;
-          }
-        ];
-      };
-
-      fs = lib.fileset;
-
-      mkSwarmMachine =
-        {
-          system,
-          name,
-          modules ? [ ],
-          stateVersion,
-          specialArgs ? { },
-          roles ? [ ],
-        }:
-        hostForRoles:
-        let
-          nixFilesIn = dir: fs.toList (fs.fileFilter (file: file.hasExt "nix") dir);
-          machineModules = nixFilesIn ./machines/${name};
-          commonModules = nixFilesIn ./common;
-          roleModules = map (role: nixFilesIn ./roles/${role}) roles;
-          roleDefinitions = {
-            config.common.role = lib.listToAttrs (
-              map (role: {
-                name = role;
-                value = {
-                  enabled = true;
-                };
-              }) roles
-            );
-          };
-        in
-        nixpkgs.lib.nixosSystem {
-          inherit system specialArgs;
-          modules = lib.concatLists (
-            [
-              [
-                agenix.nixosModules.default
-                home.nixosModules.home-manager
-                disko.nixosModules.disko
-
-                ./modules/common.nix
-                roleDefinitions
-                hostForRoles
-
-                (
-                  { ... }:
-                  {
-                    home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-                      { home.stateVersion = stateVersion; }
-                      nixvim.homeManagerModules.nixvim
-                      ./modules/nvim.nix
-                      ./modules/git.nix
-                      ./modules/shell.nix
-                    ];
-
-                    home-manager.useGlobalPkgs = true;
-                    home-manager.extraSpecialArgs = {
-                      inherit inputs;
-                      hostname = name;
-                    };
-                  }
-                )
-              ]
-              machineModules
-              commonModules
-              modules
-            ]
-            ++ roleModules
-          );
-        };
-
-      # TODO!
-      mkSwarm =
-        machines:
-        let
-          rolesPerHost = lib.mapAttrs (k: v: v.roles) machines;
-          hostForRoles =
-            let
-              flattened = lib.flatten (
-                lib.mapAttrsToList (
-                  host:
-                  map (role: {
-                    ${role}.name = host;
-                  })
-                ) rolesPerHost
-              );
-            in
-            {
-              config.common.role = lib.mergeAttrsList flattened;
             };
+
+          homeManagerConfig = {
+            pkgs = nixpkgs.legacyPackages."x86_64-linux";
+            extraSpecialArgs = { inherit inputs nixvim; };
+            modules = [
+              nixvim.homeManagerModules.nixvim
+              ./modules/nvim.nix
+              ./modules/git.nix
+              ./modules/gpg.nix
+              ./modules/shell.nix
+              {
+                home.stateVersion = "24.05";
+                home.username = "pta2002";
+                home.homeDirectory = "/home/pta2002";
+                programs.home-manager.enable = true;
+              }
+            ];
+          };
+
+          fs = lib.fileset;
+
+          mkSwarmMachine =
+            {
+              system,
+              name,
+              modules ? [ ],
+              stateVersion,
+              specialArgs ? { },
+              roles ? [ ],
+            }:
+            hostForRoles:
+            let
+              nixFilesIn = dir: fs.toList (fs.fileFilter (file: file.hasExt "nix") dir);
+              machineModules = nixFilesIn ./machines/${name};
+              commonModules = nixFilesIn ./common;
+              roleModules = map (role: nixFilesIn ./roles/${role}) roles;
+              roleDefinitions = {
+                config.common.role = lib.listToAttrs (
+                  map (role: {
+                    name = role;
+                    value = {
+                      enabled = true;
+                    };
+                  }) roles
+                );
+              };
+            in
+            nixpkgs.lib.nixosSystem {
+              inherit system specialArgs;
+              modules = lib.concatLists (
+                [
+                  [
+                    agenix.nixosModules.default
+                    home.nixosModules.home-manager
+                    disko.nixosModules.disko
+
+                    # Shouldn't this be by default?
+                    inputs.agenix-rekey.nixosModules.default
+
+                    ./modules/common.nix
+                    roleDefinitions
+                    hostForRoles
+
+                    (
+                      { ... }:
+                      {
+                        home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
+                          { home.stateVersion = stateVersion; }
+                          nixvim.homeManagerModules.nixvim
+                          ./modules/nvim.nix
+                          ./modules/git.nix
+                          ./modules/shell.nix
+                        ];
+
+                        home-manager.useGlobalPkgs = true;
+                        home-manager.extraSpecialArgs = {
+                          inherit inputs;
+                          hostname = name;
+                        };
+                      }
+                    )
+                  ]
+                  machineModules
+                  commonModules
+                  modules
+                ]
+                ++ roleModules
+              );
+            };
+
+          # TODO!
+          mkSwarm =
+            machines:
+            let
+              rolesPerHost = lib.mapAttrs (k: v: v.roles) machines;
+              hostForRoles =
+                let
+                  flattened = lib.flatten (
+                    lib.mapAttrsToList (
+                      host:
+                      map (role: {
+                        ${role}.name = host;
+                      })
+                    ) rolesPerHost
+                  );
+                in
+                {
+                  config.common.role = lib.mergeAttrsList flattened;
+                };
+            in
+            lib.mapAttrs (k: v: mkSwarmMachine v hostForRoles) machines;
         in
-        lib.mapAttrs (k: v: mkSwarmMachine v hostForRoles) machines;
-    in
-    {
-      lib.overrideHomeConfiguration =
-        config:
-        home.lib.homeManagerConfiguration (
-          homeManagerConfig
-          // {
-            modules = homeManagerConfig.modules ++ [ config ];
-          }
-        );
-
-      homeConfigurations = {
-        pta2002 = home.lib.homeManagerConfiguration homeManagerConfig;
-      };
-
-      nixosConfigurations =
         {
-          hydrogen = mkMachine "hydrogen" "x86_64-linux";
-          mercury = mkMachine "mercury" "x86_64-linux";
+          lib.overrideHomeConfiguration =
+            config:
+            home.lib.homeManagerConfiguration (
+              homeManagerConfig
+              // {
+                modules = homeManagerConfig.modules ++ [ config ];
+              }
+            );
 
-          pie = nixpkgs.lib.nixosSystem {
-            system = "aarch64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              agenix.nixosModules.default
-              nixos-hardware.nixosModules.raspberry-pi-4
-              ./machines/pie.nix
-            ];
-          };
-        }
-        // (mkSwarm {
-          mars = {
-            system = "aarch64-linux";
-            name = "mars";
-            stateVersion = "24.11";
-            specialArgs = { inherit inputs my-switches; };
-            modules = [
-              raspberry-pi-nix.nixosModules.raspberry-pi
-            ];
-
-            roles = [
-              "media"
-              "data-host"
-            ];
+          homeConfigurations = {
+            pta2002 = home.lib.homeManagerConfiguration homeManagerConfig;
           };
 
-          cloudy = {
-            system = "aarch64-linux";
-            stateVersion = "22.11";
-            name = "cloudy";
-            specialArgs = { inherit inputs nixvim; };
-            roles = [ "dns" ];
-          };
+          nixosConfigurations =
+            {
+              hydrogen = mkMachine "hydrogen" "x86_64-linux";
+              mercury = mkMachine "mercury" "x86_64-linux";
 
-          panda = {
-            system = "x86_64-linux";
-            name = "panda";
-            stateVersion = "25.05";
-            roles = [
-              "snatcher"
-              "stream"
-              "auth"
-            ];
-          };
-        });
+              pie = nixpkgs.lib.nixosSystem {
+                system = "aarch64-linux";
+                specialArgs = { inherit inputs; };
+                modules = [
+                  agenix.nixosModules.default
+                  nixos-hardware.nixosModules.raspberry-pi-4
+                  ./machines/pie.nix
+                ];
+              };
+            }
+            // (mkSwarm {
+              mars = {
+                system = "aarch64-linux";
+                name = "mars";
+                stateVersion = "24.11";
+                specialArgs = { inherit inputs my-switches; };
+                modules = [
+                  raspberry-pi-nix.nixosModules.raspberry-pi
+                ];
 
-      deploy.nodes = {
-        panda = {
-          hostname = "panda";
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;
+                roles = [
+                  "media"
+                  "data-host"
+                ];
+              };
+
+              cloudy = {
+                system = "aarch64-linux";
+                stateVersion = "22.11";
+                name = "cloudy";
+                specialArgs = { inherit inputs nixvim; };
+                roles = [ "dns" ];
+              };
+
+              panda = {
+                system = "x86_64-linux";
+                name = "panda";
+                stateVersion = "25.05";
+                roles = [
+                  "snatcher"
+                  "stream"
+                  "auth"
+                ];
+              };
+            });
+
+          deploy.nodes = {
+            panda = {
+              hostname = "panda";
+              profiles.system = {
+                user = "root";
+                path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;
+              };
+            };
+
+            cloudy = {
+              hostname = "cloudy";
+              remoteBuild = true;
+              profiles.system = {
+                user = "root";
+                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.cloudy;
+              };
+            };
+
+            mars = {
+              hostname = "mars";
+              remoteBuild = true;
+              profiles.system = {
+                user = "root";
+                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mars;
+              };
+            };
           };
         };
 
-        cloudy = {
-          hostname = "cloudy";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.cloudy;
-          };
-        };
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
 
-        mars = {
-          hostname = "mars";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mars;
+      perSystem =
+        {
+          config,
+          pkgs,
+          ...
+        }:
+        {
+          devShells.default = pkgs.mkShell {
+            nativeBuildInputs = [ config.agenix-rekey.package ];
+          };
+
+          agenix-rekey = {
+            # This might be interesting later, but for now there is no need.
+            collectHomeManagerConfigurations = false;
+            nixosConfigurations = {
+              inherit (self.nixosConfigurations) panda cloudy mars;
+            };
           };
         };
-      };
-    };
+    });
 }

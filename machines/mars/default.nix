@@ -20,9 +20,7 @@
   proxy.ipv4 = "100.126.178.45";
   proxy.ipv6 = "fd7a:115c:a1e0::2501:b22d";
 
-  age.secrets.caddy-mars = {
-    file = ../../secrets/caddy-mars.age;
-  };
+  age.secrets.caddy-mars.rekeyFile = ../../secrets/caddy-mars.age;
 
   virtualisation.docker.enable = true;
 
@@ -133,11 +131,11 @@
   # Stuff for cloudflared
   age.secrets = {
     marstunnel = {
-      file = ../../secrets/marstunnel.json.age;
+      rekeyFile = ../../secrets/marstunnel.json.age;
       mode = "400";
     };
     cf-cert = {
-      file = ../../secrets/cert-panda.pem.age;
+      rekeyFile = ../../secrets/cert-panda.pem.age;
       mode = "400";
     };
   };
