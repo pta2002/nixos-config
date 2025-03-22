@@ -37,7 +37,7 @@ in
             listen = mkOption {
               type = types.str;
               default = "0.0.0.0";
-              description = "Address to bind to, or alternatively, path to the socket to listen on.";
+              description = "Address to bind to, or, alternatively, path to the socket to listen on.";
             };
 
             port = mkOption {
@@ -51,7 +51,7 @@ in
 
       default = { };
       description = ''
-        Settings for vouch-proxy.
+        Settings for vouch-proxy. See https://github.com/vouch/vouch-proxy for more details.
       '';
     };
   };
