@@ -1,11 +1,12 @@
-{ lib, config, ... }:
+{ lib, ... }:
 let
   roles = [
     "auth"
+    "data-host"
     "dns"
     "media"
-    "data-host"
     "snatcher"
+    "stream"
   ];
 in
 {

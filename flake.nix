@@ -271,6 +271,7 @@
             stateVersion = "25.05";
             roles = [
               "snatcher"
+              "stream"
               "auth"
             ];
           };
