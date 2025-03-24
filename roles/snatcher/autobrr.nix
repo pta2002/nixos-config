@@ -23,7 +23,7 @@ in
       oidcClientId = "autobrr";
       oidcClientSecret = secret;
       oidcRedirectUrl = "https://autobrr.${config.proxy.domain}/api/auth/oidc/callback";
-      disableBuiltInLogin = true;
+      oidcDisableBuiltInLogin = true;
     };
   };
 
