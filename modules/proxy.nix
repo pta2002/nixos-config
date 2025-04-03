@@ -35,7 +35,7 @@ let
         };
 
         generatedNginxConfig = lib.mkOption {
-          type = lib.types.anything;
+          type = lib.types.attrsOf (lib.types.anything);
           readOnly = true;
         };
       };
@@ -51,6 +51,14 @@ let
               locations."/" = {
                 recommendedProxySettings = true;
                 proxyPass = "http://${config.addr}";
+
+                extraConfig =
+                  lib.mkDefault # nginx
+                    ''
+                      # For websockets upgrade
+                      proxy_set_header Upgrade $http_upgrade;
+                      proxy_set_header Connection $connection_upgrade;
+                    '';
               };
             }
             (lib.mkIf config.auth.enable {
@@ -75,6 +83,10 @@ let
                   auth_request /validate;
 
                   proxy_set_header X-Vouch-User $auth_resp_x_vouch_user;
+
+                  # For websockets upgrade
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection $connection_upgrade;
 
                   # if validate returns `401 not authorized` then forward the request to the error401 block
                   error_page 401 = @error401;

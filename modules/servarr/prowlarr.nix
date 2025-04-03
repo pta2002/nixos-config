@@ -92,16 +92,6 @@ in
     in
     {
       systemd.services.prowlarr.serviceConfig = {
-        LoadCredential = "PROWLARR__AUTH__APIKEY:${cfg.apiKeyFile}";
-        ExecStartPre = pkgs.writeShellScript "prowlarr-apikey" ''
-          if [ ! -s config.xml ]; then
-            echo '<?xml version="1.0" encoding="UTF-8"?><Config><ApiKey></ApiKey><AuthenticationMethod></AuthenticationMethod></Config>' > /var/lib/prowlarr/config.xml
-          fi
-          ${lib.getExe pkgs.xmlstarlet} ed -L -u "/Config/ApiKey" -v "@API_KEY@" "/var/lib/prowlarr/config.xml"
-          ${lib.getExe pkgs.xmlstarlet} ed -L -u "/Config/AuthenticationMethod" -v "External" "/var/lib/prowlarr/config.xml"
-          ${lib.getExe pkgs.replace-secret} '@API_KEY@' ''${CREDENTIALS_DIRECTORY}/PROWLARR__AUTH__APIKEY "/var/lib/prowlarr/config.xml"
-        '';
-
         # Wait to ensure it is available. There's DEFINITELY a better way to do this, using e.g. systemd-socket-proxyd
         ExecStartPost = pkgs.writeShellScript "wait-for-prowlarr" ''
           timeout 30 '${lib.getExe pkgs.bash}' -c 'while ! ${lib.getExe pkgs.curl} --fail http://localhost:9696 -L --silent > /dev/null; do sleep 1; done'

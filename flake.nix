@@ -268,6 +268,7 @@
                 roles = [
                   "media"
                   "data-host"
+                  "actions-runner"
                 ];
               };
 
@@ -276,7 +277,10 @@
                 stateVersion = "22.11";
                 name = "cloudy";
                 specialArgs = { inherit inputs nixvim; };
-                roles = [ "dns" ];
+                roles = [
+                  "dns"
+                  "actions-runner"
+                ];
               };
 
               panda = {
@@ -284,9 +288,11 @@
                 name = "panda";
                 stateVersion = "25.05";
                 roles = [
+                  "auth"
+                  "git"
                   "snatcher"
                   "stream"
-                  "auth"
+                  "actions-runner"
                 ];
               };
             });

@@ -73,6 +73,7 @@ in
 
   services.prowlarr = {
     enable = true;
+    environmentFiles = [ config.age.secrets.prowlarrEnv.path ];
 
     settings = {
       url = "https://prowlarr.p.pta2002.com";

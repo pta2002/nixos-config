@@ -1,9 +1,11 @@
 { lib, ... }:
 let
   roles = [
+    "actions-runner"
     "auth"
     "data-host"
     "dns"
+    "git"
     "media"
     "snatcher"
     "stream"
