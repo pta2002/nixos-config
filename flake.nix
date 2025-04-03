@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-cloudflared.url = "github:wrbbz/nixpkgs/cloudflared-2025.4.0";
 
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
@@ -64,6 +65,7 @@
       deploy-rs,
       raspberry-pi-nix,
       flake-parts,
+      nixpkgs-cloudflared,
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } (_: {
@@ -166,6 +168,16 @@
               modules = lib.concatLists (
                 [
                   [
+                    (
+                      { pkgs, ... }:
+                      {
+                        nixpkgs.overlays = [
+                          (self: super: {
+                            inherit (nixpkgs-cloudflared.legacyPackages.${pkgs.system}) cloudflared;
+                          })
+                        ];
+                      }
+                    )
                     agenix.nixosModules.default
                     home.nixosModules.home-manager
                     disko.nixosModules.disko

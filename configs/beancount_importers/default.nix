@@ -1,10 +1,10 @@
-{ python3 }:
+{ python3, python3Packages }:
 python3.pkgs.buildPythonPackage rec {
   name = "beancount_importers";
   src = ./.;
   format = "pyproject";
 
-  propagatedBuildInputs = with python3.pkgs.pythonPackages; [
+  propagatedBuildInputs = with python3Packages; [
     beancount
     pypdf
   ];

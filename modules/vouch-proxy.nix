@@ -79,7 +79,8 @@ in
           ExecStart = ''
             ${lib.getExe cfg.package} -config ''${STATE_DIRECTORY}/config.yml
           '';
-          DynamicUser = true;
+          # TODO: Report vouch-proxy bug! It does not handle this correctly.
+          # DynamicUser = true;
           StateDirectory = "vouch-proxy";
           LoadCredentials = mkIf (cfg.jwtSecretFile != null) "jwtSecret:${cfg.jwtSecretFile}";
         };
