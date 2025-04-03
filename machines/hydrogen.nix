@@ -15,9 +15,22 @@
   #   resolution 3440 1440
   # '';
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "vfio-pci" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "ehci_pci"
+    "ahci"
+    "usbhid"
+    "usb_storage"
+    "sd_mod"
+    "vfio-pci"
+  ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" "i2c-dev" "snd-seq" "snd-rawmidi" ];
+  boot.kernelModules = [
+    "kvm-intel"
+    "i2c-dev"
+    "snd-seq"
+    "snd-rawmidi"
+  ];
   boot.extraModulePackages = [ ];
   boot.kernelParams = [
     "iommu=pt"
@@ -28,17 +41,15 @@
   hardware.i2c.enable = true;
   services.udev.packages = [ pkgs.openrgb ];
 
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/1e5ec187-b64e-4a3a-a058-259272aa54c5";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/1e5ec187-b64e-4a3a-a058-259272aa54c5";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot/efi" =
-    {
-      device = "/dev/disk/by-uuid/3D21-52D1";
-      fsType = "vfat";
-    };
+  fileSystems."/boot/efi" = {
+    device = "/dev/disk/by-uuid/3D21-52D1";
+    fsType = "vfat";
+  };
 
   fileSystems."/mnt/drive0" = {
     device = "/dev/sr0";
@@ -62,6 +73,7 @@
   };
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.powerManagement.enable = true;
+  hardware.nvidia.open = false;
 
   networking.hostName = "hydrogen";
   networking.interfaces.enp3s0.useDHCP = true;

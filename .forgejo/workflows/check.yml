@@ -1,0 +1,16 @@
+name: "Flake check"
+
+on:
+  pull_request:
+  push:
+    branches: ['main']
+
+jobs:
+  lockfile:
+    runs-on: nix
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run nix flake check
+        run: nix flake check
+

@@ -1,0 +1,32 @@
+name: "Update flake.lock"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['main']
+  schedule:
+    - cron: '0 0 * * 0' # runs weekly on Sunday at 00
+
+env:
+  NIX_CONFIG: access-tokens = github.com=${{ secrets.GH_NIX_TOKEN }}
+
+
+jobs:
+  lockfile:
+    runs-on: nix
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run nix flake update
+        run: nix flake update
+      - name: Create Pull Request
+        uses: https://github.com/maxking/forgejo-create-pr@main
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          base: 'main'
+          add-paths: '.'
+          commit-message: 'flake.lock: update'
+          pr-title: 'flake.lock: update'
+          pr-body: |
+            Automated flake update
+

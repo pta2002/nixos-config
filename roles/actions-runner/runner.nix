@@ -13,6 +13,8 @@ let
         pkgs.bash
         pkgs.jq
         pkgs.nodejs
+        pkgs.curl
+        pkgs.python3
       ]
     }; do
       for bin in "$dir"/bin/*; do

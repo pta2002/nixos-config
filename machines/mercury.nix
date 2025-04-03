@@ -27,7 +27,10 @@ in
   networking.hostId = "a3aa8a8f";
   networking.interfaces.wlo1.useDHCP = true;
 
-  services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+  services.xserver.videoDrivers = [
+    "modesetting"
+    "nvidia"
+  ];
   nixpkgs.config.packageOverrides = pkgs: {
     # vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
@@ -49,12 +52,24 @@ in
   };
 
   hardware.nvidia.nvidiaSettings = false;
+  hardware.nvidia.open = false;
 
   environment.systemPackages = [ nvidia-offload ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "ahci"
+    "nvme"
+    "usb_storage"
+    "sd_mod"
+  ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" "kvmgt" "vfio-iommu-type1" "mdev" ];
+  boot.kernelModules = [
+    "kvm-intel"
+    "kvmgt"
+    "vfio-iommu-type1"
+    "mdev"
+  ];
   boot.extraModulePackages = [ ];
 
   virtualisation.kvmgt.enable = true;
@@ -66,20 +81,17 @@ in
 
   boot.supportedFilesystems = [ "bcachefs" ];
 
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/ba866b4c-d78d-4ade-a9b8-5064b5faa3e6";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/ba866b4c-d78d-4ade-a9b8-5064b5faa3e6";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-label/boot";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-label/boot";
+    fsType = "vfat";
+  };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/3231529d-a4e6-4976-a325-c7c5ffc677dc"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/3231529d-a4e6-4976-a325-c7c5ffc677dc"; } ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }
