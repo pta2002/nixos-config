@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   services.thelounge = {
     enable = true;
     extraConfig.reverseProxy = true;

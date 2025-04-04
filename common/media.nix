@@ -4,7 +4,9 @@
   config = lib.mkMerge [
     {
       # I don't want to have to deal with kerberos/idmapd, NFS is messy enough as is. At least this way things should "work" for the most part.
-      users.groups.data = { gid = 988; };
+      users.groups.data = {
+        gid = 988;
+      };
       users.users.pta2002.extraGroups = [ "data" ];
 
       networking.domain = "pta2002.com";
@@ -15,7 +17,11 @@
       fileSystems."/srv/media" = {
         fsType = "nfs";
         device = "${config.common.role.data-host.name}:/data";
-        options = [ "x-systemd.automount" "nofail" "noatime" ];
+        options = [
+          "x-systemd.automount"
+          "nofail"
+          "noatime"
+        ];
       };
     })
     (lib.mkIf (config.common.role.data-host.enabled) {
@@ -24,7 +30,11 @@
         depends = [ "/mnt" ];
         device = "/mnt/data";
         fsType = "none";
-        options = [ "bind" "noatime" "nofail" ];
+        options = [
+          "bind"
+          "noatime"
+          "nofail"
+        ];
       };
     })
   ];

@@ -1,5 +1,6 @@
 # Config file for desktop systems
-{ pkgs, pkgs-nocuda, ... }: {
+{ pkgs, pkgs-nocuda, ... }:
+{
   imports = [
     ./ssh.nix
     ./wayland.nix
@@ -111,7 +112,7 @@
     dedicatedServer.openFirewall = true;
   };
 
-  i18n.inputMethod= {
+  i18n.inputMethod = {
     type = "ibus";
     ibus.engines = with pkgs.ibus-engines; [
       uniemoji

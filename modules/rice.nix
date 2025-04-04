@@ -1,4 +1,10 @@
-{ pkgs, config, inputs, hostname, ... }:
+{
+  pkgs,
+  config,
+  inputs,
+  hostname,
+  ...
+}:
 {
   xsession.enable = true;
 
@@ -26,7 +32,10 @@
     nerd-fonts.fira-code
 
     (pkgs.rofi.override {
-      plugins = with pkgs; [ rofi-emoji rofi-calc ];
+      plugins = with pkgs; [
+        rofi-emoji
+        rofi-calc
+      ];
     })
 
     # (stdenv.mkDerivation rec {
@@ -129,12 +138,36 @@
     };
 
     wintypes = {
-      desktop = { shadow = true; };
-      dropdown_menu = { shadow = false; blur = false; full-shadow = false; opacity = 1.0; };
-      popup_menu = { shadow = false; blur = false; full-shadow = false; opacity = 1.0; };
-      menu = { shadow = false; blur = false; full-shadow = false; opacity = 1.0; };
-      tooltip = { shadow = false; blur = true; full-shadow = false; opacity = 1.0; };
-      dialog = { animation = false; };
+      desktop = {
+        shadow = true;
+      };
+      dropdown_menu = {
+        shadow = false;
+        blur = false;
+        full-shadow = false;
+        opacity = 1.0;
+      };
+      popup_menu = {
+        shadow = false;
+        blur = false;
+        full-shadow = false;
+        opacity = 1.0;
+      };
+      menu = {
+        shadow = false;
+        blur = false;
+        full-shadow = false;
+        opacity = 1.0;
+      };
+      tooltip = {
+        shadow = false;
+        blur = true;
+        full-shadow = false;
+        opacity = 1.0;
+      };
+      dialog = {
+        animation = false;
+      };
     };
   };
 
@@ -184,16 +217,20 @@
     in
     {
       enable = true;
-      events = [{
-        event = "before-sleep";
-        command = cmd;
-      }];
+      events = [
+        {
+          event = "before-sleep";
+          command = cmd;
+        }
+      ];
 
       # This should cause the system to go to sleep, which will mean that before-sleep runs!
-      timeouts = [{
-        timeout = 300;
-        command = "systemctl suspend";
-      }];
+      timeouts = [
+        {
+          timeout = 300;
+          command = "systemctl suspend";
+        }
+      ];
     };
 
   home.file =

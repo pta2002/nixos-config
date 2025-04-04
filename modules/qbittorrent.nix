@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.services.qbittorrent;
 in
@@ -40,59 +45,57 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable
-    {
-      environment.systemPackages = [ pkgs.qbittorrent-cli ];
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = [ pkgs.qbittorrent-cli ];
 
-      networking.firewall.allowedTCPPorts = [ 42044 ];
-      networking.firewall.allowedUDPPorts = [ 42044 ];
+    networking.firewall.allowedTCPPorts = [ 42044 ];
+    networking.firewall.allowedUDPPorts = [ 42044 ];
 
-      proxy.services.qbittorrent = "localhost:${toString cfg.webuiPort}";
+    proxy.services.qbittorrent = "localhost:${toString cfg.webuiPort}";
 
-      systemd.services.qbittorrent = {
-        description = "qBittorrent BitTorrent Service";
-        after = [ "network.target" ];
+    systemd.services.qbittorrent = {
+      description = "qBittorrent BitTorrent Service";
+      after = [ "network.target" ];
 
-        wantedBy = [ "multi-user.target" ];
+      wantedBy = [ "multi-user.target" ];
 
-        serviceConfig = {
-          ExecStart = "${lib.getExe cfg.package} --webui-port=${toString cfg.webuiPort}";
-          User = cfg.user;
-          Group = cfg.group;
+      serviceConfig = {
+        ExecStart = "${lib.getExe cfg.package} --webui-port=${toString cfg.webuiPort}";
+        User = cfg.user;
+        Group = cfg.group;
 
-          # RuntimeDirectory = [ (baseNameOf rootDir) ];
-          # RuntimeDirectoryMode = "755";
-          #
-          # UMask = "0066";
-          #
-          # RootDirectory = rootDir;
-          # RootDirectoryStartOnly = true;
-          #
-          # BindPaths = [
-          #   "${cfg.home}"
-          #   cfg.downloadDir
-          #   "/run"
-          # ];
-          #
-          # BindReadOnlyPaths = [
-          #   builtins.storeDir
-          # ];
-        };
+        # RuntimeDirectory = [ (baseNameOf rootDir) ];
+        # RuntimeDirectoryMode = "755";
+        #
+        # UMask = "0066";
+        #
+        # RootDirectory = rootDir;
+        # RootDirectoryStartOnly = true;
+        #
+        # BindPaths = [
+        #   "${cfg.home}"
+        #   cfg.downloadDir
+        #   "/run"
+        # ];
+        #
+        # BindReadOnlyPaths = [
+        #   builtins.storeDir
+        # ];
       };
+    };
 
-      users.users = lib.optionalAttrs (cfg.user == "qbittorrent") {
-        qbittorrent = {
-          group = cfg.group;
-          description = "qBittorrent user";
-          home = cfg.home;
-          isSystemUser = true;
-          createHome = true;
-        };
+    users.users = lib.optionalAttrs (cfg.user == "qbittorrent") {
+      qbittorrent = {
+        group = cfg.group;
+        description = "qBittorrent user";
+        home = cfg.home;
+        isSystemUser = true;
+        createHome = true;
       };
+    };
 
-      users.groups = lib.optionalAttrs (cfg.group == "qbittorrent") {
-        qbittorrent = { };
-      };
-    }
-  ;
+    users.groups = lib.optionalAttrs (cfg.group == "qbittorrent") {
+      qbittorrent = { };
+    };
+  };
 }

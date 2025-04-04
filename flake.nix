@@ -33,6 +33,8 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     agenix-rekey.url = "github:oddlama/agenix-rekey";
     agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
+
+    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
   nixConfig = {
@@ -72,6 +74,7 @@
       imports = [
         # inputs.home.flakeModules.home-manager
         inputs.agenix-rekey.flakeModule
+        inputs.treefmt-nix.flakeModule
       ];
 
       flake =
@@ -359,6 +362,14 @@
             collectHomeManagerConfigurations = false;
             nixosConfigurations = {
               inherit (self.nixosConfigurations) panda cloudy mars;
+            };
+          };
+
+          treefmt = {
+            projectRootFile = "flake.nix";
+            programs = {
+              nixfmt.enable = true;
+              ruff.enable = true;
             };
           };
         };

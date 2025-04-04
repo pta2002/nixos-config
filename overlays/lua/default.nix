@@ -9,7 +9,12 @@ pkgs: self: super: {
     };
 
     upower_dbus = pkgs.callPackage (import ./upower_dbus) {
-      inherit (pkgs.luaPackages) buildLuarocksPackage luaOlder dbus_proxy enum;
+      inherit (pkgs.luaPackages)
+        buildLuarocksPackage
+        luaOlder
+        dbus_proxy
+        enum
+        ;
     };
   };
 }

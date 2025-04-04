@@ -3,7 +3,6 @@
   services.samba-wsdd.enable = true;
   services.samba-wsdd.openFirewall = true;
 
-
   services.samba = {
     enable = true;
     package = pkgs.sambaFull;
@@ -23,7 +22,12 @@
       workgroup = "mars";
       "netbios name" = "mars";
       security = "user";
-      "hosts allow" = [ "100.0.0.0/8" "fd7a:115c:a1e0::/48" "127.0.0.1" "localhost" ];
+      "hosts allow" = [
+        "100.0.0.0/8"
+        "fd7a:115c:a1e0::/48"
+        "127.0.0.1"
+        "localhost"
+      ];
       "hosts deny" = [ "0.0.0.0/0" ];
       "guest account" = "nobody";
       "map to guest" = "bad user";

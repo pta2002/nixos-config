@@ -1,17 +1,19 @@
-{ fetchurl
-, lua
-, buildLuarocksPackage
-, fetchgit
-, luaOlder
-, lgi
+{
+  fetchurl,
+  lua,
+  buildLuarocksPackage,
+  fetchgit,
+  luaOlder,
+  lgi,
 }:
 buildLuarocksPackage {
   pname = "dbus_proxy";
   version = "0.10.3-2";
-  knownRockspec = (fetchurl {
-    url = "mirror://luarocks/dbus_proxy-0.10.3-2.rockspec";
-    sha256 = "0fhbj84vxd50lvk83isxin9hj70n9y0i62kx531695151lkr269h";
-  }).outPath;
+  knownRockspec =
+    (fetchurl {
+      url = "mirror://luarocks/dbus_proxy-0.10.3-2.rockspec";
+      sha256 = "0fhbj84vxd50lvk83isxin9hj70n9y0i62kx531695151lkr269h";
+    }).outPath;
   src = fetchgit {
     rev = "c9253bde3fa5a64261953d1b196c57fabf9f8561";
     url = "https://github.com/stefano-m/lua-dbus_proxy";
@@ -19,7 +21,10 @@ buildLuarocksPackage {
   };
 
   disabled = with lua; (luaOlder "5.1");
-  propagatedBuildInputs = [ lua lgi ];
+  propagatedBuildInputs = [
+    lua
+    lgi
+  ];
 
   meta = {
     homepage = "https://github.com/stefano-m/lua-dbus_proxy";

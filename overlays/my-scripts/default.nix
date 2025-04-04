@@ -1,6 +1,6 @@
-pkgs: self: super:
-{
-  floating-print = with pkgs;
+pkgs: self: super: {
+  floating-print =
+    with pkgs;
     writers.writeBashBin "floating-print" ''
       temp=`mktemp --suffix=.png`
 

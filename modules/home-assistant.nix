@@ -4,9 +4,10 @@
     enable = true;
     openFirewall = true;
 
-    extraPackages = p: with p; [
-      gtts
-    ];
+    extraPackages =
+      p: with p; [
+        gtts
+      ];
 
     extraComponents = [
       "esphome"
@@ -31,79 +32,81 @@
 
     lovelaceConfig = {
       title = "Home";
-      views = [{
-        title = "Dashboard";
-        cards = [
-          {
-            type = "vertical-stack";
-            title = "Bedroom";
-            cards = [
-              {
-                type = "horizontal-stack";
-                cards = [
-                  {
-                    type = "custom:mushroom-light-card";
-                    entity = "light.ceiling_light";
-                    fill_container = true;
-                    layout = "vertical";
-                    show_brightness_control = true;
-                    name = "Ceiling";
-                  }
-                  {
-                    type = "custom:mushroom-light-card";
-                    entity = "light.bed_light";
-                    fill_container = true;
-                    layout = "vertical";
-                    show_brightness_control = true;
-                    name = "Bed";
-                  }
-                  {
-                    type = "custom:mushroom-light-card";
-                    entity = "light.desk_light";
-                    fill_container = true;
-                    layout = "vertical";
-                    show_brightness_control = true;
-                    name = "Desk";
-                  }
-                ];
-              }
-              {
-                type = "horizontal-stack";
-                cards = [
-                  {
-                    type = "custom:mushroom-light-card";
-                    entity = "light.desk_strip";
-                    fill_container = true;
-                    layout = "vertical";
-                    show_brightness_control = true;
-                    name = "Desk strip";
-                  }
-                  {
-                    type = "custom:mushroom-light-card";
-                    entity = "light.short_cable_lights";
-                    fill_container = true;
-                    layout = "vertical";
-                    show_brightness_control = true;
-                    name = "Bookshelf strip";
-                  }
-                ];
-              }
-              {
-                type = "custom:mini-graph-card";
-                entities = [ "sensor.bedroom_temperature_temperature" ];
-                name = "Temperature";
-                hours_to_show = 12;
-                points_per_hour = 4;
-              }
-              {
-                type = "custom:mini-media-player";
-                entity = "media_player.spotify";
-                artwork = "material";
-              }
-            ];
-          }
-        ];
-      }];
+      views = [
+        {
+          title = "Dashboard";
+          cards = [
+            {
+              type = "vertical-stack";
+              title = "Bedroom";
+              cards = [
+                {
+                  type = "horizontal-stack";
+                  cards = [
+                    {
+                      type = "custom:mushroom-light-card";
+                      entity = "light.ceiling_light";
+                      fill_container = true;
+                      layout = "vertical";
+                      show_brightness_control = true;
+                      name = "Ceiling";
+                    }
+                    {
+                      type = "custom:mushroom-light-card";
+                      entity = "light.bed_light";
+                      fill_container = true;
+                      layout = "vertical";
+                      show_brightness_control = true;
+                      name = "Bed";
+                    }
+                    {
+                      type = "custom:mushroom-light-card";
+                      entity = "light.desk_light";
+                      fill_container = true;
+                      layout = "vertical";
+                      show_brightness_control = true;
+                      name = "Desk";
+                    }
+                  ];
+                }
+                {
+                  type = "horizontal-stack";
+                  cards = [
+                    {
+                      type = "custom:mushroom-light-card";
+                      entity = "light.desk_strip";
+                      fill_container = true;
+                      layout = "vertical";
+                      show_brightness_control = true;
+                      name = "Desk strip";
+                    }
+                    {
+                      type = "custom:mushroom-light-card";
+                      entity = "light.short_cable_lights";
+                      fill_container = true;
+                      layout = "vertical";
+                      show_brightness_control = true;
+                      name = "Bookshelf strip";
+                    }
+                  ];
+                }
+                {
+                  type = "custom:mini-graph-card";
+                  entities = [ "sensor.bedroom_temperature_temperature" ];
+                  name = "Temperature";
+                  hours_to_show = 12;
+                  points_per_hour = 4;
+                }
+                {
+                  type = "custom:mini-media-player";
+                  entity = "media_player.spotify";
+                  artwork = "material";
+                }
+              ];
+            }
+          ];
+        }
+      ];
     };
     lovelaceConfigWritable = true;
 

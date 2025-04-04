@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   programs.tiny = {
     enable = true;
     settings = {
