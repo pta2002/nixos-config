@@ -205,7 +205,8 @@ in
           "nix:docker://forgejo-runner-nix"
         ];
         settings = {
-          container.options = "-e NIX_BUILD_SHELL=/bin/bash -e PAGER=cat -e PATH=/bin -e SSL_CERT_FILE=/etc/ssl/certs/ca-bundle.crt -v /nix:/nix -v ${storeDeps}/bin:/bin -v ${storeDeps}/etc/ssl:/etc/ssl --user nixuser";
+          # Limit memory to 6GB, and CPU to 60%. In the future, this should be based on the specs of the machine.
+          container.options = "-e NIX_BUILD_SHELL=/bin/bash -e PAGER=cat -e PATH=/bin -e SSL_CERT_FILE=/etc/ssl/certs/ca-bundle.crt -v /nix:/nix -v ${storeDeps}/bin:/bin -v ${storeDeps}/etc/ssl:/etc/ssl --user nixuser --memory 6g --memory-swap 12g --cpu-quota=60000";
           container.network = "host";
           container.valid_volumes = [
             "/nix"
