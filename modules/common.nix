@@ -4,6 +4,7 @@ let
     "actions-runner"
     "auth"
     "data-host"
+    "docs"
     "dns"
     "git"
     "media"

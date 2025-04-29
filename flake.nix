@@ -303,11 +303,12 @@
                 name = "panda";
                 stateVersion = "25.05";
                 roles = [
+                  "actions-runner"
                   "auth"
+                  "docs"
                   "git"
                   "snatcher"
                   "stream"
-                  "actions-runner"
                 ];
               };
             });
