@@ -24,9 +24,9 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           base: 'main'
+          pr-branch: 'flake-update'
           add-paths: '.'
           commit-message: 'flake.lock: update'
           pr-title: 'flake.lock: update'
-          pr-body: |
-            Automated flake update
+          pr-body: Automated flake update
 
