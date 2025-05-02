@@ -169,6 +169,10 @@ in
       # Note that this has some interactions with the User setting; so you may
       # want to consult the systemd docs if using both.
       DynamicUser = true;
+
+      MemoryHigh = "6G";
+      MemoryMax = "12G";
+      CPUQuota = "60%";
     };
   };
 
@@ -206,7 +210,7 @@ in
         ];
         settings = {
           # Limit memory to 6GB, and CPU to 60%. In the future, this should be based on the specs of the machine.
-          container.options = "-e NIX_BUILD_SHELL=/bin/bash -e PAGER=cat -e PATH=/bin -e SSL_CERT_FILE=/etc/ssl/certs/ca-bundle.crt -v /nix:/nix -v ${storeDeps}/bin:/bin -v ${storeDeps}/etc/ssl:/etc/ssl --user nixuser --memory 6g --memory-swap 12g --cpu-quota=60000";
+          container.options = "-e NIX_BUILD_SHELL=/bin/bash -e PAGER=cat -e PATH=/bin -e SSL_CERT_FILE=/etc/ssl/certs/ca-bundle.crt -v /nix:/nix -v ${storeDeps}/bin:/bin -v ${storeDeps}/etc/ssl:/etc/ssl --user nixuser";
           container.network = "host";
           container.valid_volumes = [
             "/nix"
