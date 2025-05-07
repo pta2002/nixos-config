@@ -15,12 +15,12 @@
       "cast"
       "spotify"
       "plex"
+      "isal"
       "sonarr"
       "radarr"
       "tasmota"
       "matter"
       "homekit"
-      "homekit_controller"
     ];
 
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
@@ -199,7 +199,12 @@
     8123
     1883
     9001
+    # Homekit
+    21063
+    21064
   ];
+  # Homekit
+  networking.firewall.allowedUDPPorts = [ 5353 ];
 
   common.backups.paths = [ "/var/lib/hass" ];
 }
