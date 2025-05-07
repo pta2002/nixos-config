@@ -17,9 +17,10 @@
       "plex"
       "sonarr"
       "radarr"
-      "transmission"
       "tasmota"
       "matter"
+      "homekit"
+      "homekit_controller"
     ];
 
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
