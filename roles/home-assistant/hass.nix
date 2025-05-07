@@ -1,4 +1,4 @@
-{ pkgs, my-switches, ... }:
+{ pkgs, ... }:
 {
   services.home-assistant = {
     enable = true;
@@ -141,68 +141,24 @@
     };
   };
 
-  # Web UI is at :8080
-  services.zigbee2mqtt = {
-    enable = true;
-    settings = {
-      homeassistant = true;
-      permit_join = false;
-      serial.port = "/dev/ttyACM0";
-      frontend = true;
-      mqtt.server = "mqtt://localhost:1883";
-      mqtt.base_topic = "zigbee2mqtt";
-    };
-  };
-
   services.matter-server = {
     enable = true;
-  };
-
-  services.mosquitto = {
-    enable = true;
-    listeners = [ ];
   };
 
   services.cloudflared.tunnels.mars = {
     ingress."home.pta2002.com" = "http://localhost:8123";
   };
 
-  proxy.services = {
-    home = "localhost:8123";
-    zigbee2mqtt = "localhost:8080";
-  };
-
-  systemd.services.switches = {
-    description = "switches";
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "${my-switches.packages.${pkgs.system}.default}/bin/my-switches";
-      Type = "simple";
-      User = "switches";
-      Group = "switches";
-      Restart = "on-failure";
-      RestartSec = "5s";
-    };
-  };
-
-  users.users.switches = {
-    isSystemUser = true;
-    group = "switches";
-  };
-
-  users.groups.switches = { };
+  proxy.services.home = "localhost:8123";
 
   networking.firewall.allowedTCPPorts = [
-    80
     8123
-    1883
     9001
     # Homekit
     21063
     21064
   ];
+
   # Homekit
   networking.firewall.allowedUDPPorts = [ 5353 ];
 

@@ -281,6 +281,7 @@
                 ];
 
                 roles = [
+                  "home-assistant"
                   "media"
                   "data-host"
                   "actions-runner"

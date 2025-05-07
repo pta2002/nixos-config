@@ -7,6 +7,7 @@ let
     "docs"
     "dns"
     "git"
+    "home-assistant"
     "media"
     "snatcher"
     "stream"

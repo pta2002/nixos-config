@@ -6,7 +6,6 @@
 }:
 {
   imports = [
-    ../../modules/home-assistant.nix
     ../../modules/filespi.nix
     ../../modules/matterbridge.nix
     ../../modules/proxy.nix
