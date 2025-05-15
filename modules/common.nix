@@ -9,6 +9,7 @@ let
     "git"
     "home-assistant"
     "media"
+    "vault"
     "snatcher"
     "stream"
   ];

@@ -3,7 +3,6 @@
   imports = [
     ../../modules/yarr.nix
     ../../modules/fava.nix
-    ../../modules/vaultwarden.nix
     ../../modules/proxy.nix
   ];
 

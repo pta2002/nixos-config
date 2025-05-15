@@ -296,6 +296,7 @@
                 specialArgs = { inherit inputs nixvim; };
                 roles = [
                   "dns"
+                  "vault"
                   "actions-runner"
                 ];
               };
