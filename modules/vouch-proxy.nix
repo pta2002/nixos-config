@@ -68,11 +68,11 @@ in
 
         serviceConfig = {
           # vouch-proxy will try to store the JWT secret in the same directory as the config file, so we need to move it.
-          ExecStartPre = lib.mkMerge [
+          ExecStartPre = lib.concatStringsSep "\n" [
             ''
               +${pkgs.coreutils}/bin/cp "${configPath}" ''${STATE_DIRECTORY}/config.yml
             ''
-            (mkIf (cfg.jwtSecretFile != null) ''
+            (lib.optionalString (cfg.jwtSecretFile != null) ''
               +${pkgs.coreutils}/bin/cp "${cfg.jwtSecretFile}" ''${STATE_DIRECTORY}/secret
             '')
           ];

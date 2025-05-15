@@ -2,10 +2,20 @@
 {
   services.vouch-proxy = {
     enable = true;
+    jwtSecretFile = config.age.secrets.vouch-secret.path;
 
     settings = {
       # kanidm does not really work well otherwise
-      vouch.domains = [ "pta2002.com" ];
+      vouch = {
+        domains = [ "pta2002.com" ];
+        jwt = {
+          # 1 year. This is internal stuff, it's fine.
+          maxAge = 60 * 24 * 365;
+        };
+
+        cookie.maxAge = config.services.vouch-proxy.settings.vouch.jwt.maxAge;
+      };
+
       oauth = {
         provider = "oidc";
         # TODO: Rename this
@@ -46,4 +56,6 @@
     "vouch.pta2002.com".service =
       "http://localhost:${toString config.services.vouch-proxy.settings.vouch.port}";
   };
+
+  age.secrets.vouch-secret.rekeyFile = ../../secrets/vouch-proxy.age;
 }
