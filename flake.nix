@@ -243,10 +243,11 @@
         in
         {
           lib.overrideHomeConfiguration =
-            config:
+            system: config:
             home.lib.homeManagerConfiguration (
               homeManagerConfig
               // {
+                pkgs = nixpkgs.legacyPackages.${system};
                 modules = homeManagerConfig.modules ++ [ config ];
               }
             );
