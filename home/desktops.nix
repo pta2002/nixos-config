@@ -10,12 +10,12 @@
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
 
-    ./modules/shell.nix
-    ./modules/git.nix
-    ./modules/tiny.nix
-    ./modules/nvim.nix
-    ./modules/rice.nix
-    ./modules/gnome.nix
+    ./shell.nix
+    ./git.nix
+    ./tiny.nix
+    ./nvim.nix
+    ./rice.nix
+    ./gnome.nix
 
     inputs.nix-index-database.hmModules.nix-index
   ];

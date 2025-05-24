@@ -103,7 +103,7 @@
 
                 home.nixosModules.home-manager
                 {
-                  home-manager.users.pta2002 = ./home.nix;
+                  home-manager.users.pta2002 = ./home/desktops.nix;
                   home-manager.extraSpecialArgs = {
                     inherit inputs;
                     hostname = name;
@@ -125,10 +125,10 @@
             extraSpecialArgs = { inherit inputs nixvim; };
             modules = [
               nixvim.homeManagerModules.nixvim
-              ./modules/nvim.nix
-              ./modules/git.nix
-              ./modules/gpg.nix
-              ./modules/shell.nix
+              ./home/nvim.nix
+              ./home/git.nix
+              ./home/gpg.nix
+              ./home/shell.nix
               {
                 home.stateVersion = "24.05";
                 home.username = "pta2002";
@@ -198,9 +198,9 @@
                         home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
                           { home.stateVersion = stateVersion; }
                           nixvim.homeManagerModules.nixvim
-                          ./modules/nvim.nix
-                          ./modules/git.nix
-                          ./modules/shell.nix
+                          ./home/nvim.nix
+                          ./home/git.nix
+                          ./home/shell.nix
                         ];
 
                         home-manager.useGlobalPkgs = true;

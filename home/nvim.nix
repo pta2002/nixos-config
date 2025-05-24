@@ -359,7 +359,6 @@
 
     extraPackages = with pkgs; [
       xclip
-      glslls
       nixfmt-rfc-style
     ];
 
