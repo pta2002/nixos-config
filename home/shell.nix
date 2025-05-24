@@ -7,6 +7,7 @@
     bat
     ripgrep
     fd
+    nh
   ];
 
   # systemd.user.sessionVariables.EDITOR = "nvim";
