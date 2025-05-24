@@ -127,6 +127,7 @@
               nixvim.homeManagerModules.nixvim
               ./home/nvim.nix
               ./home/git.nix
+              ./home/jj.nix
               ./home/gpg.nix
               ./home/shell.nix
               {

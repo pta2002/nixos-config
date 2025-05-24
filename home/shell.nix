@@ -102,5 +102,5 @@
     config.theme = "gruvbox-dark";
   };
 
-  services.ssh-agent.enable = true;
+  services.ssh-agent.enable = pkgs.stdenv.isLinux;
 }

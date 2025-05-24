@@ -1,4 +1,7 @@
-{ pkgs, inputs, ... }:
+{ pkgs, config, ... }:
+let
+  utils = config.lib.nixvim.utils;
+in
 {
   programs.nixvim = {
     enable = true;
@@ -256,7 +259,8 @@
       smartcase = true;
       ignorecase = true;
 
-      undodir = "/home/pta2002/.cache/nvim/undodir";
+      # undodir = "/home/pta2002/.cache/nvim/undodir";
+      undodir = utils.mkRaw ''vim.fs.normalize("~/.cache/nvim/undodir")'';
       undofile = true;
 
       showmode = false;
