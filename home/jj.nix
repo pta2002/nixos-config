@@ -73,20 +73,20 @@
       '';
     };
 
-      git_state.disabled = true;
-      git_commit.disabled = true;
-      git_metrics.disabled = true;
-      git_branch.disabled = true;
-      custom.git_branch = {
-        when = true;
-        command = "jj root --ignore-working-copy >/dev/null 2>&1 || starship module git_branch";
-        description = "Only show git_branch if we're not in a jj repo";
-      };
+    git_state.disabled = true;
+    git_commit.disabled = true;
+    git_metrics.disabled = true;
+    git_branch.disabled = true;
+    custom.git_branch = {
+      when = true;
+      command = "jj root --ignore-working-copy >/dev/null 2>&1 || starship module git_branch";
+      description = "Only show git_branch if we're not in a jj repo";
+    };
 
-      custom.git_state = {
-        when = true;
-        command = "jj root --ignore-working-copy >/dev/null 2>&1 || starship module git_state";
-        description = "Only show git_state if we're not in a jj repo";
-      };
+    custom.git_state = {
+      when = true;
+      command = "jj root --ignore-working-copy >/dev/null 2>&1 || starship module git_state";
+      description = "Only show git_state if we're not in a jj repo";
+    };
   };
 }
