@@ -287,6 +287,7 @@
                   "media"
                   "data-host"
                   "actions-runner"
+                  "k3s-server"
                 ];
               };
 
@@ -299,6 +300,7 @@
                   "dns"
                   "vault"
                   "actions-runner"
+                  "k3s-server"
                 ];
               };
 
@@ -313,6 +315,8 @@
                   "git"
                   "snatcher"
                   "stream"
+                  "k3s-lead"
+                  "k3s-server"
                 ];
               };
             });

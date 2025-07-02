@@ -2,6 +2,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }:
 {
@@ -38,15 +39,15 @@
     firmware-partition-label = "BOOT";
   };
 
-  networking.firewall.extraCommands = ''
-    # Huawei AP keeps spamming requests to dmesg, stop logging them.
-    iptables \
-      --insert nixos-fw-log-refuse 1 \
-      --source 192.168.1.65 \
-      --protocol tcp \
-      --dport 40000 \
-      --jump nixos-fw-refuse
-  '';
+  # networking.firewall.extraCommands = ''
+  #   # Huawei AP keeps spamming requests to dmesg, stop logging them.
+  #   iptables \
+  #     --insert nixos-fw-log-refuse 1 \
+  #     --source 192.168.1.65 \
+  #     --protocol tcp \
+  #     --dport 40000 \
+  #     --jump nixos-fw-refuse
+  # '';
 
   fileSystems = {
     "/" = {
@@ -138,4 +139,13 @@
       mode = "400";
     };
   };
+
+  # Required for k3s to work
+  boot.kernelParams = [
+    "cgroup_enable=memory"
+    "cgroup_enable=cpuset"
+    "cgroup_memory=1"
+  ];
+
+  services.k3s.extraFlags = [ "--node-ip=100.126.178.45" ];
 }

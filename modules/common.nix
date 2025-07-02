@@ -12,6 +12,8 @@ let
     "vault"
     "snatcher"
     "stream"
+    "k3s-lead"
+    "k3s-server"
   ];
 in
 {

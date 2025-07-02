@@ -199,11 +199,13 @@ in
           # Corefile
           ''
             ${cfg.domain} {
+              bind tailscale0
               cache 30s
               file ${dbfile}
             }
 
             . {
+              bind tailscale0
               cache 30s
               # Forward to cloudflare
               forward . tls://2606:4700::1111 tls://2606:4700::1001 tls://1.1.1.1 tls://1.0.0.1 {

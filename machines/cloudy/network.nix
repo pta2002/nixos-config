@@ -21,4 +21,6 @@
       default = "http_status:404";
     };
   };
+
+  services.k3s.extraFlags = [ "--node-ip=100.86.136.44" ];
 }

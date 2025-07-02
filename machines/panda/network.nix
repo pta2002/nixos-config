@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   imports = [
     ../../modules/proxy.nix
@@ -49,4 +49,6 @@
       default = "http_status:404";
     };
   };
+
+  services.k3s.extraFlags = [ "--node-ip=100.81.36.57" ];
 }
