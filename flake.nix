@@ -35,6 +35,9 @@
     agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
+
+    jetpack-nixos.url = "github:anduril/jetpack-nixos";
+    jetpack-nixos.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {
@@ -68,6 +71,7 @@
       raspberry-pi-nix,
       flake-parts,
       nixpkgs-cloudflared,
+      jetpack-nixos,
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } (_: {
@@ -319,6 +323,16 @@
                   "k3s-server"
                 ];
               };
+
+              jetson = {
+                system = "aarch64";
+                name = "jetson";
+                stateVersion = "25.05";
+                modules = [ jetpack-nixos.nixosModules.default ];
+                roles = [
+                  "k3s-server"
+                ];
+              };
             });
 
           deploy.nodes = {
@@ -347,6 +361,15 @@
                 path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mars;
               };
             };
+
+            jetson = {
+              hostname = "jetson";
+              remoteBuild = true;
+              profiles.system = {
+                user = "root";
+                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.jetson;
+              };
+            };
           };
         };
 
@@ -370,7 +393,12 @@
             # This might be interesting later, but for now there is no need.
             collectHomeManagerConfigurations = false;
             nixosConfigurations = {
-              inherit (self.nixosConfigurations) panda cloudy mars;
+              inherit (self.nixosConfigurations)
+                panda
+                cloudy
+                mars
+                jetson
+                ;
             };
           };
 

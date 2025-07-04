@@ -329,6 +329,26 @@
         "type": "github"
       }
     },
+    "jetpack-nixos": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1751584885,
+        "narHash": "sha256-q2Qr+nel83fkvD7YySnhfPRVZTaGJZYWk7KX/DTEiyw=",
+        "owner": "anduril",
+        "repo": "jetpack-nixos",
+        "rev": "83455ba771e83e2e755dcb138fe8273d67a38bb2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anduril",
+        "repo": "jetpack-nixos",
+        "type": "github"
+      }
+    },
     "libcamera-src": {
       "flake": false,
       "locked": {
@@ -603,6 +623,7 @@
         "disko": "disko",
         "flake-parts": "flake-parts_2",
         "home": "home",
+        "jetpack-nixos": "jetpack-nixos",
         "my-switches": "my-switches",
         "nix-index-database": "nix-index-database",
         "nixos-hardware": "nixos-hardware",
