@@ -305,6 +305,7 @@
                   "vault"
                   "actions-runner"
                   "k3s-server"
+                  "nix-cache"
                 ];
               };
 
