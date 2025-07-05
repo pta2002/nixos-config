@@ -1,20 +1,6 @@
 { lib, ... }:
 let
-  roles = [
-    "actions-runner"
-    "auth"
-    "data-host"
-    "docs"
-    "dns"
-    "git"
-    "home-assistant"
-    "media"
-    "vault"
-    "snatcher"
-    "stream"
-    "k3s-lead"
-    "k3s-server"
-  ];
+  roles = builtins.attrNames (builtins.readDir ../roles);
 in
 {
   options.common = {
