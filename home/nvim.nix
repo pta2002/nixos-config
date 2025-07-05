@@ -357,7 +357,6 @@ in
       pkgs.vimPlugins.terminal-nvim
       pkgs.vimPlugins.scope-nvim
       pkgs.vimPlugins.vim-terraform
-      pkgs.vimPlugins.gleam-vim
       pkgs.vimPlugins.nvim-unception
     ];
 

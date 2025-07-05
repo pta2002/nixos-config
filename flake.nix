@@ -291,7 +291,7 @@
                   "media"
                   "data-host"
                   "actions-runner"
-                  "k3s-server"
+                  "nomad-server"
                 ];
               };
 
@@ -304,7 +304,7 @@
                   "dns"
                   "vault"
                   "actions-runner"
-                  "k3s-server"
+                  "nomad-server"
                   "nix-cache"
                 ];
               };
@@ -320,8 +320,8 @@
                   "git"
                   "snatcher"
                   "stream"
-                  "k3s-lead"
-                  "k3s-server"
+                  "nomad-lead"
+                  "nomad-server"
                 ];
               };
 
@@ -331,14 +331,14 @@
                 stateVersion = "25.05";
                 modules = [ jetpack-nixos.nixosModules.default ];
                 roles = [
-                  "k3s-server"
+                  "nomad-server"
                 ];
               };
             });
 
           deploy.nodes = {
             panda = {
-              hostname = "panda";
+              hostname = "100.81.36.57";
               profiles.system = {
                 user = "root";
                 path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;
@@ -346,7 +346,7 @@
             };
 
             cloudy = {
-              hostname = "cloudy";
+              hostname = "100.86.136.44";
               remoteBuild = true;
               profiles.system = {
                 user = "root";
@@ -355,7 +355,7 @@
             };
 
             mars = {
-              hostname = "mars";
+              hostname = "100.126.178.45";
               remoteBuild = true;
               profiles.system = {
                 user = "root";
@@ -364,7 +364,7 @@
             };
 
             jetson = {
-              hostname = "jetson";
+              hostname = "100.74.251.44";
               remoteBuild = true;
               profiles.system = {
                 user = "root";
@@ -409,6 +409,10 @@
               nixfmt.enable = true;
               ruff.enable = true;
             };
+          };
+
+          packages = {
+            k8s-manifests = pkgs.callPackage ./k8s/miniflux.nix { };
           };
         };
     });

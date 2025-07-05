@@ -1,5 +1,8 @@
 { pkgs, ... }:
 {
+  virtualisation.docker.enable = true;
+  virtualisation.docker.enableNvidia = true;
+
   hardware.nvidia-jetpack = {
     enable = true;
     som = "orin-nano";
@@ -9,6 +12,8 @@
     # TODO: This does not yet work on k3s. I will need to figure out why.
     container-toolkit.enable = true;
   };
+
+  services.nomad.settings.client.node_pool = "nvidia";
 
   boot.supportedFilesystems = [
     "btrfs"
