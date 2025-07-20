@@ -2,7 +2,7 @@
 {
   config,
   pkgs,
-  lib,
+  nixos-raspberrypi,
   ...
 }:
 {
@@ -30,14 +30,7 @@
     "bcachefs"
   ];
 
-  raspberry-pi-nix = {
-    board = "bcm2712";
-    # Needed for bcachefs
-    kernel-version = "v6_12_17";
-    # We're not using a camera, no point
-    libcamera-overlay.enable = false;
-    firmware-partition-label = "BOOT";
-  };
+  boot.kernelPackages = nixos-raspberrypi.packages.${pkgs.hostPlatform.system}.linuxPackages_rpi5;
 
   # networking.firewall.extraCommands = ''
   #   # Huawei AP keeps spamming requests to dmesg, stop logging them.

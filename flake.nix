@@ -29,6 +29,7 @@
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
     raspberry-pi-nix.inputs.rpi-firmware-src.url = "github:raspberrypi/firmware/next";
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     agenix-rekey.url = "github:oddlama/agenix-rekey";
@@ -45,15 +46,13 @@
       "https://cache.nixos.org/"
       "https://nix-community.cachix.org"
       "https://cuda-maintainers.cachix.org"
-      "https://nixpkgs-unfree.cachix.org"
-      "https://numtide.cachix.org"
+      "https://nixos-raspberrypi.cachix.org"
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-      "nixpkgs-unfree.cachix.org-1:hqvoInulhbV4nJ9yJOEr+4wxhDV4xq2d1DK7S6Nj6rs="
-      "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+      "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
     ];
   };
 
@@ -68,7 +67,7 @@
       nixos-hardware,
       disko,
       deploy-rs,
-      raspberry-pi-nix,
+      nixos-raspberrypi,
       flake-parts,
       nixpkgs-cloudflared,
       jetpack-nixos,
@@ -153,6 +152,7 @@
               stateVersion,
               specialArgs ? { },
               roles ? [ ],
+              func ? nixpkgs.lib.nixosSystem,
             }:
             hostForRoles:
             let
@@ -171,7 +171,7 @@
                 );
               };
             in
-            nixpkgs.lib.nixosSystem {
+            func {
               inherit system specialArgs;
               modules = lib.concatLists (
                 [
@@ -224,7 +224,6 @@
               );
             };
 
-          # TODO!
           mkSwarm =
             machines:
             let
@@ -281,9 +280,10 @@
                 system = "aarch64-linux";
                 name = "mars";
                 stateVersion = "24.11";
-                specialArgs = { inherit inputs my-switches; };
-                modules = [
-                  raspberry-pi-nix.nixosModules.raspberry-pi
+                specialArgs = { inherit inputs my-switches nixos-raspberrypi; };
+                func = nixos-raspberrypi.lib.nixosSystem;
+                modules = with nixos-raspberrypi.nixosModules; [
+                  raspberry-pi-5.base
                 ];
 
                 roles = [
