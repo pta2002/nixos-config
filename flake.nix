@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-cloudflared.url = "github:wrbbz/nixpkgs/cloudflared-2025.4.0";
 
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
@@ -39,6 +38,9 @@
 
     jetpack-nixos.url = "github:anduril/jetpack-nixos";
     jetpack-nixos.inputs.nixpkgs.follows = "nixpkgs";
+
+    copyparty.url = "github:9001/copyparty";
+    copyparty.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {
@@ -69,7 +71,6 @@
       deploy-rs,
       nixos-raspberrypi,
       flake-parts,
-      nixpkgs-cloudflared,
       jetpack-nixos,
       ...
     }@inputs:
@@ -123,24 +124,32 @@
               };
             };
 
-          homeManagerConfig = {
-            pkgs = nixpkgs.legacyPackages."x86_64-linux";
-            extraSpecialArgs = { inherit inputs nixvim; };
-            modules = [
-              nixvim.homeManagerModules.nixvim
-              ./home/nvim.nix
-              ./home/git.nix
-              ./home/jj.nix
-              ./home/gpg.nix
-              ./home/shell.nix
-              {
-                home.stateVersion = "24.05";
-                home.username = "pta2002";
-                home.homeDirectory = "/home/pta2002";
-                programs.home-manager.enable = true;
-              }
-            ];
-          };
+          mkHomeManagerConfig =
+            {
+              pkgs ? nixpkgs.legacyPackages."x86_64-linux",
+              modules ? [
+                {
+                  home.stateVersion = "24.05";
+                  home.username = "pta2002";
+                  home.homeDirectory = "/home/pta2002";
+                }
+              ],
+            }:
+            {
+              inherit pkgs;
+              extraSpecialArgs = { inherit inputs nixvim; };
+              modules = [
+                nixvim.homeManagerModules.nixvim
+                ./home/nvim.nix
+                ./home/git.nix
+                ./home/jj.nix
+                ./home/gpg.nix
+                ./home/shell.nix
+                {
+                  programs.home-manager.enable = true;
+                }
+              ] ++ modules;
+            };
 
           fs = lib.fileset;
 
@@ -176,16 +185,6 @@
               modules = lib.concatLists (
                 [
                   [
-                    (
-                      { pkgs, ... }:
-                      {
-                        nixpkgs.overlays = [
-                          (self: super: {
-                            inherit (nixpkgs-cloudflared.legacyPackages.${pkgs.system}) cloudflared;
-                          })
-                        ];
-                      }
-                    )
                     agenix.nixosModules.default
                     home.nixosModules.home-manager
                     disko.nixosModules.disko
@@ -248,16 +247,31 @@
         {
           lib.overrideHomeConfiguration =
             system: config:
-            home.lib.homeManagerConfiguration (
-              homeManagerConfig
-              // {
-                pkgs = nixpkgs.legacyPackages.${system};
-                modules = homeManagerConfig.modules ++ [ config ];
-              }
-            );
+            home.lib.homeManagerConfiguration (mkHomeManagerConfig {
+              pkgs = nixpkgs.legacyPackages.${system};
+              modules = [
+                {
+                  home.username = "pta2002";
+                  home.stateVersion = "24.05";
+                  home.homeDirectory = "/home/pta2002";
+                }
+                config
+              ];
+            });
+          lib.mkHomeManagerConfig = mkHomeManagerConfig;
 
           homeConfigurations = {
-            pta2002 = home.lib.homeManagerConfiguration homeManagerConfig;
+            pta2002 = home.lib.homeManagerConfiguration (mkHomeManagerConfig { });
+            pta2002-darwin = home.lib.homeManagerConfiguration (mkHomeManagerConfig {
+              pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+              modules = [
+                {
+                  home.username = "ctw03386";
+                  home.stateVersion = "25.11";
+                  home.homeDirectory = "/Users/ctw03386";
+                }
+              ];
+            });
           };
 
           nixosConfigurations =
@@ -377,6 +391,7 @@
       systems = [
         "x86_64-linux"
         "aarch64-linux"
+        "aarch64-darwin"
       ];
 
       perSystem =
@@ -387,7 +402,11 @@
         }:
         {
           devShells.default = pkgs.mkShell {
-            nativeBuildInputs = [ config.agenix-rekey.package ];
+            nativeBuildInputs = [
+              config.agenix-rekey.package
+              pkgs.age-plugin-yubikey
+              pkgs.age-plugin-fido2-hmac
+            ];
           };
 
           agenix-rekey = {

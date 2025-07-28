@@ -6,10 +6,14 @@
       ../keys/panda.pub
       ../keys/mars.pub
       ../keys/cloudy.pub
+      ../keys/mac.pub
     ];
 
     masterIdentities = [
-      "/home/pta2002/.ssh/id_ed25519"
+      {
+        identity = ../yubikey-identity.txt;
+        pubkey = "age1yubikey1qwp5e7kdrq7723a5ypppd7f37zwhldugu7qp2ur9qdfhz7ujfmsn272pqxs";
+      }
     ];
 
     storageMode = "local";

@@ -65,6 +65,27 @@
         "type": "github"
       }
     },
+    "copyparty": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753727575,
+        "narHash": "sha256-xx75xD9EN8AjneOd0AAfNFy6mpCXTbJhWd+QD4Hu1sc=",
+        "owner": "9001",
+        "repo": "copyparty",
+        "rev": "7c9c962b79228a9438125a3b8290500812579304",
+        "type": "github"
+      },
+      "original": {
+        "owner": "9001",
+        "repo": "copyparty",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -244,6 +265,21 @@
     },
     "flake-utils": {
       "locked": {
+        "lastModified": 1678901627,
+        "narHash": "sha256-U02riOqrKKzwjsxc/400XnElV+UtPUQWpANPlyazjH0=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "93a2b84fc4b70d9e089d029deacc3583435c2ed6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
+      "locked": {
         "lastModified": 1676283394,
         "narHash": "sha256-XX2f9c3iySLCw54rJ/CZs+ZK6IQy7GXNY4nSOyu2QG4=",
         "owner": "numtide",
@@ -257,7 +293,7 @@
         "type": "github"
       }
     },
-    "flake-utils_2": {
+    "flake-utils_3": {
       "inputs": {
         "systems": "systems_3"
       },
@@ -401,7 +437,7 @@
     },
     "my-switches": {
       "inputs": {
-        "flake-utils": "flake-utils",
+        "flake-utils": "flake-utils_2",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -518,22 +554,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-cloudflared": {
-      "locked": {
-        "lastModified": 1743673149,
-        "narHash": "sha256-jGucaQTPNN+j901QEALk1lRs73zAFuSCPnZJMY3YfXs=",
-        "owner": "wrbbz",
-        "repo": "nixpkgs",
-        "rev": "cf1af042a660fe1311403eddf5ed01e50037f44f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "wrbbz",
-        "ref": "cloudflared-2025.4.0",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1751159883,
@@ -622,7 +642,7 @@
     },
     "nuschtosSearch": {
       "inputs": {
-        "flake-utils": "flake-utils_2",
+        "flake-utils": "flake-utils_3",
         "ixx": "ixx",
         "nixpkgs": [
           "nixvim",
@@ -697,6 +717,7 @@
       "inputs": {
         "agenix": "agenix",
         "agenix-rekey": "agenix-rekey",
+        "copyparty": "copyparty",
         "deploy-rs": "deploy-rs",
         "disko": "disko",
         "flake-parts": "flake-parts_2",
@@ -707,7 +728,6 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-raspberrypi": "nixos-raspberrypi",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-cloudflared": "nixpkgs-cloudflared",
         "nixvim": "nixvim",
         "raspberry-pi-nix": "raspberry-pi-nix",
         "treefmt-nix": "treefmt-nix_2"
@@ -751,7 +771,7 @@
       "flake": false,
       "locked": {
         "lastModified": 1739975675,
-        "narHash": "sha256-DklG7vO4BNK660P9Rd+f8oNavojgGcldB8d2+PPhGvk=",
+        "narHash": "sha256-bCwddfOVf2t+Rc13Ap/U1c0lLB9YBAJhvvyXoTFyZOo=",
         "owner": "raspberrypi",
         "repo": "firmware",
         "rev": "03a4fb56ccf125623f4f90333345e393be60b7bf",
