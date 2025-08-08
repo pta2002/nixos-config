@@ -110,7 +110,8 @@ in
 
           LoadCredential = [
             "apiKey:${cfg.apiKeyFile}"
-          ] ++ (lib.mapAttrsToList (name: val: ''${name}apiKey:${val.apiKeyFile}'') cfg.applications);
+          ]
+          ++ (lib.mapAttrsToList (name: val: ''${name}apiKey:${val.apiKeyFile}'') cfg.applications);
 
           RuntimeDirectory = [ "prowlarr-setup" ];
 

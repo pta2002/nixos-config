@@ -10,7 +10,7 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = lib.mkIf (config.services.xserver.desktopManager.gnome.enable == false) [
+    extraPortals = lib.mkIf (config.services.desktopManager.gnome.enable == false) [
       pkgs.xdg-desktop-portal-gtk
     ];
   };
@@ -32,7 +32,7 @@
     pkgs.wl-clipboard
   ];
 
-  services.xserver.displayManager.gdm = {
+  services.displayManager.gdm = {
     enable = true;
     wayland = true;
   };

@@ -88,7 +88,5 @@
     '';
   };
 
-  systemd.extraConfig = "DefaultLimitNOFILE=524288";
-
   system.stateVersion = "21.11";
 }

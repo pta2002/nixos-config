@@ -8,7 +8,7 @@
 }:
 {
   imports = [
-    inputs.nixvim.homeManagerModules.nixvim
+    inputs.nixvim.homeModules.nixvim
 
     ./shell.nix
     ./git.nix
@@ -17,7 +17,7 @@
     ./rice.nix
     ./gnome.nix
 
-    inputs.nix-index-database.hmModules.nix-index
+    inputs.nix-index-database.homeModules.nix-index
   ];
 
   home.stateVersion = "21.11";
@@ -86,7 +86,7 @@
     virt-manager
     qbittorrent
     element-desktop
-    plex-media-player
+    plex-desktop
     # todoist-electron
 
     reaper
@@ -138,7 +138,7 @@
 
   programs.vscode = {
     enable = true;
-    extensions = with pkgs.vscode-extensions; [
+    profiles.default.extensions = with pkgs.vscode-extensions; [
       vscodevim.vim
       ms-vscode.cpptools
       github.copilot

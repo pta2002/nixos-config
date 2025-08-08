@@ -69,7 +69,7 @@
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.graphics = {
     enable = true;
-    extraPackages = [ pkgs.mesa.drivers ];
+    extraPackages = [ pkgs.mesa ];
   };
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.powerManagement.enable = true;

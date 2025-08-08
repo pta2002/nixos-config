@@ -112,7 +112,7 @@
                     inherit inputs;
                     hostname = name;
                   };
-                  home-manager.sharedModules = [ overlays ];
+                  # home-manager.sharedModules = [ overlays ];
                   home-manager.useGlobalPkgs = true;
                   # home-manager.backupFileExtension = ".hm-bak";
                 }
@@ -139,7 +139,7 @@
               inherit pkgs;
               extraSpecialArgs = { inherit inputs nixvim; };
               modules = [
-                nixvim.homeManagerModules.nixvim
+                nixvim.homeModules.nixvim
                 ./home/nvim.nix
                 ./home/git.nix
                 ./home/jj.nix
@@ -148,7 +148,8 @@
                 {
                   programs.home-manager.enable = true;
                 }
-              ] ++ modules;
+              ]
+              ++ modules;
             };
 
           fs = lib.fileset;
@@ -201,7 +202,7 @@
                       {
                         home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
                           { home.stateVersion = stateVersion; }
-                          nixvim.homeManagerModules.nixvim
+                          nixvim.homeModules.nixvim
                           ./home/nvim.nix
                           ./home/git.nix
                           ./home/shell.nix
@@ -274,81 +275,80 @@
             });
           };
 
-          nixosConfigurations =
-            {
-              hydrogen = mkMachine "hydrogen" "x86_64-linux";
-              mercury = mkMachine "mercury" "x86_64-linux";
+          nixosConfigurations = {
+            hydrogen = mkMachine "hydrogen" "x86_64-linux";
+            mercury = mkMachine "mercury" "x86_64-linux";
 
-              pie = nixpkgs.lib.nixosSystem {
-                system = "aarch64-linux";
-                specialArgs = { inherit inputs; };
-                modules = [
-                  agenix.nixosModules.default
-                  nixos-hardware.nixosModules.raspberry-pi-4
-                  ./machines/pie.nix
-                ];
-              };
-            }
-            // (mkSwarm {
-              mars = {
-                system = "aarch64-linux";
-                name = "mars";
-                stateVersion = "24.11";
-                specialArgs = { inherit inputs my-switches nixos-raspberrypi; };
-                func = nixos-raspberrypi.lib.nixosSystem;
-                modules = with nixos-raspberrypi.nixosModules; [
-                  raspberry-pi-5.base
-                ];
+            pie = nixpkgs.lib.nixosSystem {
+              system = "aarch64-linux";
+              specialArgs = { inherit inputs; };
+              modules = [
+                agenix.nixosModules.default
+                nixos-hardware.nixosModules.raspberry-pi-4
+                ./machines/pie.nix
+              ];
+            };
+          }
+          // (mkSwarm {
+            mars = {
+              system = "aarch64-linux";
+              name = "mars";
+              stateVersion = "24.11";
+              specialArgs = { inherit inputs my-switches nixos-raspberrypi; };
+              func = nixos-raspberrypi.lib.nixosSystem;
+              modules = with nixos-raspberrypi.nixosModules; [
+                raspberry-pi-5.base
+              ];
 
-                roles = [
-                  "home-assistant"
-                  "media"
-                  "data-host"
-                  "actions-runner"
-                  "nomad-server"
-                ];
-              };
+              roles = [
+                "home-assistant"
+                "media"
+                "data-host"
+                "actions-runner"
+                "nomad-server"
+              ];
+            };
 
-              cloudy = {
-                system = "aarch64-linux";
-                stateVersion = "22.11";
-                name = "cloudy";
-                specialArgs = { inherit inputs nixvim; };
-                roles = [
-                  "dns"
-                  "vault"
-                  "actions-runner"
-                  "nomad-server"
-                  "nix-cache"
-                ];
-              };
+            cloudy = {
+              system = "aarch64-linux";
+              stateVersion = "22.11";
+              name = "cloudy";
+              specialArgs = { inherit inputs nixvim; };
+              roles = [
+                "dns"
+                "vault"
+                "actions-runner"
+                "nomad-server"
+                "nix-cache"
+              ];
+            };
 
-              panda = {
-                system = "x86_64-linux";
-                name = "panda";
-                stateVersion = "25.05";
-                roles = [
-                  "actions-runner"
-                  "auth"
-                  "docs"
-                  "git"
-                  "snatcher"
-                  "stream"
-                  "nomad-lead"
-                  "nomad-server"
-                ];
-              };
+            panda = {
+              system = "x86_64-linux";
+              name = "panda";
+              stateVersion = "25.05";
+              roles = [
+                "actions-runner"
+                "auth"
+                "docs"
+                "git"
+                "snatcher"
+                "stream"
+                "nomad-lead"
+                "nomad-server"
+              ];
+            };
 
-              jetson = {
-                system = "aarch64";
-                name = "jetson";
-                stateVersion = "25.05";
-                modules = [ jetpack-nixos.nixosModules.default ];
-                roles = [
-                  "nomad-server"
-                ];
-              };
-            });
+            jetson = {
+              system = "aarch64";
+              name = "jetson";
+              stateVersion = "25.05";
+              modules = [ jetpack-nixos.nixosModules.default ];
+              roles = [
+                "nomad-server"
+              ];
+            };
+          });
 
           deploy.nodes = {
             panda = {
@@ -428,10 +428,6 @@
               nixfmt.enable = true;
               ruff.enable = true;
             };
-          };
-
-          packages = {
-            k8s-manifests = pkgs.callPackage ./k8s/miniflux.nix { };
           };
         };
     });
