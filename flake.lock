@@ -627,11 +627,11 @@
         "systems": "systems_4"
       },
       "locked": {
-        "lastModified": 1754572513,
-        "narHash": "sha256-BN2a2Lft9BwdDPBplaWe8kYW2wLaaVLDwcWwMJeBw3I=",
+        "lastModified": 1754657014,
+        "narHash": "sha256-ARxeuYdgpkult3QzDBuiQUipp1ttJMQG9q3FDIRKupI=",
         "owner": "pta2002",
         "repo": "nixvim",
-        "rev": "1db179502524f21fe4e3175e3348202ed0ef253f",
+        "rev": "9cbd617a3ffc16b16a43509fde3d97ed08e38caa",
         "type": "github"
       },
       "original": {
