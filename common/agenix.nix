@@ -12,7 +12,7 @@
     masterIdentities = [
       {
         identity = ../yubikey-identity.txt;
-        pubkey = "age1yubikey1qwp5e7kdrq7723a5ypppd7f37zwhldugu7qp2ur9qdfhz7ujfmsn272pqxs";
+        pubkey = "age1yubikey1qdcq69ac06n3kn5jwjkmustcja8nmk8qkwj3g7eemfjswnnrrq2fzjku5cc";
       }
     ];
 
