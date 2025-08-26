@@ -60,27 +60,31 @@ in
 
       lspkind = {
         enable = true;
-        mode = "symbol_text";
-        cmp.ellipsisChar = "…";
-        cmp.menu = {
-          buffer = "[Buffer]";
-          nvim_lsp = "[LSP]";
-          luasnip = "[LuaSnip]";
-          nvim_lua = "[Lua]";
-          latex_symbols = "[Latex]";
-        };
-        cmp.after = # lua
-          ''
-            function(entry, vim_item, kind)
-              local strings = vim.split(kind.kind, "%s", { trimempty = true })
-              if #strings == 2 then
-                kind.kind = " " .. strings[1] .. " "
-                kind.menu = "   " .. strings[2]
-              end
+        settings = {
+          mode = "symbol_text";
+          cmp = {
+            ellipsis_char = "…";
+            menu = {
+              buffer = "[Buffer]";
+              nvim_lsp = "[LSP]";
+              luasnip = "[LuaSnip]";
+              nvim_lua = "[Lua]";
+              latex_symbols = "[Latex]";
+            };
+            after = # lua
+              ''
+                function(entry, vim_item, kind)
+                  local strings = vim.split(kind.kind, "%s", { trimempty = true })
+                  if #strings == 2 then
+                    kind.kind = " " .. strings[1] .. " "
+                    kind.menu = "   " .. strings[2]
+                  end
 
-              return kind
-            end
-          '';
+                  return kind
+                end
+              '';
+          };
+        };
       };
 
       lsp = {

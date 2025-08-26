@@ -771,7 +771,7 @@
       "flake": false,
       "locked": {
         "lastModified": 1739975675,
-        "narHash": "sha256-DklG7vO4BNK660P9Rd+f8oNavojgGcldB8d2+PPhGvk=",
+        "narHash": "sha256-bCwddfOVf2t+Rc13Ap/U1c0lLB9YBAJhvvyXoTFyZOo=",
         "owner": "raspberrypi",
         "repo": "firmware",
         "rev": "03a4fb56ccf125623f4f90333345e393be60b7bf",

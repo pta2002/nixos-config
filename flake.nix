@@ -406,6 +406,7 @@
               config.agenix-rekey.package
               pkgs.age-plugin-yubikey
               pkgs.age-plugin-fido2-hmac
+              pkgs.deploy-rs
             ];
           };
 

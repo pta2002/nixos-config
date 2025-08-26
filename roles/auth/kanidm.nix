@@ -33,8 +33,7 @@ in
     };
   };
 
-  systemd.services.kanidm.requires = [ "acme-finished-${domain}.target" ];
-  systemd.services.kanidm.after = [ "acme-finished-${domain}.target" ];
+  systemd.services.kanidm.requires = [ "acme-${domain}.service" ];
 
   age.secrets.kanidmIdmAdmin = {
     owner = "kanidm";
