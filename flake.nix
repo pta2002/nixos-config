@@ -26,9 +26,7 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
-    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
-    raspberry-pi-nix.inputs.rpi-firmware-src.url = "github:raspberrypi/firmware/next";
-    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     agenix-rekey.url = "github:oddlama/agenix-rekey";
@@ -405,7 +403,6 @@
             nativeBuildInputs = [
               config.agenix-rekey.package
               pkgs.age-plugin-yubikey
-              pkgs.age-plugin-fido2-hmac
               pkgs.deploy-rs
             ];
           };
