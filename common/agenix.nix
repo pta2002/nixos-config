@@ -2,11 +2,11 @@
 {
   age.rekey = {
     extraEncryptionPubkeys = [
-      ../keys/laptop.pub
       ../keys/panda.pub
       ../keys/mars.pub
       ../keys/cloudy.pub
       ../keys/mac.pub
+      ../keys/thinkpad.pub
     ];
 
     masterIdentities = [

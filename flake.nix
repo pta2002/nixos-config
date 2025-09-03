@@ -33,6 +33,7 @@
     agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     jetpack-nixos.url = "github:anduril/jetpack-nixos";
     jetpack-nixos.inputs.nixpkgs.follows = "nixpkgs";
