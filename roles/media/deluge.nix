@@ -11,7 +11,10 @@
     group = "data";
 
     config.download_location = "/srv/media/torrents";
-    config.enabled_plugins = [ "Label" ];
+    config.enabled_plugins = [
+      "Label"
+      "Execute"
+    ];
     config.copy_torrent_file = true;
     config.allow_remote = true;
     config.max_active_seeding = -1;

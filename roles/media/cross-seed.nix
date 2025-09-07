@@ -24,6 +24,9 @@ in
       fuzzySizeThreshold = 0.02;
       action = "inject";
       duplicateCategories = true;
+      searchCadence = "1 day";
+      excludeOlder = "2 weeks";
+      excludeRecentSearch = "3 days";
     };
 
     settingsFile = config.age.secrets.cross-seed.path;
