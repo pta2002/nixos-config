@@ -226,6 +226,7 @@ in
         group = config.services.nginx.group;
       };
 
+      systemd.services.coredns.after = [ "tailscaled.service" ];
       systemd.services.nginx.after = [ "tailscaled.service" ];
       services.nginx = {
         enable = true;

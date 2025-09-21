@@ -304,7 +304,6 @@
                 "media"
                 "data-host"
                 "actions-runner"
-                "nomad-server"
               ];
             };
 
@@ -317,7 +316,6 @@
                 "dns"
                 "vault"
                 "actions-runner"
-                "nomad-server"
                 "nix-cache"
               ];
             };
@@ -329,12 +327,10 @@
               roles = [
                 "actions-runner"
                 "auth"
-                "docs"
+                # "docs"
                 "git"
                 "snatcher"
                 "stream"
-                "nomad-lead"
-                "nomad-server"
               ];
             };
 
@@ -344,7 +340,6 @@
               stateVersion = "25.05";
               modules = [ jetpack-nixos.nixosModules.default ];
               roles = [
-                "nomad-server"
               ];
             };
           });
