@@ -27,6 +27,8 @@
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
+    nixpkgs-25-05-rpi.url = "github:nvmd/nixpkgs/modules-with-keys-25.05";
+    nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs-25-05-rpi";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     agenix-rekey.url = "github:oddlama/agenix-rekey";
@@ -364,7 +366,7 @@
 
             mars = {
               hostname = "100.126.178.45";
-              remoteBuild = true;
+              remoteBuild = false;
               profiles.system = {
                 user = "root";
                 path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mars;

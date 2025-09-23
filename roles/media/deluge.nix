@@ -14,6 +14,7 @@
     config.enabled_plugins = [
       "Label"
       "Execute"
+      "ltConfig"
     ];
     config.copy_torrent_file = true;
     config.allow_remote = true;
