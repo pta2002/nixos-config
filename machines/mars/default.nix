@@ -11,7 +11,6 @@
     ../../modules/matterbridge.nix
     ../../modules/proxy.nix
     ../../modules/thelounge.nix
-    ../../modules/samba.nix
   ];
 
   proxy.enable = true;
