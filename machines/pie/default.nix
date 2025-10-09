@@ -27,7 +27,18 @@ in
     apply-overlays-dtmerge.enable = true;
     touch-ft5406.enable = true;
     bluetooth.enable = true;
+    # Needed for the backlight!
+    i2c1.enable = true;
+    i2c0.enable = true;
   };
+
+  # Needed to be able to control the display brightness
+  hardware.deviceTree.overlays = [
+    {
+      name = "vc4-kms-dsi-7inch-overlay";
+      dtsText = ./vc4-kms-dsi-7inch-overlay.dts;
+    }
+  ];
 
   systemd.user.services."kiosk" = {
     enable = true;

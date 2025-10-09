@@ -1,7 +1,6 @@
 { pkgs, ... }:
 {
-  virtualisation.docker.enable = true;
-  virtualisation.docker.enableNvidia = true;
+  hardware.nvidia-container-toolkit.enable = true;
 
   hardware.nvidia-jetpack = {
     enable = true;

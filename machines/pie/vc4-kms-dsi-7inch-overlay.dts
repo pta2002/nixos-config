@@ -1,0 +1,164 @@
+/*
+ * Device Tree overlay for RaspberryPi 7" Touchscreen panel
+ *
+ * This is taken from the raspberry pi kernel:
+ * https://github.com/raspberrypi/linux/blob/bad3872df40dd9a4ba7ff239c17288a7a84a80f9/arch/arm/boot/dts/overlays/vc4-kms-dsi-7inch-overlay.dts
+ *
+ * The only change has been to manually merge in the included `edt-ft5406.dtsi`
+ * file, and change `compatible` to "brcm,bcm2711".
+ */
+
+/dts-v1/;
+/plugin/;
+
+/ {
+  compatible = "brcm,bcm2711";
+
+  fragment@0 {
+    target = <&dsi1>;
+    __overlay__ {
+      #address-cells = <1>;
+      #size-cells = <0>;
+      status = "okay";
+      port {
+        dsi_out: endpoint {
+          remote-endpoint = <&bridge_in>;
+        };
+      };
+      bridge@0 {
+        reg = <0>;
+        compatible = "toshiba,tc358762";
+        vddc-supply = <&reg_bridge>;
+        ports {
+          #address-cells = <1>;
+          #size-cells = <0>;
+
+          port@0 {
+            reg = <0>;
+            bridge_in: endpoint {
+              remote-endpoint = <&dsi_out>;
+            };
+          };
+
+          port@1 {
+            reg = <1>;
+            bridge_out: endpoint {
+              remote-endpoint = <&panel_in>;
+            };
+          };
+        };
+      };
+    };
+  };
+
+  fragment@1 {
+    target-path = "/";
+    __overlay__ {
+      panel_disp1: panel_disp1@0 {
+        reg = <0>;
+        compatible = "raspberrypi,7inch-dsi", "simple-panel";
+        backlight = <&reg_display>;
+        power-supply = <&reg_display>;
+
+        port {
+          panel_in: endpoint {
+            remote-endpoint = <&bridge_out>;
+          };
+        };
+      };
+
+      reg_bridge: reg_bridge@0 {
+        reg = <0>;
+        compatible = "regulator-fixed";
+        regulator-name = "bridge_reg";
+        gpio = <&reg_display 0 0>;
+        vin-supply = <&reg_display>;
+        enable-active-high;
+      };
+    };
+  };
+
+  fragment@2 {
+    target = <&i2c_csi_dsi>;
+    __overlay__ {
+      #address-cells = <1>;
+      #size-cells = <0>;
+      status = "okay";
+
+      reg_display: reg_display@45 {
+        compatible = "raspberrypi,7inch-touchscreen-panel-regulator";
+        reg = <0x45>;
+        gpio-controller;
+        #gpio-cells = <2>;
+      };
+    };
+  };
+
+  fragment@3 {
+    target = <&i2c0if>;
+    __overlay__ {
+      status = "okay";
+    };
+  };
+
+  fragment@4 {
+    target = <&i2c0mux>;
+    __overlay__ {
+      status = "okay";
+    };
+  };
+
+  fragment@5 {
+    target = <&ft5406>;
+    __overlay__ {
+      vcc-supply = <&reg_display>;
+      reset-gpio = <&reg_display 1 1>;
+    };
+  };
+
+  fragment@10 {
+    target = <&ft5406>;
+    __overlay__ {
+      touchscreen-inverted-x;
+    };
+  };
+
+  fragment@11 {
+    target = <&ft5406>;
+    __overlay__ {
+      touchscreen-inverted-y;
+    };
+  };
+
+  fragment@12 {
+    target = <&i2c_csi_dsi>;
+    __overlay__ {
+      #address-cells = <1>;
+      #size-cells = <0>;
+      status = "okay";
+      ft5406: ts@38 {
+        compatible = "edt,edt-ft5406";
+        reg = <0x38>;
+
+        touchscreen-size-x = < 800 >;
+        touchscreen-size-y = < 480 >;
+      };
+    };
+  };
+
+  fragment@13 {
+    target = <&i2c0if>;
+    __overlay__ {
+      status = "okay";
+    };
+  };
+
+  __overrides__ {
+    sizex = <&ft5406>,"touchscreen-size-x:0";
+    sizey = <&ft5406>,"touchscreen-size-y:0";
+    invx = <0>, "-10";
+    invy = <0>, "-11";
+    swapxy = <&ft5406>,"touchscreen-swapped-x-y?";
+    disable_touch = <0>, "-10-11-12-13";
+  };
+};
