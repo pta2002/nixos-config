@@ -30,6 +30,10 @@
   ];
 
   boot.kernelPackages = nixos-raspberrypi.packages.${pkgs.hostPlatform.system}.linuxPackages_rpi5;
+  boot.loader.raspberryPi = {
+    bootloader = "kernel";
+    configurationLimit = 3;
+  };
 
   # networking.firewall.extraCommands = ''
   #   # Huawei AP keeps spamming requests to dmesg, stop logging them.
@@ -49,6 +53,10 @@
         "subvol=root"
       ];
       fsType = "btrfs";
+    };
+    "/boot/firmware" = {
+      device = "/dev/disk/by-label/BOOT";
+      fsType = "vfat";
     };
     "/home" = {
       device = "/dev/disk/by-label/NixOS";
