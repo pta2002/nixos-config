@@ -288,7 +288,7 @@
               modules = [
                 agenix.nixosModules.default
                 nixos-hardware.nixosModules.raspberry-pi-4
-                ./machines/pie.nix
+                ./machines/pie/default.nix
               ];
             };
           }
@@ -301,7 +301,7 @@
               func = nixos-raspberrypi.lib.nixosSystem;
               modules = with nixos-raspberrypi.nixosModules; [
                 raspberry-pi-5.base
-                  # TODO: Re-enable this once I have good CI infra
+                # TODO: Re-enable this once I have good CI infra
                 # raspberry-pi-5.page-size-16k
               ];
 
