@@ -36,7 +36,7 @@ in
   hardware.deviceTree.overlays = [
     {
       name = "vc4-kms-dsi-7inch-overlay";
-      dtsText = ./vc4-kms-dsi-7inch-overlay.dts;
+      dtsFile = ./vc4-kms-dsi-7inch-overlay.dts;
     }
   ];
 
@@ -115,11 +115,11 @@ in
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     shell = pkgs.fish;
-    openssh.authorizedKeys.keys = import ../ssh-keys.nix lib;
+    openssh.authorizedKeys.keys = import ../../ssh-keys.nix lib;
     password = "";
   };
 
-  users.users.root.openssh.authorizedKeys.keys = import ../ssh-keys.nix lib;
+  users.users.root.openssh.authorizedKeys.keys = import ../../ssh-keys.nix lib;
 
   security.sudo.extraRules = [
     {
