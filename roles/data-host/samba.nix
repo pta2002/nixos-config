@@ -39,7 +39,7 @@
       "min protocol" = "SMB2";
       # Extended attributes
       "ea spport" = "yes";
-      "vfs objects" ="fruit streams_xattr";
+      "vfs objects" = "fruit streams_xattr";
 
       # Settings for TimeMachine
       # https://wiki.samba.org/index.php/Configure_Samba_to_Work_Better_with_Mac_OS_X
@@ -47,7 +47,7 @@
       "fruit:model" = "MacPro";
       "fruit:advertise_fullsync" = true;
       "fruit:appl" = "yes";
-      "fruit:veto_appledouble" ="no";
+      "fruit:veto_appledouble" = "no";
       "fruit:zero_file_id" = "yes";
       "fruit:wipe_intentionally_left_blank_rfork" = "yes";
       "fruit:delete_empty_adfiles" = "yes";
@@ -63,7 +63,7 @@
       "kernel share modes" = "no";
       "posix locking" = "no";
       "vfs objects" = "catia fruit streams_xattr";
-      "ea support"=  "yes";
+      "ea support" = "yes";
       "browseable" = "yes";
       "read only" = "No";
       "inherit acls" = "yes";
