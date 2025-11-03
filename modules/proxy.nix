@@ -55,7 +55,6 @@ let
                     proxy_http_version 1.1;
                     proxy_set_header Upgrade $http_upgrade;
                     proxy_set_header Connection $connection_upgrade;
-                    client_max_body_size 100M;
                     proxy_redirect off;
                   '';
 
@@ -230,6 +229,8 @@ in
       systemd.services.nginx.after = [ "tailscaled.service" ];
       services.nginx = {
         enable = true;
+        # 5GB ought to be enough!
+        clientMaxBodySize = "5G";
         virtualHosts = lib.mkMerge (
           [
             {

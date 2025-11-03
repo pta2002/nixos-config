@@ -15,6 +15,8 @@ let
         pkgs.nodejs
         pkgs.curl
         pkgs.python3
+        pkgs.attic-client
+        pkgs.omnix
       ]
     }; do
       for bin in "$dir"/bin/*; do
@@ -208,14 +210,18 @@ in
           "nix-${pkgs.system}:docker://forgejo-runner-nix"
           "nix:docker://forgejo-runner-nix"
         ];
+
         settings = {
           # Limit memory to 6GB, and CPU to 60%. In the future, this should be based on the specs of the machine.
-          container.options = "-e NIX_BUILD_SHELL=/bin/bash -e PAGER=cat -e PATH=/bin -e SSL_CERT_FILE=/etc/ssl/certs/ca-bundle.crt -v /nix:/nix -v ${storeDeps}/bin:/bin -v ${storeDeps}/etc/ssl:/etc/ssl --user nixuser";
+          container.options = "-e NIX_BUILD_SHELL=/bin/bash -e PAGER=cat -e PATH=/bin -e SSL_CERT_FILE=/etc/ssl/certs/ca-bundle.crt -v /nix:/nix -v ${storeDeps}/bin:/bin -v ${storeDeps}/etc/ssl:/etc/ssl -v ${config.age.secrets.attic-netrc.path}:/root/.config/nix/netrc:ro -v ${config.age.secrets.attic-config.path}:/etc/attic/config.toml:ro --user nixuser";
+
           container.network = "host";
           container.valid_volumes = [
             "/nix"
             "${storeDeps}/bin"
             "${storeDeps}/etc/ssl"
+            config.age.secrets.attic-netrc.path
+            config.age.secrets.attic-config.path
           ];
         };
       };

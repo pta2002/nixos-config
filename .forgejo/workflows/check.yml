@@ -1,5 +1,8 @@
 name: "Flake check"
 
+env:
+  XDG_CONFIG_HOME: /etc/
+
 on:
   pull_request:
   push:
@@ -11,6 +14,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Run nix flake check
-        run: nix flake check
+      
+      - name: Set up cache
+        run: attic cache info homelab-main
 
+      - name: Run om ci
+        run: om ci run --include-all-dependencies -- --show-trace --accept-flake-config | attic push homelab-main --stdin
+
+      - name: Print errors from previous run
+        if: failure()
+        run: cat /tmp/*.toml

@@ -23,6 +23,12 @@
     fsType = "ext4";
   };
 
+  fileSystems."/mnt" = {
+    device = "/dev/sda4";
+    fsType = "btrfs";
+    options = [ "noatime" ];
+  };
+
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
 }

@@ -14,10 +14,18 @@
     environmentFile = config.age.secrets.atticd-env.path;
 
     settings = {
+      # Had some issues with the default, hopefully this is enough.
+      max-nar-info-size = 4 * 1024 * 1024;
+
       listen = "127.0.0.1:8332";
       jwt = { };
+
+      storage.path = "/mnt/attic/storage";
+      storage.type = "local";
     };
   };
+
+  proxy.services.attic.addr = "127.0.0.1:8332";
 
   services.cloudflared.tunnels."${config.common.role.nix-cache.name}-tunnel".ingress = {
     "attic.pta2002.com" = {
