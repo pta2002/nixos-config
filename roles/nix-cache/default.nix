@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 {
   age.secrets.atticd-env = {
     rekeyFile = ../../secrets/atticd-env.age;
