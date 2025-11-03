@@ -280,7 +280,6 @@
 
           nixosConfigurations = {
             hydrogen = mkMachine "hydrogen" "x86_64-linux";
-            mercury = mkMachine "mercury" "x86_64-linux";
 
             pie = nixpkgs.lib.nixosSystem {
               system = "aarch64-linux";
