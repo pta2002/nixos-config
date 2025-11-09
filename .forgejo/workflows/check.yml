@@ -9,8 +9,9 @@ on:
     branches: ['main']
 
 jobs:
-  lockfile:
-    runs-on: nix
+  check:
+    # TODO: The x86 machine is too broken for this... and also means that the ARM checks wouldn't run!
+    runs-on: nix-aarch64-linux
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
