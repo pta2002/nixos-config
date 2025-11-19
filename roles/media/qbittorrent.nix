@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
 {
   services.qbittorrent = {
     enable = true;
@@ -12,11 +16,45 @@
       Preferences.WebUI = {
         Username = "admin";
         Password_PBKDF2 = "@ByteArray(+oCodC4yCdKyEYKzkBs0Cg==:Srrfd7ftdJMav06xwYocajEm3PkpisVLrWQmie32IkcOo9/Y7jFkJG25zHYr3Tzvj3WdF2Egfk6NwNZmTNJOjQ==)";
-        AlternativeUIEnabled = true;
-        RootFolder = "${pkgs.vuetorrent}/share/vuetorrent";
       };
+
+      BitTorrent.Session = {
+        AddTorrentsStopped = false;
+        DHTEnabled = false;
+        LSDEnabled = false;
+        PeXEnabled = false;
+        MaxConnections = -1;
+        MaxConnectionsPerTorrent = -1;
+        MaxUploads = -1;
+        MaxUploadsPerTorrent = -1;
+        QueueingSystemEnabled = false;
+        Port = 41821;
+        UseAlternativeGlobalSpeedLimit = false;
+      };
+
+      Network.PortForwardingEnabled = false;
     };
 
     openFirewall = true;
   };
+
+  systemd.services.qui = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    requires = ["network-online.target"];
+    serviceConfig = {
+      Group = "data";
+      DynamicUser = true;
+      ExecStart = "${lib.getExe pkgs.qui} serve";
+      StateDirectory = "qui";
+    };
+
+    environment = {
+      QUI__DATA_DIR = "%S/qui";
+    };
+  };
+
+  networking.firewall.allowedTCPPorts = [ 41821 ];
+
+  proxy.services.qui = "127.0.0.1:7476";
 }

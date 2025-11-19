@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  user = "deluge";
+  user = "qbittorrent";
   group = "data";
 in
 {
@@ -13,8 +13,9 @@ in
         "/srv/media/movies"
       ];
       linkDirs = [ "/srv/media/torrents/links" ];
-      torrentDir = "/var/lib/deluge/.config/deluge/state";
-      outputDir = "/var/lib/deluge/output";
+      torrentDir = "/var/lib/qBittorrent/qBittorrent/data/BT_backup";
+      # outputDir = "/var/lib/deluge/output";
+      # outputDir = null;
       linkType = "hardlink";
       matchMode = "partial";
       skipRecheck = true;
