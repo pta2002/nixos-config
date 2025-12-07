@@ -3,6 +3,7 @@
   config,
   pkgs,
   nixos-raspberrypi,
+  lib,
   ...
 }:
 {
@@ -34,6 +35,10 @@
     bootloader = "kernel";
     configurationLimit = 3;
   };
+
+  boot.extraModulePackages = lib.mkIf (config.boot.kernelPackages.kernel.kernelOlder "6.16") (
+    lib.mkForce [ ]
+  );
 
   # networking.firewall.extraCommands = ''
   #   # Huawei AP keeps spamming requests to dmesg, stop logging them.
