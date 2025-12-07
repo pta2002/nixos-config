@@ -37,7 +37,7 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    jetpack-nixos.url = "github:pta2002/jetpack-nixos/get-redist";
+    jetpack-nixos.url = "github:anduril/jetpack-nixos";
     jetpack-nixos.inputs.nixpkgs.follows = "nixpkgs";
 
     copyparty.url = "github:9001/copyparty";

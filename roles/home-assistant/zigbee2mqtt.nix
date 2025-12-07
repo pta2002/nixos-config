@@ -3,7 +3,7 @@
   services.zigbee2mqtt = {
     enable = true;
     settings = {
-      homeassistant = true;
+      homeassistant.enable = true;
       permit_join = false;
       serial.port = "/dev/ttyACM0";
       frontend = true;
