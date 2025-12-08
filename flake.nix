@@ -369,6 +369,9 @@
                   {
                     nixpkgs.overlays = [
                       (final: prev: {
+                        # Use the standard nix package to avoid rebuilds due to cudaSupport!
+                        nix = inputs.nixpkgs.legacyPackages.aarch64-linux.nix;
+
                         onnxruntime = prev.onnxruntime.override { ncclSupport = false; };
                         python3-cuda = prev.python3.override {
                           packageOverrides = python-final: python-prev: {
@@ -395,12 +398,6 @@
                         };
                       })
                     ];
-
-                    # Use standard nix package to avoid rebuilds due to cudaSupport
-                    nix.package =
-                      (import inputs.nixpkgs {
-                        system = "aarch64-linux";
-                      }).nix;
                   }
                 )
               ];
