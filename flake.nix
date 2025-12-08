@@ -30,6 +30,14 @@
     nixpkgs-25-11-rpi.url = "github:nvmd/nixpkgs/modules-with-keys-25.11";
     nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs-25-11-rpi";
 
+    # Keeping this around so that we can use the 25.05 kernel with RPi, which
+    # supports the in-tree bcachefs module. Since the DKMS module for Linux
+    # 6.12 is broken, we can't use the newer kernel package until RPi ships a
+    # newer kernel.
+    nixos-raspberrypi-25-05.url = "github:nvmd/nixos-raspberrypi/main";
+    nixpkgs-25-05-rpi.url = "github:nvmd/nixpkgs/modules-with-keys-25.05";
+    nixos-raspberrypi-25-05.inputs.nixpkgs.follows = "nixpkgs-25-05-rpi";
+
     flake-parts.url = "github:hercules-ci/flake-parts";
     agenix-rekey.url = "github:oddlama/agenix-rekey";
     agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
@@ -75,6 +83,7 @@
       disko,
       deploy-rs,
       nixos-raspberrypi,
+      nixos-raspberrypi-25-05,
       flake-parts,
       jetpack-nixos,
       ...
@@ -298,7 +307,14 @@
               system = "aarch64-linux";
               name = "mars";
               stateVersion = "24.11";
-              specialArgs = { inherit inputs my-switches nixos-raspberrypi; };
+              specialArgs = {
+                inherit
+                  inputs
+                  my-switches
+                  nixos-raspberrypi
+                  nixos-raspberrypi-25-05
+                  ;
+              };
               func = nixos-raspberrypi.lib.nixosSystem;
               modules = with nixos-raspberrypi.nixosModules; [
                 raspberry-pi-5.base

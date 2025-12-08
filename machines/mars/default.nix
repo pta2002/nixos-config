@@ -2,7 +2,7 @@
 {
   config,
   pkgs,
-  nixos-raspberrypi,
+  nixos-raspberrypi-25-05,
   lib,
   ...
 }:
@@ -30,7 +30,7 @@
     "bcachefs"
   ];
 
-  boot.kernelPackages = nixos-raspberrypi.packages.${pkgs.hostPlatform.system}.linuxPackages_rpi5;
+  boot.kernelPackages = nixos-raspberrypi-25-05.packages.${pkgs.hostPlatform.system}.linuxPackages_rpi5;
   boot.loader.raspberryPi = {
     bootloader = "kernel";
     configurationLimit = 3;
