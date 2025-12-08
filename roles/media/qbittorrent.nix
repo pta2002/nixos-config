@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }:
 {
@@ -41,7 +42,7 @@
   systemd.services.qui = {
     wantedBy = [ "multi-user.target" ];
     after = [ "network-online.target" ];
-    requires = ["network-online.target"];
+    requires = [ "network-online.target" ];
     serviceConfig = {
       Group = "data";
       DynamicUser = true;
@@ -54,7 +55,16 @@
     };
   };
 
+  systemd.tmpfiles.settings."10-torrents" = {
+    "/srv/media/torrents".d = {
+      group = "data";
+      user = config.services.qbittorrent.user;
+      mode = "0775";
+    };
+  };
+
   networking.firewall.allowedTCPPorts = [ 41821 ];
+  networking.firewall.allowedUDPPorts = [ 41821 ];
 
   proxy.services.qui = "127.0.0.1:7476";
 }
