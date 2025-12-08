@@ -1,6 +1,6 @@
 {
   # This is needed since we still have some references to the deluge user.
-  users.groups.deluge = {};
+  users.groups.deluge = { };
 
   users.users.deluge = {
     uid = 83;
