@@ -402,6 +402,7 @@
                 )
               ];
               roles = [
+                "actions-runner"
                 "immich"
               ];
             };
