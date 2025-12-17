@@ -20,7 +20,7 @@
       };
 
       BitTorrent.Session = {
-        AddTorrentsStopped = false;
+        AddTorrentStopped = false;
         DHTEnabled = false;
         LSDEnabled = false;
         PeXEnabled = false;
@@ -31,6 +31,7 @@
         QueueingSystemEnabled = false;
         Port = 41821;
         UseAlternativeGlobalSpeedLimit = false;
+        DefaultSavePath = "/srv/media/torrents";
       };
 
       Network.PortForwardingEnabled = false;
