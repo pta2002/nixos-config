@@ -11,7 +11,8 @@
       ui.default-command = "log";
 
       # So we don't need to always specify --allow-all
-      git.push-new-bookmarks = true;
+      remotes.origin.auto-track-bookmarks = "peal-*";
+      remotes.upstream.auto-track-bookmarks = "master";
 
       revset-aliases = {
         "closest_bookmark(to)" = "heads(::to & bookmarks())";
