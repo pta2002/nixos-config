@@ -6,7 +6,7 @@
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      ExecStart = "${my-switches.packages.${pkgs.system}.default}/bin/my-switches";
+      ExecStart = "${my-switches.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/my-switches";
       Type = "simple";
       User = "switches";
       Group = "switches";

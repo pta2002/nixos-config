@@ -114,7 +114,7 @@
     nurl
     docker-compose
 
-    # inputs.devenv.packages.${pkgs.system}.devenv
+    # inputs.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
     android-studio
 
     # nixgl.auto.nixVulkanNvidia

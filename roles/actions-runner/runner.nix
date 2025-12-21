@@ -207,7 +207,7 @@ in
         url = forgejoUrl;
         tokenFile = config.age.secrets.forgejoToken.path;
         labels = [
-          "nix-${pkgs.system}:docker://forgejo-runner-nix"
+          "nix-${pkgs.stdenv.hostPlatform.system}:docker://forgejo-runner-nix"
           "nix:docker://forgejo-runner-nix"
         ];
 
