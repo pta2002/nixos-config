@@ -8,7 +8,6 @@
 }:
 {
   imports = [
-    ../../modules/filespi.nix
     ../../modules/matterbridge.nix
     ../../modules/proxy.nix
     ../../modules/thelounge.nix
