@@ -414,12 +414,13 @@
         ]
       },
       "locked": {
-        "lastModified": 1766189431,
-        "narHash": "sha256-KWkl3q/Xv6C0sN2irRSr/7mnZMasZUp4T+Lx5F4lgnk=",
-        "owner": "anduril",
-        "repo": "jetpack-nixos",
-        "rev": "afb6ecf435d54f9d8795758bc745e146f187be85",
-        "type": "github"
+        "lastModified": 1766406216,
+        "narHash": "sha256-OGJ4+QC8vsuiWxBFU5Ps6fVNnj8JhU47AbVnmSnb/Dc=",
+        "ref": "refs/heads/master",
+        "rev": "c6df684f76782635934b373689e717c9c75089e9",
+        "revCount": 723,
+        "type": "git",
+        "url": "file:///Users/ctw03386/sources/jetpack-nixos/"
       },
       "original": {
         "owner": "anduril",
