@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   hardware.nvidia-container-toolkit.enable = true;
 
@@ -7,12 +7,8 @@
     som = "orin-nano";
     carrierBoard = "devkit";
     super = true;
-
-    # TODO: This does not yet work on k3s. I will need to figure out why.
-    container-toolkit.enable = true;
+    configureCuda = false;
   };
-
-  services.nomad.settings.client.node_pool = "nvidia";
 
   boot.supportedFilesystems = [
     "btrfs"

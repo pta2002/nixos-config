@@ -1,0 +1,30 @@
+From b9233f36dd362ba5eb439bec677ff736becdcae5 Mon Sep 17 00:00:00 2001
+From: Pedro Alves <pta2002@pta2002.com>
+Date: Sun, 4 Jan 2026 15:37:41 +0000
+Subject: [PATCH] conftest: Fix for GCC 15 by using -std=gnu11
+
+GCC 15 defaults to -std=c23, which breaks the conftest checks since
+Linux will manually define the bool type, which is a builtin on C23.
+
+Fix this incompatibility by explicitly defining gnu11, which is what is
+used by the Linux kernel.
+---
+ scripts/conftest/conftest.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/conftest/conftest.sh b/scripts/conftest/conftest.sh
+index 7deb4068..c8689c12 100755
+--- a/scripts/conftest/conftest.sh
++++ b/scripts/conftest/conftest.sh
+@@ -91,7 +91,7 @@ build_cflags() {
+     BASE_CFLAGS="-O2 -D__KERNEL__ \
+ -DKBUILD_BASENAME=\"#conftest$$\" -DKBUILD_MODNAME=\"#conftest$$\" \
+ -nostdinc -isystem $ISYSTEM \
+--Wno-implicit-function-declaration -Wno-strict-prototypes"
++-Wno-implicit-function-declaration -Wno-strict-prototypes -std=gnu11"
+ 
+     if [ "$OUTPUT" != "$SOURCES" ]; then
+         OUTPUT_CFLAGS="-I$OUTPUT/include2 -I$OUTPUT/include"
+-- 
+2.51.2
+
