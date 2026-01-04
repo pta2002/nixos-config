@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-25-11.url = "github:NixOS/nixpkgs/nixos-25.11";
 
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
@@ -105,6 +106,10 @@
               nixpkgs.overlays = [
                 (import ./overlays/lua pkgs)
                 (import ./overlays/my-scripts pkgs)
+                (final: prev: {
+                  # TODO: Remove when https://github.com/NixOS/nixpkgs/issues/476626 is merged.
+                  omnix = inputs.nixpkgs-25-11.legacyPackages.${final.stdenv.hostPlatform.system}.omnix;
+                })
               ];
             }
           );
@@ -200,6 +205,7 @@
               modules = lib.concatLists (
                 [
                   [
+                    overlays
                     agenix.nixosModules.default
                     home.nixosModules.home-manager
                     disko.nixosModules.disko
