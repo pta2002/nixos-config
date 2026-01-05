@@ -407,7 +407,8 @@
               ];
               roles = [
                 "actions-runner"
-                "immich"
+                # "immich"
+                "garage"
               ];
             };
           });

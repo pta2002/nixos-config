@@ -20,8 +20,21 @@
       listen = "127.0.0.1:8332";
       jwt = { };
 
-      storage.path = "/mnt/attic/storage";
-      storage.type = "local";
+      # storage.path = "/mnt/attic/storage";
+      # storage.type = "local";
+
+      storage = {
+        type = "s3";
+        region = "garage";
+        bucket = "attic";
+        endpoint = "https://garage.j.pta2002.com";
+
+        # TODO: Move into agenix
+        credentials = {
+          access_key_id = "GKf73b036606269ffd31076e2f";
+          secret_access_key = "28f55754e304959847fa3b0f14ad35402c173759408b447a34b9b9c6033c3dad";
+        };
+      };
     };
   };
 
