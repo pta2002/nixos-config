@@ -409,6 +409,7 @@
                 "actions-runner"
                 # "immich"
                 "garage"
+                "k3s"
               ];
             };
           });
@@ -442,7 +443,7 @@
 
             jetson = {
               hostname = "100.74.251.44";
-              remoteBuild = true;
+              # remoteBuild = true;
               profiles.system = {
                 user = "root";
                 path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.jetson;
