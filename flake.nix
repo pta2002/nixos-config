@@ -87,412 +87,273 @@
       jetpack-nixos,
       ...
     }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs; } (_: {
-      imports = [
-        # inputs.home.flakeModules.home-manager
-        inputs.agenix-rekey.flakeModule
-        inputs.treefmt-nix.flakeModule
-      ];
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      { self, ... }:
+      {
+        imports = [
+          inputs.agenix-rekey.flakeModule
+          inputs.treefmt-nix.flakeModule
+        ];
 
-      flake =
-        let
-          lib = nixpkgs.lib;
-
-          overlays = (
-            { pkgs, ... }:
-            {
-              nixpkgs.overlays = [
-                (import ./overlays/lua pkgs)
-                (import ./overlays/my-scripts pkgs)
-                (final: prev: {
-                  # TODO: Remove when https://github.com/NixOS/nixpkgs/issues/476626 is merged.
-                  omnix = inputs.nixpkgs-25-11.legacyPackages.${final.stdenv.hostPlatform.system}.omnix;
-                })
-              ];
-            }
-          );
-
-          mkMachine =
-            name: system:
-            nixpkgs.lib.nixosSystem {
-              inherit system;
-
-              modules = [
-                overlays
-                ./configuration.nix
-                ./machines/${name}.nix
-
-                home.nixosModules.home-manager
-                {
-                  home-manager.users.pta2002 = ./home/desktops.nix;
-                  home-manager.extraSpecialArgs = {
-                    inherit inputs;
-                    hostname = name;
-                  };
-                  # home-manager.sharedModules = [ overlays ];
-                  home-manager.useGlobalPkgs = true;
-                  # home-manager.backupFileExtension = ".hm-bak";
-                }
-              ];
-
-              specialArgs = {
-                inherit inputs;
-                hostname = name;
-              };
+        flake =
+          let
+            lib = nixpkgs.lib;
+            machineLib = import ./lib/machines.nix { inherit inputs lib; };
+          in
+          {
+            # Export library functions for use in other flakes
+            lib = machineLib // {
+              overrideHomeConfiguration =
+                system: config:
+                home.lib.homeManagerConfiguration (machineLib.mkHomeManagerConfig {
+                  pkgs = nixpkgs.legacyPackages.${system};
+                  modules = [
+                    {
+                      home.username = "pta2002";
+                      home.stateVersion = "24.05";
+                      home.homeDirectory = "/home/pta2002";
+                    }
+                    config
+                  ];
+                });
             };
 
-          mkHomeManagerConfig =
-            {
-              pkgs ? nixpkgs.legacyPackages."x86_64-linux",
-              modules ? [
-                {
-                  home.stateVersion = "24.05";
-                  home.username = "pta2002";
-                  home.homeDirectory = "/home/pta2002";
-                }
-              ],
-            }:
-            {
-              inherit pkgs;
-              extraSpecialArgs = { inherit inputs nixvim; };
-              modules = [
-                nixvim.homeModules.nixvim
-                ./home/nvim.nix
-                ./home/git.nix
-                ./home/jj.nix
-                ./home/gpg.nix
-                ./home/shell.nix
-                {
-                  programs.home-manager.enable = true;
-                }
-              ]
-              ++ modules;
+            # Home Manager configurations
+            homeConfigurations = {
+              pta2002 = home.lib.homeManagerConfiguration (machineLib.mkHomeManagerConfig { });
+              pta2002-darwin = home.lib.homeManagerConfiguration (machineLib.mkHomeManagerConfig {
+                pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+                modules = [
+                  {
+                    home.username = "ctw03386";
+                    home.stateVersion = "25.11";
+                    home.homeDirectory = "/Users/ctw03386";
+                  }
+                ];
+              });
             };
 
-          fs = lib.fileset;
+            # NixOS system configurations
+            nixosConfigurations =
+              {
+                # Standalone machines
+                hydrogen = machineLib.mkMachine "hydrogen" "x86_64-linux";
 
-          mkSwarmMachine =
-            {
-              system,
-              name,
-              modules ? [ ],
-              stateVersion,
-              specialArgs ? { },
-              roles ? [ ],
-              func ? nixpkgs.lib.nixosSystem,
-            }:
-            hostForRoles:
-            let
-              nixFilesIn = dir: fs.toList (fs.fileFilter (file: file.hasExt "nix") dir);
-              machineModules = nixFilesIn ./machines/${name};
-              commonModules = nixFilesIn ./common;
-              roleModules = map (role: nixFilesIn ./roles/${role}) roles;
-              roleDefinitions = {
-                config.common.role = lib.listToAttrs (
-                  map (role: {
-                    name = role;
-                    value = {
-                      enabled = true;
-                    };
-                  }) roles
-                );
-              };
-            in
-            func {
-              inherit system specialArgs;
-              modules = lib.concatLists (
-                [
-                  [
-                    overlays
+                pie = nixpkgs.lib.nixosSystem {
+                  system = "aarch64-linux";
+                  specialArgs = { inherit inputs; };
+                  modules = [
                     agenix.nixosModules.default
-                    home.nixosModules.home-manager
-                    disko.nixosModules.disko
+                    nixos-hardware.nixosModules.raspberry-pi-4
+                    ./machines/pie/default.nix
+                  ];
+                };
+              }
+              // (machineLib.mkSwarm {
+                # Swarm machines
+                mars = {
+                  system = "aarch64-linux";
+                  name = "mars";
+                  stateVersion = "24.11";
+                  specialArgs = {
+                    inherit
+                      inputs
+                      my-switches
+                      nixos-raspberrypi
+                      nixos-raspberrypi-25-05
+                      ;
+                  };
+                  func = nixos-raspberrypi.lib.nixosSystem;
+                  modules = with nixos-raspberrypi.nixosModules; [
+                    raspberry-pi-5.base
+                    # TODO: Re-enable this once I have good CI infra
+                    # raspberry-pi-5.page-size-16k
+                  ];
 
-                    # Shouldn't this be by default?
-                    inputs.agenix-rekey.nixosModules.default
+                  roles = [
+                    "home-assistant"
+                    "media"
+                    "data-host"
+                    "actions-runner"
+                  ];
+                };
 
-                    ./modules/common.nix
-                    roleDefinitions
-                    hostForRoles
+                cloudy = {
+                  system = "aarch64-linux";
+                  stateVersion = "22.11";
+                  name = "cloudy";
+                  specialArgs = { inherit inputs nixvim; };
+                  roles = [
+                    "dns"
+                    "vault"
+                    "actions-runner"
+                    "nix-cache"
+                  ];
+                };
 
+                panda = {
+                  system = "x86_64-linux";
+                  name = "panda";
+                  stateVersion = "25.05";
+                  roles = [
+                    "actions-runner"
+                    "auth"
+                    # "docs"
+                    "git"
+                    "snatcher"
+                    "stream"
+                  ];
+                };
+
+                jetson = {
+                  system = "aarch64-linux";
+                  name = "jetson";
+                  stateVersion = "25.05";
+                  specialArgs = { inherit inputs; };
+                  modules = [
+                    jetpack-nixos.nixosModules.default
                     (
-                      { ... }:
+                      { inputs, ... }:
                       {
-                        home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-                          { home.stateVersion = stateVersion; }
-                          nixvim.homeModules.nixvim
-                          ./home/nvim.nix
-                          ./home/git.nix
-                          ./home/shell.nix
-                        ];
+                        nixpkgs.overlays = [
+                          (final: prev: {
+                            # Use the standard nix package to avoid rebuilds due to cudaSupport!
+                            nix = inputs.nixpkgs.legacyPackages.aarch64-linux.nix;
 
-                        home-manager.useGlobalPkgs = true;
-                        home-manager.extraSpecialArgs = {
-                          inherit inputs;
-                          hostname = name;
-                        };
+                            onnxruntime = prev.onnxruntime.override { ncclSupport = false; };
+                            python3-cuda = prev.python3.override {
+                              packageOverrides = python-final: python-prev: {
+                                # The python package does not respect ncclSupport!
+                                onnxruntime = python-prev.onnxruntime.overrideAttrs {
+                                  buildInputs =
+                                    [
+                                      prev.oneDNN
+                                      prev.re2
+                                      final.onnxruntime.protobuf
+                                      final.onnxruntime
+                                    ]
+                                    ++ lib.optionals final.onnxruntime.passthru.cudaSupport (
+                                      with final.onnxruntime.passthru.cudaPackages;
+                                      [
+                                        libcublas # libcublasLt.so.XX libcublas.so.XX
+                                        libcurand # libcurand.so.XX
+                                        libcufft # libcufft.so.XX
+                                        cudnn # libcudnn.soXX
+                                        cuda_cudart # libcudart.so.XX
+                                      ]
+                                    );
+                                };
+                              };
+                            };
+                          })
+                        ];
                       }
                     )
-                  ]
-                  machineModules
-                  commonModules
-                  modules
-                ]
-                ++ roleModules
-              );
-            };
-
-          mkSwarm =
-            machines:
-            let
-              rolesPerHost = lib.mapAttrs (k: v: v.roles) machines;
-              hostForRoles =
-                let
-                  flattened = lib.flatten (
-                    lib.mapAttrsToList (
-                      host:
-                      map (role: {
-                        ${role}.name = host;
-                      })
-                    ) rolesPerHost
-                  );
-                in
-                {
-                  config.common.role = lib.mergeAttrsList flattened;
+                  ];
+                  roles = [
+                    "actions-runner"
+                    # "immich"
+                    "garage"
+                    "k3s"
+                  ];
                 };
-            in
-            lib.mapAttrs (k: v: mkSwarmMachine v hostForRoles) machines;
-        in
-        {
-          lib.overrideHomeConfiguration =
-            system: config:
-            home.lib.homeManagerConfiguration (mkHomeManagerConfig {
-              pkgs = nixpkgs.legacyPackages.${system};
-              modules = [
-                {
-                  home.username = "pta2002";
-                  home.stateVersion = "24.05";
-                  home.homeDirectory = "/home/pta2002";
-                }
-                config
-              ];
-            });
-          lib.mkHomeManagerConfig = mkHomeManagerConfig;
+              });
 
-          homeConfigurations = {
-            pta2002 = home.lib.homeManagerConfiguration (mkHomeManagerConfig { });
-            pta2002-darwin = home.lib.homeManagerConfiguration (mkHomeManagerConfig {
-              pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-              modules = [
-                {
-                  home.username = "ctw03386";
-                  home.stateVersion = "25.11";
-                  home.homeDirectory = "/Users/ctw03386";
-                }
-              ];
-            });
+            # Deploy-rs configuration
+            deploy.nodes = {
+              panda = {
+                hostname = "100.81.36.57";
+                profiles.system = {
+                  user = "root";
+                  path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;
+                };
+              };
+
+              cloudy = {
+                hostname = "100.86.136.44";
+                remoteBuild = true;
+                profiles.system = {
+                  user = "root";
+                  path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.cloudy;
+                };
+              };
+
+              mars = {
+                hostname = "100.126.178.45";
+                remoteBuild = false;
+                profiles.system = {
+                  user = "root";
+                  path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mars;
+                };
+              };
+
+              jetson = {
+                hostname = "100.74.251.44";
+                profiles.system = {
+                  user = "root";
+                  path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.jetson;
+                };
+              };
+            };
           };
 
-          nixosConfigurations = {
-            hydrogen = mkMachine "hydrogen" "x86_64-linux";
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+          "aarch64-darwin"
+        ];
 
-            pie = nixpkgs.lib.nixosSystem {
-              system = "aarch64-linux";
-              specialArgs = { inherit inputs; };
-              modules = [
-                agenix.nixosModules.default
-                nixos-hardware.nixosModules.raspberry-pi-4
-                ./machines/pie/default.nix
+        perSystem =
+          {
+            config,
+            pkgs,
+            system,
+            ...
+          }:
+          {
+            # Development shell
+            devShells.default = pkgs.mkShell {
+              nativeBuildInputs = [
+                config.agenix-rekey.package
+                pkgs.age-plugin-yubikey
+                inputs.deploy-rs.packages.${system}.default
               ];
             };
-          }
-          // (mkSwarm {
-            mars = {
-              system = "aarch64-linux";
-              name = "mars";
-              stateVersion = "24.11";
-              specialArgs = {
-                inherit
-                  inputs
-                  my-switches
-                  nixos-raspberrypi
-                  nixos-raspberrypi-25-05
+
+            # Apps for nix run
+            apps = {
+              agenix-rekey = {
+                type = "app";
+                program = "${config.agenix-rekey.package}/bin/agenix-rekey";
+              };
+              deploy-rs = {
+                type = "app";
+                program = "${inputs.deploy-rs.packages.${system}.default}/bin/deploy";
+              };
+            };
+
+            # Agenix-rekey configuration
+            agenix-rekey = {
+              collectHomeManagerConfigurations = false;
+              nixosConfigurations = {
+                inherit (self.nixosConfigurations)
+                  panda
+                  cloudy
+                  mars
+                  jetson
                   ;
               };
-              func = nixos-raspberrypi.lib.nixosSystem;
-              modules = with nixos-raspberrypi.nixosModules; [
-                raspberry-pi-5.base
-                # TODO: Re-enable this once I have good CI infra
-                # raspberry-pi-5.page-size-16k
-              ];
-
-              roles = [
-                "home-assistant"
-                "media"
-                "data-host"
-                "actions-runner"
-              ];
             };
 
-            cloudy = {
-              system = "aarch64-linux";
-              stateVersion = "22.11";
-              name = "cloudy";
-              specialArgs = { inherit inputs nixvim; };
-              roles = [
-                "dns"
-                "vault"
-                "actions-runner"
-                "nix-cache"
-              ];
-            };
-
-            panda = {
-              system = "x86_64-linux";
-              name = "panda";
-              stateVersion = "25.05";
-              roles = [
-                "actions-runner"
-                "auth"
-                # "docs"
-                "git"
-                "snatcher"
-                "stream"
-              ];
-            };
-
-            jetson = {
-              system = "aarch64-linux";
-              name = "jetson";
-              stateVersion = "25.05";
-              specialArgs = { inherit inputs; };
-              modules = [
-                jetpack-nixos.nixosModules.default
-                (
-                  { inputs, ... }:
-                  {
-                    nixpkgs.overlays = [
-                      (final: prev: {
-                        # Use the standard nix package to avoid rebuilds due to cudaSupport!
-                        nix = inputs.nixpkgs.legacyPackages.aarch64-linux.nix;
-
-                        onnxruntime = prev.onnxruntime.override { ncclSupport = false; };
-                        python3-cuda = prev.python3.override {
-                          packageOverrides = python-final: python-prev: {
-                            # The python package does not respect ncclSupport!
-                            onnxruntime = python-prev.onnxruntime.overrideAttrs {
-                              buildInputs = [
-                                prev.oneDNN
-                                prev.re2
-                                final.onnxruntime.protobuf
-                                final.onnxruntime
-                              ]
-                              ++ lib.optionals final.onnxruntime.passthru.cudaSupport (
-                                with final.onnxruntime.passthru.cudaPackages;
-                                [
-                                  libcublas # libcublasLt.so.XX libcublas.so.XX
-                                  libcurand # libcurand.so.XX
-                                  libcufft # libcufft.so.XX
-                                  cudnn # libcudnn.soXX
-                                  cuda_cudart # libcudart.so.XX
-                                ]
-                              );
-                            };
-                          };
-                        };
-                      })
-                    ];
-                  }
-                )
-              ];
-              roles = [
-                "actions-runner"
-                # "immich"
-                "garage"
-                "k3s"
-              ];
-            };
-          });
-
-          deploy.nodes = {
-            panda = {
-              hostname = "100.81.36.57";
-              profiles.system = {
-                user = "root";
-                path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;
-              };
-            };
-
-            cloudy = {
-              hostname = "100.86.136.44";
-              remoteBuild = true;
-              profiles.system = {
-                user = "root";
-                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.cloudy;
-              };
-            };
-
-            mars = {
-              hostname = "100.126.178.45";
-              remoteBuild = false;
-              profiles.system = {
-                user = "root";
-                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mars;
-              };
-            };
-
-            jetson = {
-              hostname = "100.74.251.44";
-              # remoteBuild = true;
-              profiles.system = {
-                user = "root";
-                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.jetson;
+            # Treefmt configuration
+            treefmt = {
+              projectRootFile = "flake.nix";
+              programs = {
+                nixfmt.enable = true;
+                ruff.enable = true;
               };
             };
           };
-        };
-
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "aarch64-darwin"
-      ];
-
-      perSystem =
-        {
-          config,
-          pkgs,
-          ...
-        }:
-        {
-          devShells.default = pkgs.mkShell {
-            nativeBuildInputs = [
-              config.agenix-rekey.package
-              pkgs.age-plugin-yubikey
-              pkgs.deploy-rs
-            ];
-          };
-
-          agenix-rekey = {
-            # This might be interesting later, but for now there is no need.
-            collectHomeManagerConfigurations = false;
-            nixosConfigurations = {
-              inherit (self.nixosConfigurations)
-                panda
-                cloudy
-                mars
-                jetson
-                ;
-            };
-          };
-
-          treefmt = {
-            projectRootFile = "flake.nix";
-            programs = {
-              nixfmt.enable = true;
-              ruff.enable = true;
-            };
-          };
-        };
-    });
+      }
+    );
 }
