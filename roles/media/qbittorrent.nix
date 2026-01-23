@@ -40,6 +40,12 @@
     openFirewall = true;
   };
 
+  # Ensure qbittorrent starts only after /srv/media is mounted
+  systemd.services.qbittorrent = {
+    after = [ "srv-media.mount" ];
+    requires = [ "srv-media.mount" ];
+  };
+
   systemd.services.qui = {
     wantedBy = [ "multi-user.target" ];
     after = [ "network-online.target" ];
