@@ -5,8 +5,17 @@ let
   gitJSON = lib.importJSON ./rel-36_eng_2025-12-11-gitrepos.json;
   gitRepos = lib.mapAttrs (
     relpath: info:
-    pkgs.fetchgit {
-      inherit (info) url rev hash;
+    let
+      gitlabPath = lib.strings.removeSuffix ".git" (
+        lib.strings.removePrefix "https://gitlab.com/" info.url
+      );
+      parts = lib.strings.splitString "/" gitlabPath;
+      repo = lib.lists.last parts;
+      owner = lib.concatStringsSep "/" (lib.lists.init parts);
+    in
+    pkgs.fetchFromGitLab {
+      inherit owner repo;
+      inherit (info) rev hash;
     }
   ) gitJSON;
 
