@@ -31,7 +31,7 @@
 
   boot.kernelPackages =
     nixos-raspberrypi-25-05.packages.${pkgs.stdenv.hostPlatform.system}.linuxPackages_rpi5;
-  boot.loader.raspberryPi = {
+  boot.loader.raspberry-pi = {
     bootloader = "kernel";
     configurationLimit = 3;
   };

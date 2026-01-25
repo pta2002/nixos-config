@@ -41,7 +41,7 @@
   };
 
   programs.starship.settings = {
-    format = lib.mkForce ''$hostname$directory''${custom.git_branch}''${custom.git_state}''${custom.jj}$character'';
+    format = lib.mkForce "$hostname$directory\${custom.git_branch}\${custom.git_state}\${custom.jj}$character";
 
     custom.jj = {
       ignore_timeout = true;

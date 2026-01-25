@@ -79,9 +79,9 @@ in
           );
 
           apiKeyPipeline = lib.concatStringsSep " | " (
-            [ ''.apiKey = $apiKey'' ]
+            [ ".apiKey = $apiKey" ]
             ++ (lib.mapAttrsToList (
-              name: val: ''.applications.${name}.apiKey = ''$${name}apiKey''
+              name: val: ".applications.${name}.apiKey = \$${name}apiKey"
             ) cfg.applications)
           );
         in
@@ -111,7 +111,7 @@ in
           LoadCredential = [
             "apiKey:${cfg.apiKeyFile}"
           ]
-          ++ (lib.mapAttrsToList (name: val: ''${name}apiKey:${val.apiKeyFile}'') cfg.applications);
+          ++ (lib.mapAttrsToList (name: val: "${name}apiKey:${val.apiKeyFile}") cfg.applications);
 
           RuntimeDirectory = [ "prowlarr-setup" ];
 

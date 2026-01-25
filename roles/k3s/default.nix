@@ -29,9 +29,14 @@
     iptables -D INPUT -s 10.43.0.0/16 -j ACCEPT || true
   '';
 
-    # Kernel modules for container networking
+  # Kernel modules for container networking
   boot.kernelModules = [
-    "br_netfilter" "overlay" "ip_vs" "ip_vs_rr" 
-    "ip_vs_wrr" "ip_vs_sh" "nf_conntrack"
+    "br_netfilter"
+    "overlay"
+    "ip_vs"
+    "ip_vs_rr"
+    "ip_vs_wrr"
+    "ip_vs_sh"
+    "nf_conntrack"
   ];
 }

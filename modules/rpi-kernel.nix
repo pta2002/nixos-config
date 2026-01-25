@@ -10,7 +10,7 @@ in
 {
   options = {
     boot.loader.rpi-5 = {
-      enable = lib.mkEnableOption ''Raspberry 5 bootloader'';
+      enable = lib.mkEnableOption "Raspberry 5 bootloader";
     };
   };
 
