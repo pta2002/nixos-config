@@ -162,6 +162,8 @@
                 ./home/jj.nix
                 ./home/gpg.nix
                 ./home/shell.nix
+                ./home/devenv.nix
+                ./home/tmux.nix
                 {
                   programs.home-manager.enable = true;
                 }
@@ -224,6 +226,8 @@
                           ./home/nvim.nix
                           ./home/git.nix
                           ./home/shell.nix
+                          ./home/devenv.nix
+                          ./home/tmux.nix
                         ];
 
                         home-manager.useGlobalPkgs = true;
