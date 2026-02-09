@@ -6,4 +6,7 @@
     enable = true;
     settings.PasswordAuthentication = false;
   };
+
+  # Also set up mosh
+  programs.mosh.enable = true;
 }
