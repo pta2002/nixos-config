@@ -223,7 +223,8 @@ in
         extensions.fzf-native.enable = true;
       };
 
-      conjure.enable = true;
+      # Broken
+      # conjure.enable = true;
 
       typst-vim.enable = true;
 
