@@ -94,10 +94,10 @@ in
             enable = true;
             settings.formatting.command = [ "nixfmt" ];
           };
-          # TODO: https://github.com/nix-community/nixvim/issues/1702
-          # rust-analyzer.enable = true;
-          # rust-analyzer.installRustc = true;
-          # rust-analyzer.installCargo = true;
+
+          rust-analyzer.enable = true;
+          rust-analyzer.installRustc = true;
+          rust-analyzer.installCargo = true;
           clangd.enable = true;
           zls.enable = true;
           pyright.enable = true;
@@ -145,8 +145,9 @@ in
           snippet.expand = # lua
             ''
               function(args)
-                          require('luasnip').lsp_expand(args.body)
-                        end'';
+                require('luasnip').lsp_expand(args.body)
+              end
+            '';
 
           window.completion = {
             winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
@@ -174,39 +175,43 @@ in
             "<Down>" = # lua
               ''
                 cmp.mapping(cmp.mapping.select_next_item({
-                              beahavior = cmp.SelectBehavior.Select
-                            }), {'i', 'c'})'';
+                  beahavior = cmp.SelectBehavior.Select
+                }), {'i', 'c'})
+              '';
             "<Up>" = # lua
               ''
                 cmp.mapping(cmp.mapping.select_prev_item({
-                              beahavior = cmp.SelectBehavior.Select
-                            }), {'i', 'c'})'';
+                  beahavior = cmp.SelectBehavior.Select
+                }), {'i', 'c'})
+              '';
 
             "<Tab>" = # lua
               ''
                 cmp.mapping(function(fallback)
-                              local luasnip = require("luasnip")
-                              if cmp.visible() then
-                                cmp.select_next_item()
-                              elseif luasnip.locally_jumpable(1) then
-                                luasnip.jump(1)
-                              else
-                                fallback()
-                              end
-                            end, { 'i', 's' })'';
+                  local luasnip = require("luasnip")
+                  if cmp.visible() then
+                    cmp.select_next_item()
+                  elseif luasnip.locally_jumpable(1) then
+                    luasnip.jump(1)
+                  else
+                    fallback()
+                  end
+                end, { 'i', 's' })
+              '';
 
             "<S-Tab>" = # lua
               ''
                 cmp.mapping(function(fallback)
-                              local luasnip = require("luasnip")
-                              if cmp.visible() then
-                                cmp.select_next_item()
-                              elseif luasnip.locally_jumpable(-1) then
-                                luasnip.jump(-1)
-                              else
-                                fallback()
-                              end
-                            end, { 'i', 's' })'';
+                  local luasnip = require("luasnip")
+                  if cmp.visible() then
+                    cmp.select_next_item()
+                  elseif luasnip.locally_jumpable(-1) then
+                    luasnip.jump(-1)
+                  else
+                    fallback()
+                  end
+                end, { 'i', 's' })
+              '';
           };
 
           window.documentation = {
@@ -349,16 +354,6 @@ in
     '';
 
     extraPlugins = [
-      (pkgs.vimUtils.buildVimPlugin rec {
-        pname = "yuck-vim";
-        version = "6dc3da77c53820c32648cf67cbdbdfb6994f4e08";
-        src = pkgs.fetchFromGitHub {
-          owner = "elkowar";
-          repo = "yuck.vim";
-          rev = version;
-          sha256 = "0890cyxnnvbbhv1irm0nxl5x7a49h1327cmhl1gmayigd4jym7ln";
-        };
-      })
       pkgs.vimPlugins.terminal-nvim
       pkgs.vimPlugins.scope-nvim
       pkgs.vimPlugins.vim-terraform
@@ -367,7 +362,7 @@ in
 
     extraPackages = with pkgs; [
       xclip
-      nixfmt-rfc-style
+      nixfmt
     ];
 
     highlight = {

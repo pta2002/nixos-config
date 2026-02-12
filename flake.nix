@@ -104,10 +104,6 @@
               nixpkgs.overlays = [
                 (import ./overlays/lua pkgs)
                 (import ./overlays/my-scripts pkgs)
-                (final: prev: {
-                  # TODO: Remove when https://github.com/NixOS/nixpkgs/issues/476626 is merged.
-                  omnix = inputs.nixpkgs-25-11.legacyPackages.${final.stdenv.hostPlatform.system}.omnix;
-                })
                 (import ./overlays/kernel)
               ];
             }
