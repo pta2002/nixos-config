@@ -108,6 +108,7 @@
                   # TODO: Remove when https://github.com/NixOS/nixpkgs/issues/476626 is merged.
                   omnix = inputs.nixpkgs-25-11.legacyPackages.${final.stdenv.hostPlatform.system}.omnix;
                 })
+                (import ./overlays/kernel)
               ];
             }
           );
@@ -365,6 +366,16 @@
               ];
             };
 
+            dragon = {
+              system = "aarch64-linux";
+              name = "dragon";
+              stateVersion = "26.05";
+              roles = [ ];
+              modules = [
+                # (nixpkgs + /nixos/modules/installer/cd-dvd/installation-cd-minimal.nix)
+              ];
+            };
+
             jetson = {
               system = "aarch64-linux";
               name = "jetson";
@@ -445,6 +456,15 @@
               };
             };
 
+            dragon = {
+              hostname = "192.168.1.131";
+              remoteBuild = true;
+              profiles.system = {
+                user = "root";
+                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.dragon;
+              };
+            };
+
             jetson = {
               hostname = "100.74.251.44";
               # remoteBuild = true;
@@ -486,6 +506,7 @@
                 cloudy
                 mars
                 jetson
+                dragon
                 ;
             };
           };
