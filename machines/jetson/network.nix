@@ -1,7 +1,5 @@
 { config, ... }:
 {
-  imports = [ ../../modules/proxy.nix ];
-
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "both";

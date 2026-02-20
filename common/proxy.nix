@@ -103,7 +103,7 @@ let
               };
             })
           ]
-          ++ (builtins.map (endpoint: {
+          ++ (map (endpoint: {
             locations.${endpoint} = {
               recommendedProxySettings = true;
               proxyPass = "http://${config.addr}";
@@ -115,7 +115,7 @@ let
 in
 {
   imports = [
-    ./vouch-proxy.nix
+    ../modules/vouch-proxy.nix
   ];
 
   options.proxy = {

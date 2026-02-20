@@ -9,7 +9,6 @@
 {
   imports = [
     ../../modules/matterbridge.nix
-    ../../modules/proxy.nix
     ../../modules/thelounge.nix
   ];
 

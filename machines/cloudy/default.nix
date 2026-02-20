@@ -3,7 +3,6 @@
   imports = [
     ../../modules/yarr.nix
     ../../modules/fava.nix
-    ../../modules/proxy.nix
   ];
 
   proxy = {

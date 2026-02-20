@@ -1,9 +1,5 @@
-{ config, lib, ... }:
+{ config, ... }:
 {
-  imports = [
-    ../../modules/proxy.nix
-  ];
-
   # Hostname + networkd
   networking = {
     hostName = "panda";
