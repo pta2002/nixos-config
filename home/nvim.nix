@@ -95,9 +95,9 @@ in
             settings.formatting.command = [ "nixfmt" ];
           };
 
-          rust-analyzer.enable = true;
-          rust-analyzer.installRustc = true;
-          rust-analyzer.installCargo = true;
+          rust_analyzer.enable = true;
+          rust_analyzer.installRustc = true;
+          rust_analyzer.installCargo = true;
           clangd.enable = true;
           zls.enable = true;
           pyright.enable = true;
