@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   services.samba-wsdd.enable = true;
   services.samba-wsdd.openFirewall = true;
@@ -19,8 +19,8 @@
     };
 
     settings.global = {
-      workgroup = "mars";
-      "netbios name" = "mars";
+      workgroup = config.networking.hostName;
+      "netbios name" = config.networking.hostName;
       security = "user";
       "hosts allow" = [
         "192.168.0.0/16"

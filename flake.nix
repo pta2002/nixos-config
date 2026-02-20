@@ -48,9 +48,6 @@
 
     jetpack-nixos.url = "github:anduril/jetpack-nixos";
     jetpack-nixos.inputs.nixpkgs.follows = "nixpkgs";
-
-    copyparty.url = "github:9001/copyparty";
-    copyparty.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {
