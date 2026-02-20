@@ -364,8 +364,15 @@
               name = "dragon";
               stateVersion = "26.05";
               roles = [ ];
-              modules = [
-                # (nixpkgs + /nixos/modules/installer/cd-dvd/installation-cd-minimal.nix)
+            };
+
+            nas = {
+              system = "aarch64-linux";
+              name = "nas";
+              stateVersion = "26.05";
+              roles = [
+                # "media"
+                "data-host"
               ];
             };
 
@@ -458,6 +465,15 @@
               };
             };
 
+            nas = {
+              hostname = "100.68.190.31";
+              remoteBuild = true;
+              profiles.system = {
+                user = "root";
+                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.nas;
+              };
+            };
+
             jetson = {
               hostname = "100.74.251.44";
               # remoteBuild = true;
@@ -500,6 +516,7 @@
                 mars
                 jetson
                 dragon
+                nas
                 ;
             };
           };
