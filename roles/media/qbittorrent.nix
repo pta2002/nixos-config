@@ -7,7 +7,7 @@
 {
   age.secrets.qui-secret = {
     rekeyFile = ../../secrets/qui-secret.age;
-    generator.script = { pkgs, ... }: "${pkgs.openssl}/bin/opoenssl rand -hex 32";
+    generator.script = { pkgs, ... }: "${pkgs.openssl}/bin/openssl rand -hex 32";
   };
 
   services.qbittorrent = {
