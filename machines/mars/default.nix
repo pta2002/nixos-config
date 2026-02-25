@@ -25,19 +25,12 @@
   boot.supportedFilesystems = [
     "btrfs"
     "vfat"
-    "bcachefs"
   ];
 
-  boot.kernelPackages =
-    nixos-raspberrypi-25-05.packages.${pkgs.stdenv.hostPlatform.system}.linuxPackages_rpi5;
   boot.loader.raspberry-pi = {
     bootloader = "kernel";
     configurationLimit = 3;
   };
-
-  boot.extraModulePackages = lib.mkIf (config.boot.kernelPackages.kernel.kernelOlder "6.16") (
-    lib.mkForce [ ]
-  );
 
   # networking.firewall.extraCommands = ''
   #   # Huawei AP keeps spamming requests to dmesg, stop logging them.
@@ -78,14 +71,6 @@
         "noatime"
       ];
       fsType = "btrfs";
-    };
-    "/mnt" = {
-      device = "/dev/disk/by-uuid/219c1fb6-beeb-450a-a3c2-59ab6fb43b84";
-      options = [
-        "noatime"
-        "nofail"
-      ];
-      fsType = "bcachefs";
     };
   };
 

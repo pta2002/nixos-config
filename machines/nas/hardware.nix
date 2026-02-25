@@ -61,10 +61,11 @@
   ];
 
   fileSystems."/mnt" = {
-    device = "/dev/disk/by-uuid/c7994232-0665-4d6a-9933-80d444654af4";
+    device = "/dev/disk/by-uuid/219c1fb6-beeb-450a-a3c2-59ab6fb43b84";
     options = [
       "noatime"
       "nofail"
+      "version_upgrade=compatible"
     ];
     fsType = "bcachefs";
   };

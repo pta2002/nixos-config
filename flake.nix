@@ -27,17 +27,8 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
-    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
-    nixpkgs-25-11-rpi.url = "github:nvmd/nixpkgs/modules-with-keys-25.11";
-    nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs-25-11-rpi";
-
-    # Keeping this around so that we can use the 25.05 kernel with RPi, which
-    # supports the in-tree bcachefs module. Since the DKMS module for Linux
-    # 6.12 is broken, we can't use the newer kernel package until RPi ships a
-    # newer kernel.
-    nixos-raspberrypi-25-05.url = "github:nvmd/nixos-raspberrypi/main";
-    nixpkgs-25-05-rpi.url = "github:nvmd/nixpkgs/modules-with-keys-25.05";
-    nixos-raspberrypi-25-05.inputs.nixpkgs.follows = "nixpkgs-25-05-rpi";
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/develop";
+    nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     agenix-rekey.url = "github:oddlama/agenix-rekey";
@@ -79,7 +70,7 @@
       disko,
       deploy-rs,
       nixos-raspberrypi,
-      nixos-raspberrypi-25-05,
+      # nixos-raspberrypi-25-05,
       flake-parts,
       jetpack-nixos,
       ...
@@ -314,7 +305,6 @@
                   inputs
                   my-switches
                   nixos-raspberrypi
-                  nixos-raspberrypi-25-05
                   ;
               };
               func = nixos-raspberrypi.lib.nixosSystem;
@@ -327,7 +317,6 @@
               roles = [
                 "home-assistant"
                 "media"
-                "data-host"
                 "actions-runner"
               ];
             };
@@ -352,7 +341,6 @@
               roles = [
                 "actions-runner"
                 "auth"
-                # "docs"
                 "git"
                 "snatcher"
                 "stream"
@@ -371,7 +359,7 @@
               name = "nas";
               stateVersion = "26.05";
               roles = [
-                # "media"
+                "media"
                 "data-host"
               ];
             };
@@ -432,6 +420,7 @@
           deploy.nodes = {
             panda = {
               hostname = "100.81.36.57";
+              remoteBuild = true;
               profiles.system = {
                 user = "root";
                 path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;

@@ -5,6 +5,11 @@
   ...
 }:
 {
+  age.secrets.qui-secret = {
+    rekeyFile = ../../secrets/qui-secret.age;
+    generator.script = { pkgs, ... }: "${pkgs.openssl}/bin/opoenssl rand -hex 32";
+  };
+
   services.qbittorrent = {
     enable = true;
 
@@ -46,20 +51,9 @@
     requires = [ "srv-media.mount" ];
   };
 
-  systemd.services.qui = {
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network-online.target" ];
-    requires = [ "network-online.target" ];
-    serviceConfig = {
-      Group = "data";
-      DynamicUser = true;
-      ExecStart = "${lib.getExe pkgs.qui} serve";
-      StateDirectory = "qui";
-    };
-
-    environment = {
-      QUI__DATA_DIR = "%S/qui";
-    };
+  services.qui = {
+    enable = true;
+    secretFile = config.age.secrets.qui-secret.path;
   };
 
   systemd.tmpfiles.settings."10-torrents" = {
