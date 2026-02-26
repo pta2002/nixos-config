@@ -316,7 +316,7 @@
 
               roles = [
                 "home-assistant"
-                "media"
+                "overseerr"
                 "actions-runner"
               ];
             };

@@ -1,6 +1,4 @@
 {
-  pkgs,
-  lib,
   config,
   ...
 }:
@@ -55,6 +53,8 @@
     enable = true;
     secretFile = config.age.secrets.qui-secret.path;
   };
+
+  users.users.qui.extraGroups = [ "data" ];
 
   systemd.tmpfiles.settings."10-torrents" = {
     "/srv/media/torrents".d = {

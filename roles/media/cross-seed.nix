@@ -14,8 +14,6 @@ in
       ];
       linkDirs = [ "/srv/media/torrents/links" ];
       torrentDir = "/var/lib/qBittorrent/qBittorrent/data/BT_backup";
-      # outputDir = "/var/lib/deluge/output";
-      # outputDir = null;
       linkType = "hardlink";
       matchMode = "partial";
       skipRecheck = true;
