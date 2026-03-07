@@ -71,11 +71,54 @@
   };
 
   # Generate device tree into EFI partition
-  # boot.loader.systemd-boot.extraFiles.${config.hardware.deviceTree.name} =
-  #   "${config.hardware.deviceTree.package}/${config.hardware.deviceTree.name}";
-  # hardware.deviceTree.enable = true;
-  # hardware.deviceTree.name = "rockchip/rk3588-rock-5-itx.dtb";
-  # hardware.deviceTree.filter = "*-rock-5-itx*.dtb";
+  boot.loader.systemd-boot.extraFiles.${config.hardware.deviceTree.name} =
+    "${config.hardware.deviceTree.package}/${config.hardware.deviceTree.name}";
+
+  hardware.deviceTree = {
+    enable = true;
+    name = "rockchip/rk3588-rock-5-itx.dtb";
+    filter = "*-rock-5-itx*.dtb";
+
+    overlays = [
+      # This gets the HDMI receiver working on the Rock 5 ITX.
+      # Unfortunately the receiver wasn't wired in correctly upstream!
+      # TODO: https://lore.kernel.org/linux-devicetree/20260304-radxa-r5-itx-hdmirx-v1-1-f77bf1f7ce03@pta2002.com/
+      {
+        name = "hdmirx";
+        dtsText = /* dts */ ''
+          #include <dt-bindings/gpio/gpio.h>
+          #include <dt-bindings/pinctrl/rockchip.h>
+
+          /dts-v1/;
+          /plugin/;
+
+          / {
+            compatible = "radxa,rock-5-itx", "rockchip,rk3588";
+          };
+
+          /* &pinctrl {
+            hdmirx {
+              hdmirx_hpd: hdmirx-5v-detection {
+                rockchip,pins = <1 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
+              };
+            };
+          }; */
+
+          &hdmi_receiver_cma {
+            status = "okay";
+          };
+
+          &hdmi_receiver {
+            pinctrl-0 = <&hdmim1_rx_cec &hdmim1_rx_hpdin &hdmim1_rx_scl &hdmim1_rx_sda &hdmirx_det>;
+            pinctrl-names = "default";
+
+            hpd-gpios = <&gpio1 RK_PC6 GPIO_ACTIVE_LOW>;
+            status = "okay";
+          };
+        '';
+      }
+    ];
+  };
 
   nixpkgs.hostPlatform = "aarch64-linux";
 
