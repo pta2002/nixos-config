@@ -1,0 +1,148 @@
+From a1080301678024cb854650d9c23a1f02cac86d79 Mon Sep 17 00:00:00 2001
+From: Pedro Alves <pta2002@pta2002.com>
+Date: Wed, 11 Mar 2026 12:56:54 +0000
+Subject: [PATCH] libspdm_ecc: support crypto_sig API for kernels without
+ akcipher verify
+
+Linux 6.13 removed crypto_akcipher_verify/sign from the akcipher API
+(commit 6b34562, "crypto: akcipher - Drop sign/verify operations"),
+moving signature operations to the new synchronous crypto_sig API.
+
+Add a conftest check for NV_CRYPTO_AKCIPHER_VERIFY_PRESENT and
+conditionalize the verify path: kernels with the old API use
+crypto_akcipher_verify (BER-encoded signatures, async requests),
+while newer kernels use crypto_sig_verify (raw digit arrays via
+ecc_digits_from_bytes, synchronous).
+
+Based on the approach taken in nv-kernel-display-driver rel-38.
+---
+ kernel-open/conftest.sh          | 19 +++++++
+ kernel-open/nvidia/libspdm_ecc.c | 60 +++++++++++++++++++++++-
+ kernel-open/nvidia/nvidia.Kbuild |  1 +
+ 3 files changed, 79 insertions(+), 1 deletion(-)
+
+diff --git a/kernel-open/conftest.sh b/kernel-open/conftest.sh
+--- a/kernel-open/conftest.sh
++++ b/kernel-open/conftest.sh
+@@ -6529,6 +6529,25 @@
+             compile_check_conftest "$CODE" "NV_CRYPTO_TFM_CTX_ALIGNED_PRESENT" "" "functions"
+         ;;
+ 
++        crypto_akcipher_verify)
++            #
++            # Determine whether the crypto_akcipher_verify API is still present.
++            # It was removed by commit 6b34562 ("crypto: akcipher - Drop
++            # sign/verify operations") in v6.13-rc1 (2024-10-04).
++            #
++            # If the API is no longer present, the replacement crypto_sig_verify
++            # API must be used instead.
++            #
++            CODE="
++            #include <crypto/akcipher.h>
++            #include <linux/crypto.h>
++            void conftest_crypto_akcipher_verify(void) {
++                (void)crypto_akcipher_verify;
++            }"
++
++            compile_check_conftest "$CODE" "NV_CRYPTO_AKCIPHER_VERIFY_PRESENT" "" "symbols"
++        ;;
++
+         crypto)
+             #
+             # Determine if we support various crypto functions.
+diff --git a/kernel-open/nvidia/libspdm_ecc.c b/kernel-open/nvidia/libspdm_ecc.c
+--- a/kernel-open/nvidia/libspdm_ecc.c
++++ b/kernel-open/nvidia/libspdm_ecc.c
+@@ -30,6 +30,15 @@
+ #include <crypto/akcipher.h>
+ #include <crypto/ecdh.h>
+ #include <crypto/internal/ecc.h>
++#ifndef NV_CRYPTO_AKCIPHER_VERIFY_PRESENT
++#include <crypto/sig.h>
++
++struct signature
++{
++    u64 r[ECC_MAX_DIGITS];
++    u64 s[ECC_MAX_DIGITS];
++};
++#endif // NV_CRYPTO_AKCIPHER_VERIFY_PRESENT
+ 
+ struct ecc_ctx {
+     unsigned int curve_id;
+@@ -221,11 +230,62 @@
+ #endif
+ }
+ 
++#ifndef NV_CRYPTO_AKCIPHER_VERIFY_PRESENT
++static bool lkca_ecdsa_verify_crypto_sig(void *ec_context, size_t hash_nid,
++                                         const uint8_t *message_hash, size_t hash_size,
++                                         const uint8_t *signature, size_t sig_size)
++{
++#ifndef USE_LKCA
++    return false;
++#else
++    struct ecc_ctx *ctx = ec_context;
++    u8 *pub_key;
++    int err;
++    DECLARE_CRYPTO_WAIT(wait);
++    struct crypto_sig *tfm = NULL;
++    struct signature sig;
++
++    if (sig_size != ctx->size || !ctx->pub_key_set)
++        return false;
++
++    tfm = crypto_alloc_sig(ctx->name, CRYPTO_ALG_TYPE_SIG, 0);
++    if (IS_ERR(tfm)) {
++        pr_info("crypto_alloc_sig failed in lkca_ecdsa_verify\n");
++        return false;
++    }
++
++    pub_key = (u8 *) &(ctx->pub_key_prefix);
++    *pub_key = 4;
++    err = crypto_sig_set_pubkey(tfm, pub_key, ctx->size + 1);
++    if (err != 0) {
++        pr_info("crypto_sig_set_pubkey failed in lkca_ecdsa_verify: %d", -err);
++        goto failTfm;
++    }
++
++    // Swap order + endianness of signature digits
++    memset(&sig, 0, sizeof(sig));
++    ecc_digits_from_bytes(signature, ctx->size/2, sig.r, ECC_MAX_DIGITS);
++    ecc_digits_from_bytes(signature + ctx->size/2, ctx->size/2, sig.s, ECC_MAX_DIGITS);
++
++    err = crypto_sig_verify(tfm, (void *)&sig, sizeof(sig), message_hash, hash_size);
++    if (err != 0)
++        pr_info("crypto_sig_verify failed in lkca_ecdsa_verify %d\n", -err);
++
++failTfm:
++    crypto_free_sig(tfm);
++    return err == 0;
++#endif
++}
++#endif // NV_CRYPTO_AKCIPHER_VERIFY_PRESENT
++
+ bool lkca_ecdsa_verify(void *ec_context, size_t hash_nid,
+                        const uint8_t *message_hash, size_t hash_size,
+                        const uint8_t *signature, size_t sig_size)
+ {
+-#ifndef USE_LKCA
++#ifndef NV_CRYPTO_AKCIPHER_VERIFY_PRESENT
++    return lkca_ecdsa_verify_crypto_sig(ec_context, hash_nid, message_hash, hash_size,
++                                        signature, sig_size);
++#elif !defined(USE_LKCA)
+     return false;
+ #else
+     struct ecc_ctx *ctx = ec_context;
+diff --git a/kernel-open/nvidia/nvidia.Kbuild b/kernel-open/nvidia/nvidia.Kbuild
+--- a/kernel-open/nvidia/nvidia.Kbuild
++++ b/kernel-open/nvidia/nvidia.Kbuild
+@@ -226,6 +226,7 @@
+ NV_CONFTEST_SYMBOL_COMPILE_TESTS += is_export_symbol_present_tsec_comms_alloc_mem_from_gscco
+ NV_CONFTEST_SYMBOL_COMPILE_TESTS += is_export_symbol_present_tsec_comms_free_gscco_mem
+ NV_CONFTEST_SYMBOL_COMPILE_TESTS += crypto
++NV_CONFTEST_SYMBOL_COMPILE_TESTS += crypto_akcipher_verify
+ NV_CONFTEST_SYMBOL_COMPILE_TESTS += is_export_symbol_present_follow_pte
+ NV_CONFTEST_SYMBOL_COMPILE_TESTS += is_export_symbol_present_hrtimer_setup
+ NV_CONFTEST_SYMBOL_COMPILE_TESTS += is_export_symbol_present_timer_delete_sync
+-- 
+2.52.0
