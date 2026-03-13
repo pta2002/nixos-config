@@ -8,20 +8,19 @@
       fsType = "ext4";
     };
     "/boot" = {
-      device = "/dev/disk/by-uuid/8F94-DEC6";
+      device = "/dev/disk/by-partuuid/dd0aa973-7f9c-4339-9f9e-fcb15a482ea7";
       fsType = "vfat";
-    };
-    "/mnt" = {
-      device = "/dev/sda4";
-      fsType = "btrfs";
-      options = [ "noatime" ];
+      options = [
+        "fmask=0077"
+        "dmask=0077"
+      ];
     };
   };
 
-  boot.loader.grub = {
-    efiSupport = true;
-    efiInstallAsRemovable = true;
-    device = "nodev";
+  boot.loader = {
+    grub.enable = false;
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
   };
 
   boot.initrd.availableKernelModules = [
