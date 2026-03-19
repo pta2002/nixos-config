@@ -217,7 +217,7 @@
               );
             };
 
-          mkSwarm = lib.mapAttrs (_: mkSwarmMachine);
+          mkSwarm = lib.mapAttrs (name: v: mkSwarmMachine (v // { inherit name; }));
         in
         {
           lib.overrideHomeConfiguration =
@@ -265,7 +265,6 @@
           // (mkSwarm {
             mars = {
               system = "aarch64-linux";
-              name = "mars";
               stateVersion = "24.11";
               specialArgs = {
                 inherit
@@ -292,7 +291,6 @@
             cloudy = {
               system = "aarch64-linux";
               stateVersion = "22.11";
-              name = "cloudy";
               roles = [
                 "dns"
                 "vault"
@@ -305,7 +303,6 @@
 
             panda = {
               system = "x86_64-linux";
-              name = "panda";
               stateVersion = "25.05";
               roles = [
                 "actions-runner"
@@ -318,14 +315,12 @@
 
             dragon = {
               system = "aarch64-linux";
-              name = "dragon";
               stateVersion = "26.05";
               roles = [ ];
             };
 
             nas = {
               system = "aarch64-linux";
-              name = "nas";
               stateVersion = "26.05";
               roles = [
                 "media"
@@ -335,7 +330,6 @@
 
             jetson = {
               system = "aarch64-linux";
-              name = "jetson";
               stateVersion = "25.05";
               modules = [
                 jetpack-nixos.nixosModules.default
