@@ -163,7 +163,6 @@
               roles ? [ ],
               func ? nixpkgs.lib.nixosSystem,
             }:
-            hostForRoles:
             let
               nixFilesIn = dir: fs.toList (fs.fileFilter (file: file.hasExt "nix") dir);
               machineModules = nixFilesIn ./machines/${name};
@@ -188,7 +187,6 @@
 
                     ./modules/cluster.nix
                     roleDefinitions
-                    hostForRoles
 
                     (
                       { ... }:
@@ -219,26 +217,7 @@
               );
             };
 
-          mkSwarm =
-            machines:
-            let
-              rolesPerHost = lib.mapAttrs (k: v: v.roles) machines;
-              hostForRoles =
-                let
-                  flattened = lib.flatten (
-                    lib.mapAttrsToList (
-                      host:
-                      map (role: {
-                        ${role}.name = host;
-                      })
-                    ) rolesPerHost
-                  );
-                in
-                {
-                  config.cluster.role = lib.mergeAttrsList flattened;
-                };
-            in
-            lib.mapAttrs (k: v: mkSwarmMachine v hostForRoles) machines;
+          mkSwarm = lib.mapAttrs (_: mkSwarmMachine);
         in
         {
           lib.overrideHomeConfiguration =

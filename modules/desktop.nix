@@ -2,7 +2,6 @@
 { pkgs, pkgs-nocuda, ... }:
 {
   imports = [
-    ./ssh.nix
     ./wayland.nix
     # ./refind.nix
   ];
