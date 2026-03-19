@@ -164,7 +164,7 @@
               name,
               modules ? [ ],
               stateVersion,
-              specialArgs ? { },
+              specialArgs ? { inherit inputs; },
               roles ? [ ],
               func ? nixpkgs.lib.nixosSystem,
             }:
@@ -303,7 +303,7 @@
               specialArgs = {
                 inherit
                   inputs
-                  my-switches
+                  # Required by nixos-rasperrypi
                   nixos-raspberrypi
                   ;
               };
@@ -318,6 +318,7 @@
                 "home-assistant"
                 "overseerr"
                 "actions-runner"
+                "irc"
               ];
             };
 
@@ -325,12 +326,13 @@
               system = "aarch64-linux";
               stateVersion = "22.11";
               name = "cloudy";
-              specialArgs = { inherit inputs nixvim; };
               roles = [
                 "dns"
                 "vault"
                 "actions-runner"
                 "nix-cache"
+                "fava"
+                "rss"
               ];
             };
 
@@ -368,45 +370,8 @@
               system = "aarch64-linux";
               name = "jetson";
               stateVersion = "25.05";
-              specialArgs = { inherit inputs; };
               modules = [
                 jetpack-nixos.nixosModules.default
-                (
-                  { inputs, ... }:
-                  {
-                    nixpkgs.overlays = [
-                      (final: prev: {
-                        # Use the standard nix package to avoid rebuilds due to cudaSupport!
-                        nix = inputs.nixpkgs.legacyPackages.aarch64-linux.nix;
-
-                        onnxruntime = prev.onnxruntime.override { ncclSupport = false; };
-                        python3-cuda = prev.python3.override {
-                          packageOverrides = python-final: python-prev: {
-                            # The python package does not respect ncclSupport!
-                            onnxruntime = python-prev.onnxruntime.overrideAttrs {
-                              buildInputs = [
-                                prev.oneDNN
-                                prev.re2
-                                final.onnxruntime.protobuf
-                                final.onnxruntime
-                              ]
-                              ++ lib.optionals final.onnxruntime.passthru.cudaSupport (
-                                with final.onnxruntime.passthru.cudaPackages;
-                                [
-                                  libcublas # libcublasLt.so.XX libcublas.so.XX
-                                  libcurand # libcurand.so.XX
-                                  libcufft # libcufft.so.XX
-                                  cudnn # libcudnn.soXX
-                                  cuda_cudart # libcudart.so.XX
-                                ]
-                              );
-                            };
-                          };
-                        };
-                      })
-                    ];
-                  }
-                )
               ];
               roles = [
                 "actions-runner"

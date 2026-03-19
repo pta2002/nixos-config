@@ -1,4 +1,4 @@
-{ pkgs, my-switches, ... }:
+{ pkgs, inputs, ... }:
 {
   systemd.services.switches = {
     description = "switches";
@@ -6,7 +6,9 @@
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      ExecStart = "${my-switches.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/my-switches";
+      ExecStart = "${
+        inputs.my-switches.packages.${pkgs.stdenv.hostPlatform.system}.default
+      }/bin/my-switches";
       Type = "simple";
       User = "switches";
       Group = "switches";

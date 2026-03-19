@@ -1,10 +1,5 @@
 { pkgs, config, ... }:
 {
-  imports = [
-    ../../modules/yarr.nix
-    ../../modules/fava.nix
-  ];
-
   proxy = {
     enable = true;
     domain = "c.pta2002.com";

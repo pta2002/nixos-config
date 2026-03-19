@@ -9,7 +9,6 @@
 {
   imports = [
     ../../modules/matterbridge.nix
-    ../../modules/thelounge.nix
   ];
 
   proxy.enable = true;
