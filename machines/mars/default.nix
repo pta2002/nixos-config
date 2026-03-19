@@ -2,15 +2,9 @@
 {
   config,
   pkgs,
-  nixos-raspberrypi-25-05,
-  lib,
   ...
 }:
 {
-  imports = [
-    ../../modules/matterbridge.nix
-  ];
-
   proxy.enable = true;
   proxy.domain = "m.pta2002.com";
   proxy.environmentFile = config.age.secrets.caddy-mars.path;
