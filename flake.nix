@@ -158,7 +158,6 @@
               system,
               name,
               modules ? [ ],
-              stateVersion,
               specialArgs ? { inherit inputs; },
               roles ? [ ],
               func ? nixpkgs.lib.nixosSystem,
@@ -188,26 +187,6 @@
                     ./modules/cluster.nix
                     roleDefinitions
 
-                    (
-                      { ... }:
-                      {
-                        home-manager.users.pta2002 = nixpkgs.lib.mkMerge [
-                          { home.stateVersion = stateVersion; }
-                          nixvim.homeModules.nixvim
-                          ./home/nvim.nix
-                          ./home/git.nix
-                          ./home/shell.nix
-                          ./home/devenv.nix
-                          ./home/tmux.nix
-                        ];
-
-                        home-manager.useGlobalPkgs = true;
-                        home-manager.extraSpecialArgs = {
-                          inherit inputs;
-                          hostname = name;
-                        };
-                      }
-                    )
                   ]
                   machineModules
                   commonModules
@@ -265,7 +244,6 @@
           // (mkSwarm {
             mars = {
               system = "aarch64-linux";
-              stateVersion = "24.11";
               specialArgs = {
                 inherit
                   inputs
@@ -290,7 +268,6 @@
 
             cloudy = {
               system = "aarch64-linux";
-              stateVersion = "22.11";
               roles = [
                 "dns"
                 "vault"
@@ -303,7 +280,6 @@
 
             panda = {
               system = "x86_64-linux";
-              stateVersion = "25.05";
               roles = [
                 "actions-runner"
                 "auth"
@@ -315,13 +291,11 @@
 
             dragon = {
               system = "aarch64-linux";
-              stateVersion = "26.05";
               roles = [ ];
             };
 
             nas = {
               system = "aarch64-linux";
-              stateVersion = "26.05";
               roles = [
                 "media"
                 "data-host"
@@ -330,7 +304,6 @@
 
             jetson = {
               system = "aarch64-linux";
-              stateVersion = "25.05";
               modules = [
                 jetpack-nixos.nixosModules.default
               ];
