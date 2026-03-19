@@ -1,9 +1,16 @@
-{ lib, ... }:
+{ lib, config, ... }:
 let
-  roles = builtins.attrNames (builtins.readDir ../roles);
+  availableRoles = builtins.attrNames (builtins.readDir ../roles);
+  cfg = config.cluster;
 in
 {
   options.cluster = {
+    roles = lib.mkOption {
+      type = lib.types.listOf (lib.types.enum availableRoles);
+      default = [ ];
+      description = "List of roles for this host to take on";
+    };
+
     role = lib.listToAttrs (
       map (role: {
         name = role;
@@ -20,7 +27,13 @@ in
             default = null;
           };
         };
-      }) roles
+      }) availableRoles
     );
   };
+
+  config.cluster.role = lib.mkMerge (
+    lib.map (role: {
+      ${role}.enabled = true;
+    }) cfg.roles
+  );
 }

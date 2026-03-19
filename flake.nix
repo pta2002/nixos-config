@@ -170,14 +170,7 @@
               commonModules = nixFilesIn ./common;
               roleModules = map (role: nixFilesIn ./roles/${role}) roles;
               roleDefinitions = {
-                config.cluster.role = lib.listToAttrs (
-                  map (role: {
-                    name = role;
-                    value = {
-                      enabled = true;
-                    };
-                  }) roles
-                );
+                config.cluster.roles = roles;
               };
             in
             func {
