@@ -86,16 +86,11 @@
         let
           lib = nixpkgs.lib;
 
-          overlays = (
-            { pkgs, ... }:
-            {
-              nixpkgs.overlays = [
-                (import ./overlays/lua pkgs)
-                (import ./overlays/my-scripts pkgs)
-                (import ./overlays/kernel)
-              ];
-            }
-          );
+          overlays = {
+            nixpkgs.overlays = [
+              (import ./overlays/kernel)
+            ];
+          };
 
           mkMachine =
             name: system:
