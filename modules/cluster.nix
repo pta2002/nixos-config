@@ -3,7 +3,7 @@ let
   roles = builtins.attrNames (builtins.readDir ../roles);
 in
 {
-  options.common = {
+  options.cluster = {
     role = lib.listToAttrs (
       map (role: {
         name = role;

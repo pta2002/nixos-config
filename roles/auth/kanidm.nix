@@ -57,7 +57,7 @@ in
   };
 
   # TODO! Would be neat if I could use the cloudflared CLI to set the DNS automatically...
-  services.cloudflared.tunnels."${config.common.role.auth.name}-tunnel".ingress = {
+  services.cloudflared.tunnels."${config.cluster.role.auth.name}-tunnel".ingress = {
     "${domain}" = {
       service = "https://localhost:8443";
       originRequest.originServerName = domain;

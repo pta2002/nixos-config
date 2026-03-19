@@ -175,7 +175,7 @@
               commonModules = nixFilesIn ./common;
               roleModules = map (role: nixFilesIn ./roles/${role}) roles;
               roleDefinitions = {
-                config.common.role = lib.listToAttrs (
+                config.cluster.role = lib.listToAttrs (
                   map (role: {
                     name = role;
                     value = {
@@ -198,7 +198,7 @@
                     # Shouldn't this be by default?
                     inputs.agenix-rekey.nixosModules.default
 
-                    ./modules/common.nix
+                    ./modules/cluster.nix
                     roleDefinitions
                     hostForRoles
 
@@ -247,7 +247,7 @@
                   );
                 in
                 {
-                  config.common.role = lib.mergeAttrsList flattened;
+                  config.cluster.role = lib.mergeAttrsList flattened;
                 };
             in
             lib.mapAttrs (k: v: mkSwarmMachine v hostForRoles) machines;

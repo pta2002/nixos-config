@@ -52,7 +52,7 @@
     };
   };
 
-  services.cloudflared.tunnels."${config.common.role.auth.name}-tunnel".ingress = {
+  services.cloudflared.tunnels."${config.cluster.role.auth.name}-tunnel".ingress = {
     "vouch.pta2002.com".service =
       "http://localhost:${toString config.services.vouch-proxy.settings.vouch.port}";
   };

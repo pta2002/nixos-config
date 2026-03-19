@@ -10,7 +10,7 @@
   };
 
   # Used by CI
-  age.secrets.attic-config = lib.mkIf config.common.role.actions-runner.enabled {
+  age.secrets.attic-config = lib.mkIf config.cluster.role.actions-runner.enabled {
     rekeyFile = ../secrets/attic.toml.age;
     owner = "nixuser";
     group = "nixuser";

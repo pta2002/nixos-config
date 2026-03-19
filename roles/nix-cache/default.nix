@@ -40,7 +40,7 @@
 
   proxy.services.attic.addr = "127.0.0.1:8332";
 
-  services.cloudflared.tunnels."${config.common.role.nix-cache.name}-tunnel".ingress = {
+  services.cloudflared.tunnels."${config.cluster.role.nix-cache.name}-tunnel".ingress = {
     "attic.pta2002.com" = {
       service = "http://${config.services.atticd.settings.listen}";
     };

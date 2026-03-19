@@ -10,7 +10,7 @@ let
   serviceOpts =
     let
       # TODO: This should not depend on the port.
-      authEndpint = "http://${config.common.role.auth.name}:9090/validate";
+      authEndpint = "http://${config.cluster.role.auth.name}:9090/validate";
     in
     { name, config, ... }:
     {

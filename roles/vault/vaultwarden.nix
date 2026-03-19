@@ -3,7 +3,7 @@
   # It's only accessible through tailscale for security.
   proxy.services.vault = "localhost:${toString config.services.vaultwarden.config.ROCKET_PORT}";
 
-  services.cloudflared.tunnels."${config.common.role.vault.name}-tunnel".ingress = {
+  services.cloudflared.tunnels."${config.cluster.role.vault.name}-tunnel".ingress = {
     "vault.pta2002.com" = {
       service = "http://localhost:${toString config.services.vaultwarden.config.ROCKET_PORT}";
     };
