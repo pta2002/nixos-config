@@ -65,12 +65,10 @@
       home,
       nixvim,
       agenix,
-      my-switches,
       nixos-hardware,
       disko,
       deploy-rs,
       nixos-raspberrypi,
-      # nixos-raspberrypi-25-05,
       flake-parts,
       jetpack-nixos,
       ...
@@ -80,12 +78,11 @@
         # inputs.home.flakeModules.home-manager
         inputs.agenix-rekey.flakeModule
         inputs.treefmt-nix.flakeModule
+        ./lib/cluster.nix
       ];
 
       flake =
         let
-          lib = nixpkgs.lib;
-
           overlays = {
             nixpkgs.overlays = [
               (import ./overlays/kernel)
@@ -151,52 +148,6 @@
               ++ modules;
             };
 
-          fs = lib.fileset;
-
-          mkSwarmMachine =
-            {
-              system,
-              name,
-              modules ? [ ],
-              specialArgs ? { inherit inputs; },
-              roles ? [ ],
-              func ? nixpkgs.lib.nixosSystem,
-            }:
-            let
-              nixFilesIn = dir: fs.toList (fs.fileFilter (file: file.hasExt "nix") dir);
-              machineModules = nixFilesIn ./machines/${name};
-              commonModules = nixFilesIn ./common;
-              roleModules = map (role: nixFilesIn ./roles/${role}) roles;
-              roleDefinitions = {
-                config.cluster.roles = roles;
-              };
-            in
-            func {
-              inherit system specialArgs;
-              modules = lib.concatLists (
-                [
-                  [
-                    overlays
-                    agenix.nixosModules.default
-                    home.nixosModules.home-manager
-                    disko.nixosModules.disko
-
-                    # Shouldn't this be by default?
-                    inputs.agenix-rekey.nixosModules.default
-
-                    ./modules/cluster.nix
-                    roleDefinitions
-
-                  ]
-                  machineModules
-                  commonModules
-                  modules
-                ]
-                ++ roleModules
-              );
-            };
-
-          mkSwarm = lib.mapAttrs (name: v: mkSwarmMachine (v // { inherit name; }));
         in
         {
           lib.overrideHomeConfiguration =
@@ -240,16 +191,23 @@
                 ./machines/pie/default.nix
               ];
             };
-          }
-          // (mkSwarm {
+          };
+
+          cluster.extraSpecialArgs = { inherit inputs; };
+          cluster.extraCommonModules = [
+            overlays
+            agenix.nixosModules.default
+            home.nixosModules.home-manager
+            disko.nixosModules.disko
+            inputs.agenix-rekey.nixosModules.default
+          ];
+
+          cluster.machines = {
             mars = {
               system = "aarch64-linux";
               specialArgs = {
-                inherit
-                  inputs
-                  # Required by nixos-rasperrypi
-                  nixos-raspberrypi
-                  ;
+                # Required by nixos-rasperrypi
+                inherit nixos-raspberrypi;
               };
               func = nixos-raspberrypi.lib.nixosSystem;
               modules = with nixos-raspberrypi.nixosModules; [
@@ -314,7 +272,7 @@
                 "k3s"
               ];
             };
-          });
+          };
 
           deploy.nodes = {
             panda = {
