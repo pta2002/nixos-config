@@ -65,6 +65,7 @@
       home,
       nixvim,
       agenix,
+      agenix-rekey,
       nixos-hardware,
       disko,
       deploy-rs,
@@ -73,86 +74,55 @@
       jetpack-nixos,
       ...
     }@inputs:
+    let
+      overlays = {
+        nixpkgs.overlays = [
+          (import ./overlays/kernel)
+        ];
+      };
+    in
     flake-parts.lib.mkFlake { inherit inputs; } (_: {
       imports = [
-        # inputs.home.flakeModules.home-manager
         inputs.agenix-rekey.flakeModule
         inputs.treefmt-nix.flakeModule
         ./lib/cluster.nix
       ];
 
-      flake =
-        let
-          overlays = {
-            nixpkgs.overlays = [
-              (import ./overlays/kernel)
-            ];
+      flake = {
+        lib.mkHomeManagerConfig =
+          {
+            pkgs ? nixpkgs.legacyPackages."x86_64-linux",
+            modules ? [
+              {
+                home.stateVersion = "24.05";
+                home.username = "pta2002";
+                home.homeDirectory = "/home/pta2002";
+              }
+            ],
+          }:
+          {
+            inherit pkgs;
+            extraSpecialArgs = { inherit inputs nixvim; };
+            modules = [
+              nixvim.homeModules.nixvim
+              ./home/nvim.nix
+              ./home/git.nix
+              ./home/jj.nix
+              ./home/gpg.nix
+              ./home/shell.nix
+              ./home/devenv.nix
+              ./home/tmux.nix
+              {
+                programs.home-manager.enable = true;
+              }
+            ]
+            ++ modules;
           };
 
-          mkMachine =
-            name: system:
-            nixpkgs.lib.nixosSystem {
-              inherit system;
-
-              modules = [
-                overlays
-                ./configuration.nix
-                ./machines/${name}.nix
-
-                home.nixosModules.home-manager
-                {
-                  home-manager.users.pta2002 = ./home/desktops.nix;
-                  home-manager.extraSpecialArgs = {
-                    inherit inputs;
-                    hostname = name;
-                  };
-                  # home-manager.sharedModules = [ overlays ];
-                  home-manager.useGlobalPkgs = true;
-                  # home-manager.backupFileExtension = ".hm-bak";
-                }
-              ];
-
-              specialArgs = {
-                inherit inputs;
-                hostname = name;
-              };
-            };
-
-          mkHomeManagerConfig =
-            {
-              pkgs ? nixpkgs.legacyPackages."x86_64-linux",
-              modules ? [
-                {
-                  home.stateVersion = "24.05";
-                  home.username = "pta2002";
-                  home.homeDirectory = "/home/pta2002";
-                }
-              ],
-            }:
-            {
-              inherit pkgs;
-              extraSpecialArgs = { inherit inputs nixvim; };
-              modules = [
-                nixvim.homeModules.nixvim
-                ./home/nvim.nix
-                ./home/git.nix
-                ./home/jj.nix
-                ./home/gpg.nix
-                ./home/shell.nix
-                ./home/devenv.nix
-                ./home/tmux.nix
-                {
-                  programs.home-manager.enable = true;
-                }
-              ]
-              ++ modules;
-            };
-
-        in
-        {
-          lib.overrideHomeConfiguration =
-            system: config:
-            home.lib.homeManagerConfiguration (mkHomeManagerConfig {
+        lib.overrideHomeConfiguration =
+          system: config:
+          home.lib.homeManagerConfiguration (
+            self.lib.mkHomeManagerConfig {
               pkgs = nixpkgs.legacyPackages.${system};
               modules = [
                 {
@@ -162,12 +132,13 @@
                 }
                 config
               ];
-            });
-          lib.mkHomeManagerConfig = mkHomeManagerConfig;
+            }
+          );
 
-          homeConfigurations = {
-            pta2002 = home.lib.homeManagerConfiguration (mkHomeManagerConfig { });
-            pta2002-darwin = home.lib.homeManagerConfiguration (mkHomeManagerConfig {
+        homeConfigurations = {
+          pta2002 = home.lib.homeManagerConfiguration (self.lib.mkHomeManagerConfig { });
+          pta2002-darwin = home.lib.homeManagerConfiguration (
+            self.lib.mkHomeManagerConfig {
               pkgs = nixpkgs.legacyPackages.aarch64-darwin;
               modules = [
                 {
@@ -176,160 +147,182 @@
                   home.homeDirectory = "/Users/ctw03386";
                 }
               ];
-            });
-          };
+            }
+          );
+        };
 
-          nixosConfigurations = {
-            hydrogen = mkMachine "hydrogen" "x86_64-linux";
+        nixosConfigurations = {
+          hydrogen = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
 
-            pie = nixpkgs.lib.nixosSystem {
-              system = "aarch64-linux";
-              specialArgs = { inherit inputs; };
-              modules = [
-                agenix.nixosModules.default
-                nixos-hardware.nixosModules.raspberry-pi-4
-                ./machines/pie/default.nix
-              ];
+            modules = [
+              overlays
+              ./configuration.nix
+              ./machines/hydrogen.nix
+
+              home.nixosModules.home-manager
+              {
+                home-manager.users.pta2002 = ./home/desktops.nix;
+                home-manager.extraSpecialArgs = {
+                  inherit inputs;
+                  hostname = "hydrogen";
+                };
+                home-manager.useGlobalPkgs = true;
+              }
+            ];
+
+            specialArgs = {
+              inherit inputs;
+              hostname = "hydrogen";
             };
           };
 
-          cluster.extraSpecialArgs = { inherit inputs; };
-          cluster.extraCommonModules = [
-            overlays
-            agenix.nixosModules.default
-            home.nixosModules.home-manager
-            disko.nixosModules.disko
-            inputs.agenix-rekey.nixosModules.default
-          ];
+          pie = nixpkgs.lib.nixosSystem {
+            system = "aarch64-linux";
+            specialArgs = { inherit inputs; };
+            modules = [
+              agenix.nixosModules.default
+              nixos-hardware.nixosModules.raspberry-pi-4
+              ./machines/pie/default.nix
+            ];
+          };
+        };
 
-          cluster.machines = {
-            mars = {
-              system = "aarch64-linux";
-              specialArgs = {
-                # Required by nixos-rasperrypi
-                inherit nixos-raspberrypi;
-              };
-              func = nixos-raspberrypi.lib.nixosSystem;
-              modules = with nixos-raspberrypi.nixosModules; [
-                raspberry-pi-5.base
-                # TODO: Re-enable this once I have good CI infra
-                # raspberry-pi-5.page-size-16k
-              ];
+        cluster.extraSpecialArgs = { inherit inputs; };
+        cluster.extraCommonModules = [
+          overlays
+          agenix.nixosModules.default
+          home.nixosModules.home-manager
+          disko.nixosModules.disko
+          agenix-rekey.nixosModules.default
+        ];
 
-              roles = [
-                "home-assistant"
-                "overseerr"
-                "actions-runner"
-                "irc"
-              ];
+        cluster.machines = {
+          mars = {
+            system = "aarch64-linux";
+            specialArgs = {
+              # Required by nixos-rasperrypi
+              inherit nixos-raspberrypi;
             };
+            func = nixos-raspberrypi.lib.nixosSystem;
+            modules = with nixos-raspberrypi.nixosModules; [
+              raspberry-pi-5.base
+              # TODO: Re-enable this once I have good CI infra
+              # raspberry-pi-5.page-size-16k
+            ];
 
-            cloudy = {
-              system = "aarch64-linux";
-              roles = [
-                "dns"
-                "vault"
-                "actions-runner"
-                "nix-cache"
-                "fava"
-                "rss"
-              ];
-            };
+            roles = [
+              "home-assistant"
+              "overseerr"
+              "actions-runner"
+              "irc"
+            ];
+          };
 
-            panda = {
-              system = "x86_64-linux";
-              roles = [
-                "actions-runner"
-                "auth"
-                "git"
-                "snatcher"
-                "stream"
-              ];
-            };
+          cloudy = {
+            system = "aarch64-linux";
+            roles = [
+              "dns"
+              "vault"
+              "actions-runner"
+              "nix-cache"
+              "fava"
+              "rss"
+            ];
+          };
 
-            dragon = {
-              system = "aarch64-linux";
-              roles = [ ];
-            };
+          panda = {
+            system = "x86_64-linux";
+            roles = [
+              "actions-runner"
+              "auth"
+              "git"
+              "snatcher"
+              "stream"
+            ];
+          };
 
-            nas = {
-              system = "aarch64-linux";
-              roles = [
-                "media"
-                "data-host"
-              ];
-            };
+          dragon = {
+            system = "aarch64-linux";
+            roles = [ ];
+          };
 
-            jetson = {
-              system = "aarch64-linux";
-              modules = [
-                jetpack-nixos.nixosModules.default
-              ];
-              roles = [
-                "actions-runner"
-                # "immich"
-                "garage"
-                "k3s"
-              ];
+          nas = {
+            system = "aarch64-linux";
+            roles = [
+              "media"
+              "data-host"
+            ];
+          };
+
+          jetson = {
+            system = "aarch64-linux";
+            modules = [ jetpack-nixos.nixosModules.default ];
+            roles = [
+              "actions-runner"
+              # "immich"
+              "garage"
+              "k3s"
+            ];
+          };
+        };
+
+        deploy.nodes = {
+          panda = {
+            hostname = "100.81.36.57";
+            remoteBuild = true;
+            profiles.system = {
+              user = "root";
+              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;
             };
           };
 
-          deploy.nodes = {
-            panda = {
-              hostname = "100.81.36.57";
-              remoteBuild = true;
-              profiles.system = {
-                user = "root";
-                path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;
-              };
+          cloudy = {
+            hostname = "100.86.136.44";
+            remoteBuild = true;
+            profiles.system = {
+              user = "root";
+              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.cloudy;
             };
+          };
 
-            cloudy = {
-              hostname = "100.86.136.44";
-              remoteBuild = true;
-              profiles.system = {
-                user = "root";
-                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.cloudy;
-              };
+          mars = {
+            hostname = "100.126.178.45";
+            remoteBuild = false;
+            profiles.system = {
+              user = "root";
+              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mars;
             };
+          };
 
-            mars = {
-              hostname = "100.126.178.45";
-              remoteBuild = false;
-              profiles.system = {
-                user = "root";
-                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mars;
-              };
+          dragon = {
+            hostname = "192.168.1.131";
+            remoteBuild = true;
+            profiles.system = {
+              user = "root";
+              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.dragon;
             };
+          };
 
-            dragon = {
-              hostname = "192.168.1.131";
-              remoteBuild = true;
-              profiles.system = {
-                user = "root";
-                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.dragon;
-              };
+          nas = {
+            hostname = "100.68.190.31";
+            remoteBuild = true;
+            profiles.system = {
+              user = "root";
+              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.nas;
             };
+          };
 
-            nas = {
-              hostname = "100.68.190.31";
-              remoteBuild = true;
-              profiles.system = {
-                user = "root";
-                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.nas;
-              };
-            };
-
-            jetson = {
-              hostname = "100.74.251.44";
-              # remoteBuild = true;
-              profiles.system = {
-                user = "root";
-                path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.jetson;
-              };
+          jetson = {
+            hostname = "100.74.251.44";
+            # remoteBuild = true;
+            profiles.system = {
+              user = "root";
+              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.jetson;
             };
           };
         };
+      };
 
       systems = [
         "x86_64-linux"
