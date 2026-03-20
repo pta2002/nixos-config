@@ -1,25 +1,23 @@
 {
   lib,
   config,
-  inputs,
+  cluster,
   ...
 }:
 let
-  availableRoles = builtins.attrNames (builtins.readDir ../roles);
+  availableRoles = lib.attrNames cluster.roles;
   cfg = config.cluster;
 
-  # Mapping between host name and its roles
-  rolesPerHost = lib.mapAttrs (
-    _host: opts: lib.attrByPath [ "cluster" "roles" ] [ ] opts.config
-  ) inputs.self.nixosConfigurations;
-
   # Mapping between roles and their hosts names
-  hostsPerRole = lib.mergeAttrsList (
-    lib.mapAttrsToList (host: roles: lib.genAttrs roles (lib.const [ host ])) rolesPerHost
-  );
+  hostsPerRole = lib.mapAttrs (_: v: v.hosts) cluster.roles;
 in
 {
   options.cluster = {
+    deployHost = lib.mkOption {
+      type = lib.types.str;
+      description = "Hostname on which this machine can be reached";
+    };
+
     roles = lib.mkOption {
       type = lib.types.listOf (lib.types.enum availableRoles);
       default = [ ];
@@ -42,6 +40,8 @@ in
   };
 
   config.cluster = {
+    roles = cluster.myRoles;
+
     role = lib.mkMerge (
       map (role: {
         ${role} = {

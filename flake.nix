@@ -82,6 +82,7 @@
       };
     in
     flake-parts.lib.mkFlake { inherit inputs; } (_: {
+      debug = true;
       imports = [
         inputs.agenix-rekey.flakeModule
         inputs.treefmt-nix.flakeModule
@@ -200,6 +201,7 @@
         cluster.machines = {
           mars = {
             system = "aarch64-linux";
+            deployHost = "100.126.178.45";
             specialArgs = {
               # Required by nixos-rasperrypi
               inherit nixos-raspberrypi;
@@ -221,6 +223,7 @@
 
           cloudy = {
             system = "aarch64-linux";
+            deployHost = "100.86.136.44";
             roles = [
               "dns"
               "vault"
@@ -233,6 +236,7 @@
 
           panda = {
             system = "x86_64-linux";
+            deployHost = "100.81.36.57";
             roles = [
               "actions-runner"
               "auth"
@@ -244,11 +248,13 @@
 
           dragon = {
             system = "aarch64-linux";
+            deployHost = "192.168.1.131";
             roles = [ ];
           };
 
           nas = {
             system = "aarch64-linux";
+            deployHost = "100.68.190.31";
             roles = [
               "media"
               "data-host"
@@ -257,6 +263,7 @@
 
           jetson = {
             system = "aarch64-linux";
+            deployHost = "100.74.251.44";
             modules = [ jetpack-nixos.nixosModules.default ];
             roles = [
               "actions-runner"
@@ -264,62 +271,6 @@
               "garage"
               "k3s"
             ];
-          };
-        };
-
-        deploy.nodes = {
-          panda = {
-            hostname = "100.81.36.57";
-            remoteBuild = true;
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.panda;
-            };
-          };
-
-          cloudy = {
-            hostname = "100.86.136.44";
-            remoteBuild = true;
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.cloudy;
-            };
-          };
-
-          mars = {
-            hostname = "100.126.178.45";
-            remoteBuild = false;
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mars;
-            };
-          };
-
-          dragon = {
-            hostname = "192.168.1.131";
-            remoteBuild = true;
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.dragon;
-            };
-          };
-
-          nas = {
-            hostname = "100.68.190.31";
-            remoteBuild = true;
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.nas;
-            };
-          };
-
-          jetson = {
-            hostname = "100.74.251.44";
-            # remoteBuild = true;
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.jetson;
-            };
           };
         };
       };
