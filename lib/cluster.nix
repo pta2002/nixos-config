@@ -175,5 +175,12 @@ in
         path = inputs.deploy-rs.lib.${machine.system}.activate.nixos machine.nixosConfiguration;
       };
     }) cfg.machines;
+
   };
+
+  config.perSystem =
+    { ... }:
+    {
+      agenix-rekey.nixosConfigurations = lib.mapAttrs (_: m: m.nixosConfiguration) cfg.machines;
+    };
 }

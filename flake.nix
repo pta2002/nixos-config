@@ -296,20 +296,8 @@
             ];
           };
 
-          agenix-rekey = {
-            # This might be interesting later, but for now there is no need.
-            collectHomeManagerConfigurations = false;
-            nixosConfigurations = {
-              inherit (self.nixosConfigurations)
-                panda
-                cloudy
-                mars
-                jetson
-                dragon
-                nas
-                ;
-            };
-          };
+          # This might be interesting later, but for now there is no need.
+          agenix-rekey.collectHomeManagerConfigurations = false;
 
           treefmt = {
             projectRootFile = "flake.nix";
