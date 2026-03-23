@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-25-11.url = "github:NixOS/nixpkgs/nixos-25.11";
 
     home.url = "github:nix-community/home-manager";
     home.inputs.nixpkgs.follows = "nixpkgs";
@@ -68,7 +67,6 @@
       agenix-rekey,
       nixos-hardware,
       disko,
-      deploy-rs,
       nixos-raspberrypi,
       flake-parts,
       jetpack-nixos,
