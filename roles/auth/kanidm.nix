@@ -5,10 +5,10 @@ let
 in
 {
   services.kanidm = {
-    enableServer = true;
-    package = pkgs.kanidmWithSecretProvisioning_1_8;
+    package = pkgs.kanidmWithSecretProvisioning_1_9;
 
-    serverSettings = {
+    server.enable = true;
+    server.settings = {
       inherit domain;
       origin = "https://${domain}";
 
@@ -64,5 +64,5 @@ in
     };
   };
 
-  common.backups.paths = [ "${config.services.kanidm.serverSettings.online_backup.path}" ];
+  common.backups.paths = [ "${config.services.kanidm.server.settings.online_backup.path}" ];
 }
