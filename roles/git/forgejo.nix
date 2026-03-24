@@ -20,6 +20,11 @@
         UPDATE_AVATAR = true;
         ACCOUNT_LONKING = "auto";
       };
+
+      actions = {
+        # Give time for things like Linux kernel compilations
+        ENDLESS_TASK_TIMEOUT = "12h";
+      };
     };
   };
 

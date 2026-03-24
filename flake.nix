@@ -236,7 +236,7 @@
             system = "x86_64-linux";
             deployHost = "100.81.36.57";
             roles = [
-              "actions-runner"
+              # "actions-runner"
               "auth"
               "git"
               "snatcher"

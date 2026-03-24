@@ -223,6 +223,9 @@ in
             config.age.secrets.attic-netrc.path
             config.age.secrets.attic-config.path
           ];
+
+          # Allow time for things like the Linux kernel
+          runner.timeout = "12h";
         };
       };
     };
