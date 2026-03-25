@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   hardware.nvidia-container-toolkit.enable = true;
 
@@ -15,6 +15,13 @@
     "vfat"
   ];
   boot.loader.systemd-boot.enable = true;
+
+  swapDevices = [
+    {
+      device = "/swap/swapfile";
+      options = [ "discard" ];
+    }
+  ];
 
   nixpkgs.hostPlatform = "aarch64-linux";
 

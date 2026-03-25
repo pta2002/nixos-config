@@ -37,8 +37,10 @@ in
 
   systemd.services.autobrr.after = [ "kanidm.service" ];
 
-  systemd.services.autobrr.serviceConfig.ExecStartPre =
-    lib.mkForce "${lib.getExe pkgs.bash} -c '${templaterCmd}'";
+  # systemd.services.autobrr.serviceConfig.ExecStartPre =
+  #   lib.mkForce "${lib.getExe pkgs.bash} -c '${templaterCmd}'";
+  systemd.services.autobrr.serviceConfig.ExecStartPre = lib.mkForce null;
+  systemd.services.autobrr.serviceConfig.EnvironmentFile = config.services.autobrr.secretFile;
 
   services.kanidm.provision.systems.oauth2.autobrr = {
     originUrl = "${config.services.autobrr.settings.oidcRedirectUrl}";

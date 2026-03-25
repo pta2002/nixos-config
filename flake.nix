@@ -268,6 +268,7 @@
               # "immich"
               "garage"
               "k3s"
+              "iptv"
             ];
           };
         };
