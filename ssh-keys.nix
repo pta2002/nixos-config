@@ -1,6 +1,6 @@
 lib:
 let
   fs = lib.fileset;
-  sshKeyFiles = fs.toList (fs.fileFilter (file: file.hasExt "pub") ./keys);
+  sshKeyFiles = fs.fileFilter (file: file.hasExt "pub") ./keys |> fs.toList;
 in
 map builtins.readFile sshKeyFiles
