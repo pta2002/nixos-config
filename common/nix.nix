@@ -4,6 +4,7 @@
     settings.experimental-features = [
       "nix-command"
       "flakes"
+      "pipe-operators"
     ];
     settings.trusted-users = [
       "root"

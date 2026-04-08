@@ -61,7 +61,7 @@ in
 
       cat <<NIX_CONFIG > etc/nix/nix.conf
       accept-flake-config = true
-      experimental-features = nix-command flakes
+      experimental-features = nix-command flakes pipe-operators
       NIX_CONFIG
 
       cat <<NSSWITCH > etc/nsswitch.conf
