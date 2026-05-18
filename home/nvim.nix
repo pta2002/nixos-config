@@ -245,7 +245,6 @@ in
       luasnip.enable = true;
       sleuth.enable = true;
 
-      git-conflict.enable = true;
       neogit = {
         enable = true;
       };
