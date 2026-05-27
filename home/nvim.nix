@@ -28,7 +28,6 @@ in
           highlight = {
             additional_vim_regex_highlighting = [ "org" ];
             enable = true;
-            disable = [ "pug" ];
           };
 
           folding = true;

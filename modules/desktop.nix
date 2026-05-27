@@ -103,7 +103,6 @@
 
   # Programs
   programs.wireshark.enable = true;
-  programs.adb.enable = true;
   programs.dconf.enable = true;
   programs.steam = {
     enable = true;

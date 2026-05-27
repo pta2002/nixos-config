@@ -97,7 +97,7 @@
     zotero
 
     # IDEs
-    jetbrains.idea-ultimate
+    jetbrains.idea
     jetbrains.clion
     # emacsUnstable
     # (emacsWithPackagesFromUsePackage {
